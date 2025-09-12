@@ -1,0 +1,103 @@
+---
+title: '07. Prototipado'
+description: 'Creación de prototipos para validar y mejorar el diseño de interfaces antes del desarrollo.'
+---
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+
+El prototipado es una de las fases más importantes en el ciclo de vida del diseño de interfaces. Consiste en crear una **versión simulada e interactiva** de un producto digital antes de invertir tiempo y recursos en su desarrollo final.
+
+Un prototipo no es un producto terminado, sino una herramienta para **validar ideas, probar la usabilidad y comunicar la visión** del diseño al equipo y a los stakeholders.
+
+### ¿Por Qué es Tan Importante Prototipar?
+
+1.  **Validación Temprana**: Permite probar la funcionalidad y el flujo de navegación con usuarios reales desde el principio, identificando problemas de usabilidad antes de que sea costoso solucionarlos.
+2.  **Ahorro de Tiempo y Dinero**: Es mucho más rápido y barato modificar un prototipo que cambiar el código de una aplicación ya desarrollada.
+3.  **Mejora la Comunicación**: Un prototipo interactivo comunica la idea del diseño de forma mucho más clara que un documento de requisitos o una imagen estática. Todos (diseñadores, desarrolladores, clientes) pueden ver y sentir cómo funcionará el producto.
+4.  **Iteración Rápida**: Facilita la experimentación con diferentes soluciones de diseño. Se pueden crear múltiples versiones y comparar cuál funciona mejor.
+
+### Tipos de Prototipos
+
+Los prototipos se suelen clasificar según su nivel de detalle y fidelidad con respecto al producto final.
+
+#### 1. Prototipos de Baja Fidelidad (Lo-Fi)
+
+Son representaciones básicas y esquemáticas de la interfaz. Su objetivo es definir la estructura, el contenido y el flujo de navegación, sin preocuparse por la estética.
+
+-   **Características**:
+    -   Rápidos y baratos de crear.
+    -   Uso de formas simples, sin colores ni imágenes.
+    -   Pueden ser en papel (bocetos o *sketches*) o digitales (*wireframes*).
+-   **Ideal para**: Las primeras fases del diseño, brainstorming y definir la arquitectura de la información.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Ejemplo de Wireframe (Baja Fidelidad)</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <img src="https://s3-alpha.figma.com/hub/file/860348856/634032d0-9f09-47dc-b852-8c2c85ab2ded-cover.png" alt="Wireframe de una aplicación móvil" />
+    <p style={{textAlign: 'center', fontStyle: 'italic', marginTop: '1rem'}}>Un wireframe se centra en la estructura y la disposición de los elementos, no en el diseño visual.</p>
+  </CardContent>
+</Card>
+
+#### 2. Prototipos de Alta Fidelidad (Hi-Fi)
+
+Son representaciones muy detalladas y realistas de la interfaz final. Incluyen el diseño visual, la interactividad y, a menudo, micro-animaciones.
+
+-   **Características**:
+    -   Apariencia muy similar al producto final (colores, tipografía, iconos).
+    -   Permiten una interacción avanzada (clics, transiciones, menús desplegables).
+    -   Se crean con herramientas de diseño especializadas.
+-   **Ideal para**: Pruebas de usabilidad detalladas, presentaciones a clientes y como guía visual para los desarrolladores.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Ejemplo de Mockup Interactivo (Alta Fidelidad)</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <img src="https://posicionweb.es/wp-content/uploads/2022/05/image-1024x507.png" alt="Mockup de una aplicación móvil" />
+    <p style={{textAlign: 'center', fontStyle: 'italic', marginTop: '1rem'}}>Un mockup de alta fidelidad simula la experiencia real del producto final.</p>
+  </CardContent>
+</Card>
+
+### Herramientas Populares de Prototipado
+
+-   **Figma**: La herramienta líder del mercado. Es colaborativa, basada en la nube y muy potente tanto para el diseño como para el prototipado.
+-   **Sketch**: Una de las pioneras en el diseño de interfaces moderno. Muy popular en el ecosistema de Apple (solo para macOS).
+-   **Adobe XD**: La propuesta de Adobe para el diseño de UI/UX. Se integra muy bien con el resto de la suite de Adobe (Photoshop, Illustrator).
+-   **InVision**: Permite convertir diseños estáticos en prototipos interactivos y facilita la colaboración y el feedback.
+
+El prototipado es, en esencia, un diálogo continuo. Nos permite "hablar" con nuestras ideas, con los usuarios y con el equipo para refinar nuestra visión y construir un producto final que sea verdaderamente útil y usable.
+
+---
+
+### 📚 Para saber más
+
+-   **[Figma](https://www.figma.com/)**: La web oficial de Figma. Explora sus funcionalidades y regístrate para obtener una cuenta gratuita para estudiantes.
+-   **[Sketch](https://www.sketch.com/)**: La web oficial de Sketch. Aunque es de pago y solo para Mac, es un referente en la industria.
+-   **[Adobe XD](https://www.adobe.com/products/xd.html)**: La web oficial de Adobe XD. Forma parte de la suite de Creative Cloud.
+
+---
+
+### 📝 Ejercicio Práctico: Tu Primer Prototipo
+
+Vamos a poner en práctica lo aprendido creando un prototipo simple.
+
+**Herramientas:**
+
+-   Puedes usar una herramienta digital como **Figma** (recomendado, por su plan gratuito).
+-   O si lo prefieres, ¡puedes hacerlo en **papel** con lápiz y tijeras!
+
+**Instrucciones:**
+
+1.  **Elige una idea simple para una app**. Por ejemplo:
+    -   Una app para registrar tus gastos diarios.
+    -   Una app para hacer una lista de la compra.
+    -   La pantalla de login y registro de una red social inventada.
+2.  **Crea un prototipo de baja fidelidad (wireframe)**. Dibuja las pantallas principales y los elementos clave (botones, campos de texto, etc.). No te preocupes por los colores ni los detalles.
+3.  **Define el flujo principal**. Por ejemplo, en la app de gastos:
+    -   *Pantalla 1 (Home):* Muestra el saldo actual y una lista de los últimos gastos. Hay un botón `+` para añadir un nuevo gasto.
+    -   *Pantalla 2 (Añadir Gasto):* Un formulario para introducir el concepto y la cantidad. Un botón de "Guardar".
+4.  **Crea un prototipo de alta fidelidad (mockup)** de al menos una de las pantallas. Ahora sí, añade colores, elige una tipografía y busca algunos iconos.
+5.  **(Opcional) Hazlo interactivo**. Si usas Figma, conecta las pantallas con "noodles" (las flechas de prototipado) para simular el flujo que definiste.
+
+Este ejercicio te dará una visión completa del proceso de prototipado, desde la idea inicial hasta una simulación interactiva.

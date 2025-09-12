@@ -1,0 +1,260 @@
+---
+title: '04. Patrones de Diseño de UI'
+description: 'Soluciones reutilizables y estandarizadas para problemas comunes en el diseño de interfaces.'
+---
+
+import { Card, CardContent } from '@/components/ui/card';
+import Quiz from '@/components/Quiz';
+
+Los **patrones de diseño de interfaces de usuario (UI)** son soluciones probadas y reutilizables para problemas de diseño que se repiten una y otra vez.  
+Usarlos nos ayuda a crear experiencias consistentes e intuitivas, porque los usuarios ya están **acostumbrados** a ellos en otras aplicaciones y no necesitan reaprender cómo funcionan.
+
+Piensa en tu día a día: cuando entras en una aplicación de música, cuando haces un pedido en una web de comida o incluso cuando revisas tus redes sociales. Todos ellos usan **los mismos patrones** para que sepas moverte sin tener que leer un manual.
+
+---
+
+### 1. Patrones de Navegación
+
+Ayudan a los usuarios a **moverse por la aplicación de manera eficiente**.
+
+- **Pestañas (Tabs)**  
+  Organizan el contenido en secciones dentro de la misma página, permitiendo cambiar de vista rápidamente.  
+  👉 Ejemplo: en WhatsApp tienes *Chats*, *Estados* y *Llamadas*.  
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/9bQ3b8x.png" alt="Ejemplo de pestañas en un navegador móvil" />
+    <p class="text-center text-sm italic mt-4">Las pestañas permiten cambiar entre diferentes contextos sin abandonar la pantalla principal.</p>
+  </CardContent>
+</Card>
+
+- **Migas de Pan (Breadcrumbs)**  
+  Muestran la ruta jerárquica de la ubicación actual del usuario, permitiéndole retroceder fácilmente.  
+  👉 Ejemplo: `Inicio > Productos > Portátiles > Gaming`.  
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/3X3A984.png" alt="Ejemplo de migas de pan en una web de comercio electrónico" />
+    <p class="text-center text-sm italic mt-4">Las migas de pan muestran al usuario dónde está y cómo ha llegado hasta ahí.</p>
+  </CardContent>
+</Card>
+
+- **Menú de Hamburguesa**  
+  Ese icono ☰ que oculta el menú principal, muy común en móviles.  
+  👉 Ejemplo: en la app de Spotify, donde el espacio en pantalla es limitado.  
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/v6p9z4I.gif" alt="Animación de un menú de hamburguesa" />
+    <p class="text-center text-sm italic mt-4">El menú de hamburguesa es una solución estándar para ocultar la navegación principal en pantallas pequeñas.</p>
+  </CardContent>
+</Card>
+
+- **Acordeón**  
+  Una lista de elementos que se expanden y contraen para mostrar u ocultar información.  
+  👉 Ejemplo: en Amazon, cuando filtras por categorías y subcategorías.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/pS2G5g3.gif" alt="Animación de un menú de tipo acordeón" />
+    <p class="text-center text-sm italic mt-4">El acordeón organiza grandes cantidades de contenido en un espacio reducido.</p>
+  </CardContent>
+</Card>
+
+:::note
+Cuando diseñes un sistema, piensa: ¿cómo puede el usuario llegar a donde quiere con el **mínimo de clics posibles**?
+:::
+
+---
+
+### 2. Patrones de Entrada de Datos
+
+Facilitan la forma en que los usuarios introducen información, reduciendo errores y mejorando la velocidad.
+
+- **Validación en línea**  
+  Retroalimentación inmediata sobre los datos introducidos en un formulario.  
+  👉 Ejemplo: al registrarte en Gmail, te avisa si la contraseña es demasiado débil.  
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/AGd3d24.png" alt="Ejemplo de validación en línea en un formulario" />
+    <p class="text-center text-sm italic mt-4">La validación en tiempo real guía al usuario para que complete el formulario correctamente desde el primer intento.</p>
+  </CardContent>
+</Card>
+
+- **Selectores de Fecha (Date Pickers)**  
+  Calendarios interactivos que simplifican la selección de fechas.  
+  👉 Ejemplo: reservar un hotel en Booking o elegir la fecha de un vuelo en Ryanair.  
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/Bq2pZ3L.png" alt="Ejemplo de un selector de fechas" />
+    <p class="text-center text-sm italic mt-4">Un selector de fechas evita que el usuario introduzca formatos incorrectos y agiliza la selección.</p>
+  </CardContent>
+</Card>
+
+- **Autocompletado**  
+  Sugiere opciones a medida que escribes.  
+  👉 Ejemplo: al buscar en Google, aparecen sugerencias antes de terminar de teclear.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/tW7zV2d.png" alt="Ejemplo de autocompletado en un buscador" />
+    <p class="text-center text-sm italic mt-4">El autocompletado ahorra tiempo y ayuda a prevenir errores de escritura.</p>
+  </CardContent>
+</Card>
+
+:::tip
+En tus proyectos de clase, **evita pedir más datos de los necesarios** y usa estos patrones para que tus formularios sean rápidos y agradables de completar.
+:::
+
+---
+
+### 3. Patrones para Presentar Información
+
+Se centran en **mostrar contenido de forma clara, atractiva y organizada**.
+
+- **Tarjetas (Cards)**  
+  Agrupan información relacionada (imagen, texto, botones) en un bloque modular.  
+  👉 Ejemplo: Netflix muestra cada serie o película en una tarjeta con su portada.  
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/S8Sj4iC.png" alt="Ejemplo de diseño basado en tarjetas" />
+    <p class="text-center text-sm italic mt-4">Las tarjetas son perfectas para presentar contenido heterogéneo de una manera visualmente atractiva y escaneable.</p>
+  </CardContent>
+</Card>
+
+- **Ventanas Modales (Modals)**  
+  Ventanas emergentes que captan la atención para mostrar algo importante.  
+  👉 Ejemplo: cuando intentas salir de una compra online y te aparece una oferta especial.  
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/g0jY2aF.png" alt="Ejemplo de una ventana modal" />
+    <p class="text-center text-sm italic mt-4">Las modales interrumpen al usuario para comunicar información crítica o solicitar una acción inmediata.</p>
+  </CardContent>
+</Card>
+
+- **Insignias (Badges)**  
+  Pequeños indicadores visuales con información breve.  
+  👉 Ejemplo: el número de mensajes sin leer en WhatsApp o Instagram.  
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/O3bSg3V.png" alt="Ejemplo de insignias de notificación" />
+    <p class="text-center text-sm italic mt-4">Las insignias son una forma no intrusiva de comunicar nueva información, como notificaciones o estados.</p>
+  </CardContent>
+</Card>
+
+- **Carrusel (Slider)**  
+  Muestra una serie de elementos de forma rotativa.  
+  👉 Ejemplo: las imágenes destacadas en la portada de una web de videojuegos.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/7a3bJ6E.png" alt="Ejemplo de un carrusel de imágenes" />
+    <p class="text-center text-sm italic mt-4">Los carruseles permiten mostrar un gran número de elementos en un espacio reducido, ideal para galerías de productos o noticias.</p>
+  </CardContent>
+</Card>
+
+:::danger
+Abusar de ventanas modales o carruseles puede resultar molesto. Recuerda: **menos es más**.
+:::
+
+---
+
+### En resumen
+
+Los **patrones de diseño de UI** son como un lenguaje visual común:  
+- Hacen que tus interfaces sean familiares.  
+- Reducen la curva de aprendizaje del usuario.  
+- Mejoran la eficiencia y la satisfacción.  
+
+:::tip
+Como programador en formación en el IES Ágora, piensa que no siempre tendrás que inventar la rueda.  
+Antes de crear un nuevo sistema de navegación o un formulario desde cero, revisa los **patrones de diseño**: probablemente ya exista una solución probada y lista para aplicar.
+:::
+
+---
+
+### 📚 Para saber más
+
+-   **[UI-Patterns.com](http://ui-patterns.com/)**: Una biblioteca muy completa de patrones de diseño de UI, con ejemplos reales y explicaciones detalladas.
+-   **[Pttrns](https://pttrns.com/)**: Una colección curada de capturas de pantalla de aplicaciones móviles que muestran patrones de diseño en acción. Ideal para buscar inspiración.
+-   **[Material Design](https://m3.material.io/)**: La guía de diseño de Google, que define todos sus componentes y patrones. Una referencia esencial para el diseño en Android y web.
+
+---
+
+### 📝 Ejercicio Práctico: Caza de Patrones
+
+Los patrones de diseño están por todas partes. Este ejercicio consiste en identificarlos en tu entorno digital.
+
+**Instrucciones:**
+
+1.  **Elige tu aplicación móvil favorita** (Instagram, TikTok, Spotify, etc.).
+2.  Navega por la aplicación y **encuentra 3 patrones de diseño diferentes** de los que hemos visto en esta sección.
+3.  **Haz una captura de pantalla** de cada uno de ellos.
+4.  Para cada captura, describe:
+    -   **Qué patrón es** (ej. "Navegación por Pestañas").
+    -   **Por qué crees que el diseñador decidió usarlo** en ese contexto (ej. "Para dar acceso rápido a las 4 secciones principales de la app: Inicio, Búsqueda, Reels y Perfil").
+
+**Ejemplo de entrega:**
+
+> #### App Analizada: Spotify
+>
+> 1.  **Patrón: Tarjetas (Cards)**
+>     *Captura de pantalla de la home de Spotify mostrando las playlists como tarjetas.*
+>     **Justificación:** Spotify usa tarjetas para cada álbum y playlist. Esto les permite mostrar mucha información (portada, título, artista) en un bloque compacto y visualmente atractivo. Es fácil de escanear y pulsar.
+>
+> 2.  **Patrón: Menú de Hamburguesa**
+>     *Captura de pantalla del menú lateral desplegado.*
+>     **Justificación:** Usan un menú de hamburguesa para ocultar opciones secundarias como la "Configuración" o "Historial", que no se necesitan todo el tiempo. Así mantienen la interfaz principal más limpia.
+>
+> 3.  **Patrón: Autocompletado**
+>     *Captura de pantalla del buscador sugiriendo artistas al escribir.*
+>     **Justificación:** Al buscar una canción, el autocompletado me sugiere resultados al instante. Esto es muy eficiente, me ahorra tiempo y evita que escriba mal el nombre de un artista.
+
+Este ejercicio te ayudará a reconocer patrones de diseño en la naturaleza y a entender el "porqué" de las decisiones de diseño que toman los profesionales.
+
+---
+
+### 🧠 Autoevaluación
+
+¡A la caza de patrones! Demuestra que los reconoces.
+
+<Quiz client:load questions={[
+  {
+    question: "¿Qué patrón de navegación es más adecuado para mostrar la jerarquía de una página dentro de un sitio web complejo?",
+    options: [
+      "Menú de Hamburguesa",
+      "Pestañas (Tabs)",
+      "Migas de Pan (Breadcrumbs)",
+      "Acordeón"
+    ],
+    correctAnswer: 2,
+    explanation: "Las 'Migas de Pan' o 'Breadcrumbs' están diseñadas específicamente para mostrar la ruta jerárquica desde la página de inicio hasta la página actual."
+  },
+  {
+    question: "Si necesitas mostrar una notificación importante que requiere la atención inmediata del usuario antes de que pueda continuar, ¿qué patrón de presentación de información usarías?",
+    options: [
+      "Insignia (Badge)",
+      "Tarjeta (Card)",
+      "Carrusel (Slider)",
+      "Ventana Modal (Modal)"
+    ],
+    correctAnswer: 3,
+    explanation: "Las ventanas modales son perfectas para interrumpir el flujo del usuario y mostrar información crítica o solicitar una acción, ya que superponen el contenido principal."
+  },
+  {
+    question: "El autocompletado en un campo de búsqueda es un patrón de entrada de datos que ayuda principalmente a...",
+    options: [
+      "Mejorar el diseño estético del formulario.",
+      "Asegurar la consistencia con otras aplicaciones.",
+      "Prevenir errores de escritura y agilizar la entrada de datos.",
+      "Mostrar el estado del sistema."
+    ],
+    correctAnswer: 2,
+    explanation: "El autocompletado previene errores al sugerir términos correctos y acelera el proceso, mejorando la eficiencia y previniendo errores."
+  }
+]} />

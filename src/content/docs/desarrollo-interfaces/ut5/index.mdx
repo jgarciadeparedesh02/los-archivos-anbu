@@ -1,0 +1,205 @@
+---
+title: "UT5: Documentación y StoryBook"
+description: Documentación de componentes y uso de herramientas como Storybook.
+sidebar:
+  label: Documentación y StoryBook
+  order: 5
+---
+# UT5: Documentación y StoryBook
+
+Esta unidad te enseñará a documentar componentes de manera efectiva y a utilizar herramientas como Storybook para mejorar el proceso de desarrollo y colaboración. En el desarrollo de interfaces modernas, la documentación no es solo un requisito, sino una parte integral del flujo de trabajo que facilita la reutilización, la consistencia y la comunicación entre equipos de diseño y desarrollo.
+
+## 1. La Importancia de la Documentación de Componentes
+
+En un mundo donde las interfaces de usuario se construyen a partir de sistemas de componentes, una documentación clara y accesible es tan crucial como el propio código. La documentación de componentes sirve como una fuente de verdad única para diseñadores, desarrolladores y otros stakeholders.
+
+### 1.1. Beneficios de una Buena Documentación
+
+*   **Reutilización:** Facilita que los desarrolladores encuentren y reutilicen componentes existentes, evitando la duplicación de esfuerzos.
+*   **Consistencia:** Asegura que los componentes se utilicen de manera coherente en toda la aplicación, manteniendo la identidad visual y la experiencia de usuario.
+*   **Colaboración:** Mejora la comunicación entre equipos de diseño, desarrollo y QA, al proporcionar un lenguaje común y una referencia visual.
+*   **Mantenimiento:** Simplifica el mantenimiento y la evolución de los componentes, ya que su propósito, propiedades y comportamiento están claramente definidos.
+*   **Onboarding:** Acelera el proceso de incorporación de nuevos miembros al equipo, permitiéndoles entender rápidamente la biblioteca de componentes.
+*   **Accesibilidad:** Permite documentar las consideraciones de accesibilidad de cada componente, asegurando que se construyan interfaces inclusivas.
+
+### 1.2. ¿Qué Documentar en un Componente?
+
+Una documentación completa de un componente debe incluir:
+
+*   **Descripción:** Un resumen conciso del propósito y la funcionalidad del componente.
+*   **Ejemplos de Uso:** Múltiples ejemplos de cómo usar el componente en diferentes escenarios, con código y una vista previa interactiva.
+*   **Propiedades (Props/Inputs):** Una lista de todas las propiedades que el componente acepta, con su tipo, descripción, valores por defecto y si son obligatorias.
+*   **Eventos (Events/Outputs):** Descripción de los eventos que emite el componente y los datos que transmiten.
+*   **Slots/Contenido:** Si el componente acepta contenido dinámico (slots en Vue, children en React).
+*   **Estilos/Clases CSS:** Información sobre cómo estilizar el componente o las clases CSS que acepta.
+*   **Consideraciones de Accesibilidad:** Pautas para asegurar que el componente sea accesible (roles ARIA, navegación por teclado, contraste).
+*   **Directrices de Uso:** Cuándo usar el componente y cuándo no, mejores prácticas.
+*   **Dependencias:** Otros componentes o servicios de los que depende.
+
+## 2. Introducción a Storybook
+
+Storybook es una herramienta de código abierto para desarrollar componentes de UI de forma aislada. Permite construir, probar y documentar componentes de manera interactiva, fuera del contexto de la aplicación principal. Es compatible con una amplia gama de frameworks de UI, incluyendo React, Vue, Angular, Web Components, etc.
+
+### 2.1. ¿Por qué usar Storybook?
+
+*   **Desarrollo Aislado:** Permite desarrollar componentes de forma independiente, sin preocuparse por las dependencias de la aplicación o el estado global.
+*   **Documentación Interactiva:** Genera una interfaz de usuario interactiva donde se pueden ver, probar y documentar todos los estados de un componente.
+*   **Colaboración Mejorada:** Sirve como un "parque de juegos" para diseñadores, desarrolladores y stakeholders, facilitando la revisión y el feedback.
+*   **Pruebas Visuales y de Regresión:** Facilita la creación de pruebas visuales y de regresión para asegurar que los cambios no rompan la UI.
+*   **Sistema de Diseño:** Es una herramienta fundamental para construir y mantener sistemas de diseño, al centralizar la biblioteca de componentes.
+
+### 2.2. Conceptos Clave de Storybook
+
+*   **Historias (Stories):** Una historia es una función que describe un estado renderizado de un componente. Cada historia representa un caso de uso o una variación específica del componente.
+*   **Args (Argumentos):** Son las propiedades (props) de un componente que se pueden controlar de forma interactiva en la interfaz de Storybook, permitiendo cambiar el estado del componente en tiempo real.
+*   **Addons:** Storybook tiene un ecosistema rico de addons que extienden su funcionalidad, como `Controls` (para manipular args), `Actions` (para registrar eventos), `Docs` (para generar documentación automática), `Viewport` (para probar responsividad), etc.
+
+## 3. Configuración y Uso Básico de Storybook
+
+La configuración de Storybook es relativamente sencilla y se puede hacer con un comando de la CLI.
+
+### 3.1. Instalación de Storybook
+
+En un proyecto existente (por ejemplo, React, Angular o Vue), se puede añadir Storybook con:
+
+```bash
+npx storybook@latest init
+```
+
+Este comando detectará el framework de tu proyecto e instalará las dependencias necesarias, además de crear archivos de configuración y ejemplos de historias.
+
+### 3.2. Creación de Historias (Stories)
+
+Las historias se escriben en archivos con la extensión `.stories.js`, `.stories.jsx`, `.stories.ts` o `.stories.tsx` (dependiendo del framework y la configuración).
+
+**Ejemplo de historia para un componente `Button` (React):**
+
+```typescript
+// src/components/Button/Button.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from './Button';
+
+const meta: Meta<typeof Button> = {
+  component: Button,
+  title: 'UI/Button',
+  tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['primary', 'secondary', 'danger'],
+    },
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof Button>;
+
+export const Primary: Story = {
+  args: {
+    variant: 'primary',
+    size: 'medium',
+    children: 'Botón Primario',
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    variant: 'secondary',
+    size: 'medium',
+    children: 'Botón Secundario',
+  },
+};
+
+export const LargeDanger: Story = {
+  args: {
+    variant: 'danger',
+    size: 'large',
+    children: 'Botón de Peligro Grande',
+  },
+};
+```
+
+En este ejemplo:
+*   `meta` define metadatos para el componente, como el título en Storybook y los `argTypes` para controlar las propiedades.
+*   `StoryObj` define el tipo de una historia.
+*   Cada `export const` es una historia diferente, mostrando el componente `Button` con distintas combinaciones de `args` (propiedades).
+
+### 3.3. Ejecución de Storybook
+
+Para iniciar Storybook, se utiliza el comando:
+
+```bash
+npm run storybook
+# o
+yarn storybook
+```
+
+Esto abrirá una interfaz web en tu navegador donde podrás ver y interactuar con tus componentes.
+
+## 4. Addons de Storybook para una Documentación Avanzada
+
+Storybook se vuelve aún más potente con sus addons, que permiten añadir funcionalidades extra para la documentación y el desarrollo.
+
+### 4.1. Addon Docs
+
+El addon `Docs` genera automáticamente documentación a partir de tus historias y comentarios JSDoc/TSDoc. Proporciona una página de documentación rica para cada componente, incluyendo tablas de propiedades, ejemplos de código y una vista previa interactiva.
+
+Para habilitarlo, generalmente ya viene configurado con `npx storybook@latest init`, pero se asegura que esté en `.storybook/main.js` o `.storybook/main.ts`:
+
+```javascript
+// .storybook/main.js
+module.exports = {
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
+    '@storybook/addon-docs', // Asegúrate de que esté aquí
+  ],
+  framework: {
+    name: '@storybook/react-vite',
+    options: {},
+  },
+};
+```
+
+### 4.2. Addon Controls
+
+El addon `Controls` permite a los usuarios de Storybook manipular las propiedades (args) de un componente directamente desde la interfaz de usuario, sin necesidad de editar el código. Esto es invaluable para probar diferentes estados y variaciones de un componente.
+
+Se configura a través de `argTypes` en el objeto `meta` de la historia, como se vio en el ejemplo del `Button`.
+
+### 4.3. Otros Addons Útiles
+
+*   **Actions:** Registra los eventos emitidos por los componentes, útil para depurar interacciones.
+*   **Viewport:** Permite cambiar el tamaño del viewport para probar la responsividad de los componentes.
+*   **Backgrounds:** Permite cambiar el color de fondo del lienzo de Storybook para probar cómo se ve el componente en diferentes contextos.
+*   **Accessibility (A11y):** Realiza auditorías de accesibilidad en tiempo real en tus componentes, identificando posibles problemas.
+
+## 5. Integración de Storybook en el Flujo de Trabajo
+
+Storybook no es solo una herramienta de documentación; es una parte integral de un flujo de trabajo de desarrollo de UI moderno.
+
+### 5.1. Desarrollo Dirigido por Componentes (CDD)
+
+Storybook promueve el Desarrollo Dirigido por Componentes (CDD), donde los componentes se construyen y prueban de forma aislada antes de integrarlos en la aplicación. Esto lleva a componentes más robustos, reutilizables y fáciles de mantener.
+
+### 5.2. Sistemas de Diseño y Storybook
+
+Los sistemas de diseño son colecciones de principios, pautas y componentes reutilizables que aseguran la coherencia y la eficiencia en el diseño y desarrollo. Storybook es una herramienta fundamental para implementar y mantener un sistema de diseño, ya que proporciona un catálogo vivo de todos los componentes, junto con su documentación y ejemplos de uso.
+
+### 5.3. Pruebas con Storybook
+
+Storybook se puede integrar con diferentes tipos de pruebas:
+
+*   **Pruebas de Instantáneas (Snapshot Testing):** Se pueden generar instantáneas de la salida renderizada de los componentes en Storybook para detectar cambios visuales inesperados.
+*   **Pruebas de Interacción:** Con addons como `@storybook/addon-interactions`, se pueden simular interacciones de usuario y verificar el comportamiento del componente.
+*   **Pruebas de Accesibilidad:** El addon A11y ayuda a identificar problemas de accesibilidad en los componentes.
+
+## Conclusión
+
+La documentación de componentes y el uso de herramientas como Storybook son prácticas indispensables en el desarrollo de interfaces modernas. No solo mejoran la calidad del código y la consistencia de la UI, sino que también optimizan la colaboración y aceleran el ciclo de desarrollo. Al adoptar Storybook, los equipos pueden construir sistemas de diseño robustos, asegurar la reutilización de componentes y mantener una fuente de verdad única para todos los elementos de la interfaz de usuario. Esta unidad te ha proporcionado una comprensión profunda de cómo Storybook puede transformar tu flujo de trabajo de desarrollo de UI.

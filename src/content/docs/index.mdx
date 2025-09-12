@@ -1,0 +1,51 @@
+---
+title: ¡Bienvenido a Los Archivos Anbu!
+description: Tu portal de entrenamiento en el arte del Desarrollo de Interfaces.
+template: splash
+hero:
+  tagline: Desvela los secretos del código y forja interfaces inquebrantables.
+  image:
+    file: ../../assets/houston.webp
+  actions:
+    - text: Inicia tu Entrenamiento
+      link: /desarrollo-interfaces/
+      icon: right-arrow
+      variant: primary
+---
+
+import { Card, CardTitle, CardDescription } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+  <Card className="p-6">
+    <CardTitle className="text-2xl font-bold mb-2">Misiones de Entrenamiento</CardTitle>
+    <CardDescription>
+      Aquí encontrarás las Unidades de Trabajo (UTs), cada una una misión crucial para dominar un aspecto del desarrollo de interfaces. Desde el diseño y la usabilidad hasta la creación de componentes y la realización de pruebas, tu camino hacia la maestría comienza ahora.
+    </CardDescription>
+    <Button asChild className="mt-4">
+      <a href="/desarrollo-interfaces/">Explora las UTs</a>
+    </Button>
+  </Card>
+
+  <Card className="p-6">
+    <CardTitle className="text-2xl font-bold mb-2">El Camino del Shinobi del Código</CardTitle>
+    <CardDescription>
+      Como miembro de Los Archivos Anbu, te embarcarás en un viaje de aprendizaje riguroso. Desarrollarás la disciplina, la creatividad y la precisión necesarias para construir interfaces que no solo funcionen, sino que también inspiren y cautiven a los usuarios.
+    </CardDescription>
+    <Button asChild className="mt-4">
+      <a href="/desarrollo-interfaces/">Comienza tu Viaje</a>
+    </Button>
+  </Card>
+</div>
+
+---
+
+### ¿Qué Esperar?
+
+En cada sección, descubrirás:
+
+*   **Técnicas Avanzadas:** Métodos probados para el diseño y la implementación.
+*   **Herramientas Secretas:** Las tecnologías más potentes a tu disposición.
+*   **Ejemplos Prácticos:** Demostraciones claras para aplicar tus conocimientos.
+
+¡Prepárate para transformar tu potencial en poder!

@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo/logo-with-text.png";
+---
+<header class="container mx-auto">
+  <div class="flex justify-between items-center">
+    <div class="flex items-center">
+      <a href="/">
+        <Image src={logo} alt="Los Archivos ANBU Logo" width={150} />
+      </a>
+    </div>
+    <nav class="hidden md:flex items-center space-x-8 font-cinzel">
+      <a href="#" class="hover:text-red-700">GENIN (BÁSICO)</a>
+      <a href="#" class="hover:text-red-700">CHŪNIN (MEDIO)</a>
+      <a href="#" class="hover:text-red-700">JŌNIN (SUPERIOR)</a>
+      <a href="#" class="hover:text-red-700">ANBU (ESPECIALIZACIÓN)</a>
+    </nav>
+  </div>
+</header>

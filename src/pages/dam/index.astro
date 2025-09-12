@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Card, CardContent } from '../../components/ui/card';
+import { BookText, BriefcaseBusiness, Smartphone, Server, Database, Lightbulb, Users } from 'lucide-react';
+
+const subjects = [
+  { acronym: 'DI', name: 'Desarrollo de Interfaces', icon: BookText },
+  { acronym: 'SGE', name: 'Sistemas de Gestión Empresarial', icon: BriefcaseBusiness },
+  { acronym: 'PMDM', name: 'Programación Multimedia y Dispositivos Móviles', icon: Smartphone },
+  { acronym: 'PSP', name: 'Programación de Servicios y Procesos', icon: Server },
+  { acronym: 'AD', name: 'Acceso a Datos', icon: Database },
+];
+---
+
+<Layout title="Asignaturas DAM">
+  <main class="container mx-auto flex-grow flex items-center justify-center py-12 px-4">
+    <div class="max-w-4xl w-full text-center bg-white/80 backdrop-blur-sm rounded-lg shadow-xl p-8">
+      <h1 class="text-5xl font-cinzel text-gray-800 mb-10">Asignaturas de Desarrollo de Aplicaciones Multiplataforma</h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {subjects.map((subject) => (
+          <Card className="hover:shadow-lg transition-shadow duration-300 ease-in-out transform hover:-translate-y-1">
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <subject.icon className="w-12 h-12 text-blue-600 mb-4" />
+              <h2 class="text-2xl font-poppins-bold text-gray-900 mb-2">{subject.acronym}</h2>
+              <p class="text-lg text-gray-700">{subject.name}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </main>
+</Layout>

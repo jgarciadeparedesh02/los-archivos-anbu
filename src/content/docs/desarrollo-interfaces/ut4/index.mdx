@@ -1,0 +1,393 @@
+---
+title: "UT4: Reportes en Angular"
+description: Generación de informes y visualización de datos en aplicaciones Angular.
+sidebar:
+  label: Reportes en Angular
+  order: 4
+---
+# UT4: Reportes en Angular
+
+En esta unidad, aprenderás a generar informes y visualizar datos dentro de aplicaciones desarrolladas con Angular. La capacidad de presentar información de manera clara y concisa es crucial para cualquier aplicación empresarial o de gestión. Exploraremos diversas técnicas y librerías para crear reportes dinámicos, interactivos y exportables, que permitan a los usuarios tomar decisiones informadas a partir de los datos.
+
+## 1. Introducción a la Generación de Reportes
+
+Los reportes son documentos que presentan información organizada y resumida, generalmente con el propósito de analizar datos, monitorear el rendimiento o comunicar resultados. En el contexto de las aplicaciones web, los reportes pueden ser desde simples tablas hasta complejos dashboards interactivos con gráficos y filtros.
+
+### 1.1. Tipos de Reportes
+
+*   **Reportes Tabulares:** Presentan datos en formato de tabla, ideales para mostrar listas de registros con columnas y filas.
+*   **Reportes Gráficos:** Utilizan visualizaciones como gráficos de barras, circulares, de líneas, etc., para mostrar tendencias, comparaciones y distribuciones de datos.
+*   **Dashboards:** Combinan múltiples visualizaciones y métricas en una sola pantalla para proporcionar una visión general del estado de un sistema o negocio.
+*   **Reportes de Detalle:** Ofrecen una vista más profunda de un registro o conjunto de datos específico.
+*   **Reportes Exportables:** Permiten a los usuarios descargar los datos o el reporte en formatos como PDF, Excel o CSV.
+
+### 1.2. Desafíos en la Generación de Reportes en Aplicaciones Web
+
+La generación de reportes en aplicaciones web presenta varios desafíos:
+
+*   **Rendimiento:** Manejar grandes volúmenes de datos y renderizar visualizaciones complejas puede afectar el rendimiento de la aplicación.
+*   **Interactividad:** Ofrecer filtros, ordenación y paginación sin recargar la página.
+*   **Diseño Responsivo:** Asegurar que los reportes se vean bien y sean funcionales en diferentes tamaños de pantalla.
+*   **Exportación:** La capacidad de exportar reportes a diferentes formatos requiere soluciones específicas.
+*   **Seguridad:** Proteger los datos sensibles y asegurar que solo los usuarios autorizados puedan acceder a ciertos reportes.
+
+## 2. Visualización de Datos con Gráficos en Angular
+
+La visualización de datos es un componente clave de los reportes. Angular se integra bien con librerías de gráficos populares que facilitan la creación de visualizaciones interactivas.
+
+### 2.1. Librerías de Gráficos Populares
+
+*   **Chart.js:** Una librería de gráficos simple pero potente que utiliza el elemento `canvas` de HTML5. Es fácil de aprender y ofrece una buena variedad de tipos de gráficos.
+*   **Ng2-Charts:** Un wrapper de Angular para Chart.js, que facilita su integración en proyectos Angular.
+*   **D3.js (Data-Driven Documents):** Una librería de JavaScript muy potente y flexible para manipular documentos basados en datos. Permite crear visualizaciones altamente personalizadas, pero tiene una curva de aprendizaje más pronunciada.
+*   **Google Charts:** Una colección de herramientas de visualización de datos interactivas y gratuitas de Google.
+*   **Highcharts:** Una librería de gráficos comerciales con una amplia gama de tipos de gráficos y funcionalidades avanzadas.
+
+### 2.2. Integración de Ng2-Charts en Angular
+
+Para integrar Ng2-Charts, primero se instala:
+
+```bash
+npm install ng2-charts chart.js
+```
+
+Luego, se importa `NgChartsModule` en el módulo de Angular donde se utilizarán los gráficos:
+
+```typescript
+// src/app/app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgChartsModule } from 'ng2-charts';
+
+import { AppComponent } from './app.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    BarChartComponent
+  ],
+  imports: [
+    BrowserModule,
+    NgChartsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+Finalmente, se utiliza el componente `base-chart` en la plantilla y se configuran los datos y opciones en la clase del componente:
+
+```typescript
+// src/app/bar-chart/bar-chart.component.ts
+import { Component } from '@angular/core';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+
+@Component({
+  selector: 'app-bar-chart',
+  templateUrl: './bar-chart.component.html',
+  styleUrls: ['./bar-chart.component.css']
+})
+export class BarChartComponent {
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    scales: {
+      x: {},
+      y: { min: 10 }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      }
+    }
+  };
+  public barChartType: ChartType = 'bar';
+  public barChartData: ChartData<'bar'> = {
+    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+    datasets: [
+      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
+      { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
+    ]
+  };
+
+  constructor() { }
+}
+```
+
+```html
+<!-- src/app/bar-chart/bar-chart.component.html -->
+<div style="display: block;">
+  <canvas baseChart
+    [options]="barChartOptions"
+    [data]="barChartData"
+    [type]="barChartType">
+  </canvas>
+</div>
+```
+
+## 3. Generación de Tablas Dinámicas y Paginación
+
+Las tablas son esenciales para mostrar datos detallados. En Angular, se pueden crear tablas dinámicas que soporten ordenación, filtrado y paginación.
+
+### 3.1. Angular Material Data Table
+
+Angular Material ofrece un componente `mat-table` muy potente y flexible para mostrar datos tabulares. Incluye funcionalidades integradas para ordenación, paginación y filtrado.
+
+Para usarlo, primero se instala Angular Material:
+
+```bash
+ng add @angular/material
+```
+
+Luego, se importa `MatTableModule`, `MatPaginatorModule` y `MatSortModule` en el módulo correspondiente:
+
+```typescript
+// src/app/app.module.ts
+import { NgModule } from '@angular/core';
+// ... otros imports
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+
+@NgModule({
+  // ...
+  imports: [
+    // ...
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
+  ],
+  // ...
+})
+export class AppModule { }
+```
+
+En el componente, se configura la fuente de datos (`MatTableDataSource`), el paginador (`MatPaginator`) y el ordenador (`MatSort`):
+
+```typescript
+// src/app/data-table/data-table.component.ts
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+
+export interface UserData {
+  id: string;
+  name: string;
+  progress: string;
+  fruit: string;
+}
+
+const NAMES: string[] = [
+  'Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack', 'Charlotte', 'Theodore', 'Isla', 'Oliver',
+  'Isabella', 'Jasper', 'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'
+];
+
+@Component({
+  selector: 'app-data-table',
+  templateUrl: './data-table.component.html',
+  styleUrls: ['./data-table.component.css']
+})
+export class DataTableComponent implements AfterViewInit {
+  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
+  dataSource: MatTableDataSource<UserData>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor() {
+    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+    this.dataSource = new MatTableDataSource(users);
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+}
+
+function createNewUser(id: number): UserData {
+  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' + NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
+
+  return {
+    id: id.toString(),
+    name: name,
+    progress: Math.round(Math.random() * 100).toString(),
+    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
+  };
+}
+```
+
+```html
+<!-- src/app/data-table/data-table.component.html -->
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="progress">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
+      <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+    </ng-container>
+
+    <!-- Fruit Column -->
+    <ng-container matColumnDef="fruit">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fruit </th>
+      <td mat-cell *matCellDef="let row"> {{row.fruit}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</div>
+
+## 4. Exportación de Reportes (PDF, Excel, CSV)
+
+La capacidad de exportar reportes es una funcionalidad muy solicitada. En Angular, se pueden implementar soluciones para exportar datos a diferentes formatos.
+
+### 4.1. Exportar a CSV/Excel
+
+Para exportar datos a CSV o Excel, se puede utilizar una librería como `xlsx` o simplemente construir el archivo CSV manualmente.
+
+```typescript
+// src/app/services/export.service.ts
+import { Injectable } from '@angular/core';
+import * as XLSX from 'xlsx';
+
+@Injectable({ providedIn: 'root' })
+export class ExportService {
+
+  constructor() { }
+
+  exportToExcel(data: any[], fileName: string): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, `${fileName}.xlsx`);
+  }
+
+  exportToCsv(data: any[], fileName: string): void {
+    const csv = data.map(row => Object.values(row).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${fileName}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+}
+```
+
+### 4.2. Exportar a PDF
+
+Para generar PDFs desde el lado del cliente, librerías como `jsPDF` o `html2canvas` son opciones populares.
+
+```typescript
+// src/app/services/pdf-export.service.ts
+import { Injectable } from '@angular/core';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+@Injectable({ providedIn: 'root' })
+export class PdfExportService {
+
+  constructor() { }
+
+  public exportToPdf(elementId: string, fileName: string): void {
+    const data = document.getElementById(elementId);
+    if (data) {
+      html2canvas(data).then(canvas => {
+        const imgWidth = 208;
+        const pageHeight = 295;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+
+        const doc = new jsPDF('p', 'mm');
+        let position = 0;
+
+        doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          doc.addPage();
+          doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        doc.save(`${fileName}.pdf`);
+      });
+    }
+  }
+}
+```
+
+Para usarlo, se envuelve el contenido que se desea exportar en un `div` con un `id` específico:
+
+```html
+<div id="report-content">
+  <!-- Contenido del reporte (tabla, gráficos, etc.) -->
+</div>
+<button (click)="pdfExportService.exportToPdf('report-content', 'mi-reporte')">Exportar a PDF</button>
+```
+
+## 5. Dashboards Interactivos
+
+Los dashboards son una forma efectiva de presentar múltiples métricas y visualizaciones en una sola vista, permitiendo a los usuarios monitorear el rendimiento y explorar datos de manera interactiva.
+
+### 5.1. Diseño de Dashboards en Angular
+
+La creación de dashboards en Angular implica combinar varios componentes (tablas, gráficos, tarjetas de métricas) y proporcionar mecanismos de interacción como filtros de fecha, selectores de categoría, etc.
+
+*   **Componentes Reutilizables:** Cada widget del dashboard (un gráfico, una tabla pequeña, una tarjeta de métrica) debe ser un componente Angular independiente.
+*   **Servicios de Datos:** Utilizar servicios para obtener y procesar los datos que alimentarán los widgets.
+*   **Comunicación entre Componentes:** Implementar patrones de comunicación (Input/Output, servicios compartidos, NgRx/Akita para gestión de estado) para que los cambios en un widget (ej. un filtro) afecten a otros.
+*   **Layout Responsivo:** Utilizar CSS Grid o Flexbox para crear un layout que se adapte a diferentes tamaños de pantalla.
+
+### 5.2. Ejemplos de Interacción en Dashboards
+
+*   **Filtros de Fecha:** Un selector de rango de fechas que actualiza todos los gráficos y tablas del dashboard.
+*   **Selectores de Categoría:** Un menú desplegable que permite filtrar los datos por una categoría específica.
+*   **Drill-down:** Al hacer clic en un elemento de un gráfico, se navega a una vista de detalle o se actualiza otra parte del dashboard con información más granular.
+
+## Conclusión
+
+La generación de reportes y la visualización de datos son habilidades esenciales para cualquier desarrollador de interfaces. En Angular, disponemos de un ecosistema rico en librerías y herramientas que nos permiten crear desde simples tablas hasta complejos dashboards interactivos y exportables. Dominar estas técnicas no solo mejora la funcionalidad de nuestras aplicaciones, sino que también empodera a los usuarios con la información necesaria para tomar decisiones. Esta unidad te ha proporcionado una base sólida para empezar a construir soluciones de reporting robustas y efectivas en tus proyectos Angular.

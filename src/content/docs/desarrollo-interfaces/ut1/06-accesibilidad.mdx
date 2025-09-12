@@ -1,0 +1,126 @@
+---
+title: '06. Accesibilidad'
+description: 'Garantizando que las interfaces puedan ser utilizadas por todas las personas, independientemente de sus capacidades.'
+---
+
+La **accesibilidad web** es la práctica de diseñar y desarrollar sitios y aplicaciones de manera que **todas las personas puedan usarlas**, sin importar sus capacidades físicas, sensoriales o cognitivas.  
+No se trata de un “extra” o un “detalle opcional”: es un aspecto fundamental de un diseño de interfaces **inclusivo, ético y profesional**.
+
+Piensa en esto: ¿de qué sirve crear la app más moderna si una parte de la población no puede ni entrar a usarla?  
+Además, la **usabilidad y la accesibilidad** van de la mano: una interfaz que excluye no puede considerarse realmente usable.
+
+---
+
+### ¿Por qué es importante la accesibilidad?
+
+- **Inclusión social**  
+  Permite que personas con distintas capacidades participen plenamente en el mundo digital.  
+  👉 Ejemplo: un alumno con daltonismo necesita colores con suficiente contraste para diferenciar botones o enlaces.
+
+- **Alcance ampliado**  
+  Un diseño accesible **beneficia a todos**, no solo a quienes tienen discapacidades.  
+  👉 Ejemplo: los subtítulos en un vídeo ayudan tanto a personas con discapacidad auditiva como a cualquiera que esté viendo el vídeo en el autobús sin auriculares.
+
+- **Requisitos legales**  
+  En muchos países (incluido España), existen normativas que obligan a que los sitios web de la administración pública cumplan con estándares de accesibilidad (WCAG).  
+  👉 Ejemplo: las webs de la Junta de Extremadura deben ser accesibles para toda la ciudadanía.
+
+:::warning
+Ignorar la accesibilidad no solo es una mala práctica: en el ámbito profesional puede acarrear **sanciones legales** y pérdida de usuarios.
+:::
+
+---
+
+### Tipos de discapacidades a considerar
+
+Cuando diseñamos una interfaz, debemos tener presentes distintas realidades:
+
+- **Visuales**  
+  Ceguera, baja visión, daltonismo.  
+  👉 Ejemplo: un alumno con daltonismo rojo-verde puede no distinguir un botón rojo de uno verde si no añadimos también iconos o texto.
+
+- **Motoras**  
+  Dificultad para usar las manos, temblores, limitaciones de control muscular fino.  
+  👉 Ejemplo: una persona que navega con teclado en lugar de ratón necesita poder moverse por todos los elementos con la tecla `Tab`.
+
+- **Auditivas**  
+  Sordera o dificultades de audición.  
+  👉 Ejemplo: si un vídeo de clase no tiene subtítulos, un alumno con problemas auditivos se queda sin acceso al contenido.
+
+- **Cognitivas**  
+  Dificultades de aprendizaje, memoria o concentración.  
+  👉 Ejemplo: si una web tiene menús confusos y sobrecargados, un alumno con TDAH puede perderse con facilidad.
+
+---
+
+### Buenas prácticas para diseñar con accesibilidad
+
+Diseñar accesible implica **tomar decisiones conscientes**. Algunas pautas clave son:
+
+- **Texto alternativo en imágenes**  
+  Para que los lectores de pantalla puedan describir el contenido a personas ciegas.
+
+- **Buen contraste de color**  
+  Asegurar que texto y fondo tengan contraste suficiente.  
+  👉 Ejemplo: texto gris claro sobre fondo blanco puede ser ilegible para muchos.
+
+- **Navegación con teclado**  
+  Todo el sitio debe poder usarse con `Tab`, `Enter` y las flechas.  
+  👉 Ejemplo: ¿qué pasa si el usuario no puede usar el ratón? ¿Tu aplicación sigue siendo usable?
+
+- **Estructura clara y lógica**  
+  Usar encabezados (`h1`, `h2`, `h3`) y un orden semántico en el HTML para que los lectores de pantalla transmitan bien la jerarquía del contenido.
+
+- **Lenguaje sencillo**  
+  Evitar tecnicismos innecesarios y textos muy largos.  
+  👉 Ejemplo: mejor *“Sube tu archivo”* que *“Inicia el proceso de carga del recurso digital”*.
+
+---
+
+### En resumen
+
+La accesibilidad no es un “añadido”: es un **pilar del desarrollo profesional**.  
+- Mejora la vida de las personas.  
+- Amplía la audiencia de tu producto.  
+- Evita problemas legales.  
+
+:::tip
+Cuando diseñes una aplicación en clase, hazte siempre esta pregunta:  
+**“¿Podría usar esto alguien con una discapacidad visual, motora, auditiva o cognitiva?”**  
+Si la respuesta es no, es momento de mejorar tu diseño.
+:::
+
+---
+
+### 📚 Para saber más
+
+-   **[Web Content Accessibility Guidelines (WCAG) 2.1](https://www.w3.org/TR/WCAG21/)**: La documentación oficial y completa de las pautas de accesibilidad. Es densa, pero es la fuente de la verdad.
+-   **[WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)**: Una herramienta online muy sencilla para comprobar si dos colores tienen el ratio de contraste suficiente para ser legibles.
+-   **[The A11Y Project](https://www.a11yproject.com/)**: Una iniciativa de la comunidad para hacer la accesibilidad web más fácil, con artículos, guías y checklists.
+
+---
+
+### 📝 Ejercicio Práctico: Ponte en su lugar
+
+La mejor forma de entender la accesibilidad es experimentarla. Este ejercicio te propone navegar por la web como lo haría una persona con ceguera.
+
+**Herramientas necesarias:**
+
+-   **Windows:** Activa el Narrador (`Ctrl + tecla de Windows + Enter`) o instala [NVDA](https://www.nvaccess.org/download/) (gratuito y más potente).
+-   **macOS:** Activa VoiceOver (`Cmd + F5`).
+-   **Android:** Activa TalkBack (en Ajustes > Accesibilidad).
+-   **iOS:** Activa VoiceOver (en Ajustes > Accesibilidad).
+
+**Instrucciones:**
+
+1.  **Activa el lector de pantallas** en tu dispositivo. Tómate un par de minutos para aprender los comandos básicos de navegación (normalmente se usa la tecla `Tab` para saltar entre enlaces y `Ctrl` para detener la voz).
+2.  **Cierra los ojos** o aparta la vista de la pantalla. El objetivo es no usar la vista.
+3.  **Intenta realizar una tarea simple** en una web que conozcas bien (por ejemplo, la web del IES Ágora, un periódico digital o una tienda online).
+    -   *Ejemplo de tarea:* Encontrar el horario de secretaría, leer el titular de la noticia principal o buscar un producto concreto.
+4.  **Anota tu experiencia:**
+    -   ¿Fue fácil o difícil navegar?
+    -   ¿Los enlaces que leía el lector de pantallas tenían sentido fuera de contexto? (ej. ¿Decía "pincha aquí" o "leer más sobre el Ciclo de DAW"?)
+    -   ¿Las imágenes tenían texto alternativo que las describiera?
+    -   ¿Te quedaste "atrapado" en algún punto sin saber cómo continuar?
+
+Este ejercicio te dará una perspectiva completamente nueva sobre la importancia de diseñar y programar de forma accesible.

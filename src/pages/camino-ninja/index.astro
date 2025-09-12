@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import shuriken from '../../assets/icons/shuriken.png';
+import kunai from '../../assets/icons/kunai.png';
+import espada from '../../assets/icons/espada.png';
+import mascara from '../../assets/icons/mascara.png';
+---
+
+<Layout title="El Camino del Ninja">
+  <main class="container mx-auto flex-grow flex items-center">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
+
+      <!-- Card Genin (Disabled) -->
+      <div class="bg-[#F9F6F1]/80 rounded-xl shadow-lg p-8 text-center flex flex-col items-center border-4 border-[#F9F6F1] filter grayscale">
+        <Image src={shuriken} alt="Icono de Shuriken" width={80} height={80} />
+        <h2 class="text-3xl font-cinzel mt-6 text-stone-800">GENIN</h2>
+        <h3 class="font-cinzel text-stone-600">GRADO BÁSICO</h3>
+        <p class="text-sm mt-4 font-open-sans text-stone-700 h-20">Primeros pergaminos, ideales para iniciarse en el camino.</p>
+        <a href="#" title="En construcción" class="mt-6 inline-block bg-gray-400 text-white py-2 px-8 rounded-md font-poppins-bold text-lg cursor-not-allowed">EXPLORAR</a>
+      </div>
+
+      <!-- Card Chūnin (Disabled) -->
+      <div class="bg-[#E2DED7]/80 rounded-xl shadow-lg p-8 text-center flex flex-col items-center border-4 border-[#E2DED7] filter grayscale">
+        <Image src={kunai} alt="Icono de Kunai" width={80} height={80} />
+        <h2 class="text-3xl font-cinzel mt-6 text-stone-800">CHŪNIN</h2>
+        <h3 class="font-cinzel text-stone-600">GRADO MEDIO</h3>
+        <p class="text-sm mt-4 font-open-sans text-stone-700 h-20">Apuntes con ejemplos y técnicas más avanzadas.</p>
+        <a href="#" title="En construcción" class="mt-6 inline-block bg-gray-400 text-white py-2 px-8 rounded-md font-poppins-bold text-lg cursor-not-allowed">EXPLORAR</a>
+      </div>
+
+      <!-- Card Jōnin -->
+      <div class="bg-[#BFB9B0]/80 rounded-xl shadow-lg p-8 text-center flex flex-col items-center transform hover:scale-105 transition-transform duration-300 border-4 border-[#BFB9B0]" transition:name="jonin-card">
+        <Image src={espada} alt="Icono de Espada" width={80} height={80} />
+        <h2 class="text-3xl font-cinzel mt-6 text-stone-800">JŌNIN</h2>
+        <h3 class="font-cinzel text-stone-600">GRADO SUPERIOR</h3>
+        <p class="text-sm mt-4 font-open-sans text-stone-700 h-20">Material completo y detallado para dominar la asignatura.</p>
+        <a href="/jonin" class="mt-6 inline-block bg-[#D46A6A] text-white py-2 px-8 rounded-md hover:bg-red-800 transition-colors font-poppins-bold text-lg">EXPLORAR</a>
+      </div>
+
+      <!-- Card Anbu (Disabled) -->
+      <div class="bg-[#C97C5D]/80 rounded-xl shadow-lg p-8 text-center flex flex-col items-center text-white border-4 border-[#C97C5D] filter grayscale">
+        <Image src={mascara} alt="Icono de Máscara ANBU" width={80} height={80} />
+        <h2 class="text-3xl font-cinzel mt-6">ANBU</h2>
+        <h3 class="font-cinzel text-red-200">ESPECIALIZACIÓN</h3>
+        <p class="text-sm mt-4 font-open-sans h-20">Los pergaminos secretos más valiosos, para los ninjas de élite.</p>
+        <a href="#" title="En construcción" class="mt-6 inline-block bg-gray-400 text-white py-2 px-8 rounded-md font-poppins-bold text-lg cursor-not-allowed">EXPLORAR</a>
+      </div>
+
+    </div>
+  </main>
+</Layout>

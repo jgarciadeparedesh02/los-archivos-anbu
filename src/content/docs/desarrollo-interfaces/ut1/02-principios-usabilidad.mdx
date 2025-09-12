@@ -1,0 +1,263 @@
+---
+title: '02. Principios de Usabilidad'
+description: 'Los 10 principios heurísticos de Jakob Nielsen para el diseño de interfaces de usuario.'
+---
+
+import { Card, CardContent } from '@/components/ui/card';
+import Quiz from '@/components/Quiz';
+
+Los **10 principios de usabilidad de Jakob Nielsen** son una guía esencial para diseñar productos digitales intuitivos, claros y eficientes.  
+Aunque se formularon en los años 90, siguen siendo un estándar que aplicamos a diario en **apps, sitios web y software**, incluidos los que usáis en clase o en vuestras prácticas de programación.
+
+Ten en cuenta: no son reglas rígidas. Más bien son recomendaciones que te ayudan a **reducir la frustración del usuario** y a **crear experiencias agradables**.  
+Piensa en la última vez que usaste una aplicación que no te dejaba volver atrás… seguro te molestó. Pues bien, aquí es donde entran en juego estos principios.
+
+---
+
+### 1. Visibilidad del estado del sistema
+El sistema debe informar al usuario de lo que ocurre en cada momento.  
+Si el sistema está procesando una tarea, debe avisar.  
+-  Ejemplo cotidiano: la barra de carga de YouTube al subir un vídeo.  
+-  En tu día a día: cuando compilas un programa en Visual Studio Code, el terminal muestra mensajes de progreso.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/sF8n8V4.png" alt="Barra de progreso de subida de archivos en Google Drive" />
+    <p class="text-center text-sm italic mt-4">Google Drive muestra una notificación clara del progreso de subida, informando al usuario del estado y tiempo restante.</p>
+  </CardContent>
+</Card>
+
+:::note
+No hay nada más frustrante que pulsar un botón y que no ocurra “nada visible”. Un *loading spinner* puede evitar que pienses que la aplicación está colgada.
+:::
+
+---
+
+### 2. Relación entre el sistema y el mundo real
+Habla el idioma del usuario, no el de la máquina.  
+-  Ejemplo: Airbnb usa *“entrada y salida”* en lugar de *“fecha inicial y final”*.  
+-  En clase: un formulario para registrar notas debería poner *“Nombre del alumno”*, no *“ID_Registro_Alumno”*.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/jQ8E6P4.png" alt="Icono de papelera en macOS" />
+    <p class="text-center text-sm italic mt-4">El icono de la papelera es una metáfora universal del mundo real para eliminar archivos. Es un lenguaje que todos entienden sin necesidad de explicación.</p>
+  </CardContent>
+</Card>
+
+---
+
+### 3. Control y libertad del usuario
+Los usuarios deben poder deshacer y salir de acciones no deseadas.  
+-  Ejemplo: Gmail permite *“Deshacer envío”*.  
+-  En tu día a día: al borrar un archivo en Windows, primero va a la papelera. Eso te da un “colchón de seguridad”.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/9F8c9z2.png" alt="Opción de deshacer envío en Gmail" />
+    <p class="text-center text-sm italic mt-4">Gmail ofrece una "salida de emergencia" durante unos segundos después de enviar un correo, dando al usuario el control para revertir un error.</p>
+  </CardContent>
+</Card>
+
+---
+
+### 4. Consistencia y estándares
+Un mismo concepto debe representarse de la misma manera.  
+-  Ejemplo: el ícono 🛒 siempre representa compras.  
+-  En programación: si en tu app usas un botón azul para *“Guardar”*, no uses el mismo color para *“Eliminar”*. La consistencia genera confianza.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/zF3mC3n.png" alt="Iconos consistentes de Google Material Design" />
+    <p class="text-center text-sm italic mt-4">Google Material Design promueve el uso de iconos estandarizados y consistentes en todas sus aplicaciones, lo que facilita el aprendizaje y la navegación.</p>
+  </CardContent>
+</Card>
+
+---
+
+### 5. Prevención de errores
+Evita errores antes de que ocurran.  
+-  Ejemplo: Google Drive pide confirmación al borrar un archivo.  
+-  En tu vida académica: cuando en Moodle adjuntas un archivo, te avisa si el tamaño supera el límite antes de subirlo.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/tV3s7vJ.png" alt="Confirmación de borrado en GitHub" />
+    <p class="text-center text-sm italic mt-4">GitHub no solo pide confirmación antes de borrar un repositorio, sino que obliga al usuario a escribir el nombre del mismo. Es una medida muy efectiva para prevenir acciones destructivas accidentales.</p>
+  </CardContent>
+</Card>
+
+---
+
+### 6. Reconocimiento antes que recuerdo
+Facilita que el usuario vea las opciones disponibles en lugar de tener que recordarlas.  
+-  Ejemplo: menús desplegables que muestran todas las opciones.  
+-  Caso práctico: en una web de matrícula, es mejor mostrar una lista de asignaturas que pedir al alumno que recuerde el código de cada una.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/vJmE9Sj.png" alt="Navegación clara en Amazon" />
+    <p class="text-center text-sm italic mt-4">Amazon muestra las categorías y subcategorías de forma visible, permitiendo al usuario navegar y reconocer las opciones en lugar de tener que recordar rutas específicas.</p>
+  </CardContent>
+</Card>
+
+---
+
+### 7. Flexibilidad y eficiencia de uso
+El sistema debe ser eficiente para novatos y expertos.  
+-  Ejemplo: atajos de teclado en Figma o Photoshop.  
+-  En clase: puedes copiar/pegar con el menú contextual (novato) o con `Ctrl+C` y `Ctrl+V` (experto). Elige tu camino.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/pD8StiF.png" alt="Paleta de comandos en Visual Studio Code" />
+    <p class="text-center text-sm italic mt-4">VS Code ofrece múltiples maneras de realizar una acción: a través de los menús (para principiantes) o con la paleta de comandos y atajos de teclado (para expertos), acelerando el flujo de trabajo.</p>
+  </CardContent>
+</Card>
+
+---
+
+### 8. Diseño estético y minimalista
+Cada elemento en pantalla compite por la atención. Muestra solo lo necesario.  
+-  Ejemplo: la interfaz limpia de Apple.  
+-  En un proyecto: si tu app de notas muestra anuncios, banners y menús innecesarios, el alumno perderá la concentración en lo importante: escribir.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/h5b5O3b.png" alt="Interfaz minimalista de Notion" />
+    <p class="text-center text-sm italic mt-4">Notion utiliza un diseño minimalista donde la interfaz secundaria se oculta hasta que es necesaria, permitiendo al usuario centrarse completamente en el contenido.</p>
+  </CardContent>
+</Card>
+
+---
+
+### 9. Ayuda en el reconocimiento y recuperación de errores
+Los mensajes de error deben ser claros y útiles.  
+-  Ejemplo: *“La contraseña es demasiado corta. Usa al menos 8 caracteres”*.  
+-  En tu día a día: si tu código no compila, el error debe señalar la línea concreta y sugerir qué revisar.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/eJ8vQ3g.png" alt="Mensaje de error útil en Twitter" />
+    <p class="text-center text-sm italic mt-4">Este mensaje de error no solo dice que la contraseña es incorrecta, sino que ofrece una solución clara y directa: solicitar un restablecimiento.</p>
+  </CardContent>
+</Card>
+
+:::danger
+Evita errores como: *“Error 500 – Internal Server Error”*. Eso no ayuda a nadie que no sea un administrador de sistemas.
+:::
+
+---
+
+### 10. Ayuda y documentación
+Aunque lo ideal es que el sistema sea intuitivo, a veces la documentación es necesaria.  
+-  Ejemplo: el centro de soporte de Notion.  
+-  En tu formación: cuando aprendes un nuevo framework, la documentación oficial es tu primera aliada.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/k3b0D2N.png" alt="Sección de ayuda en Slack" />
+    <p class="text-center text-sm italic mt-4">Slack integra una sección de ayuda fácil de encontrar y con un buscador, permitiendo a los usuarios resolver sus dudas sin salir de la aplicación.</p>
+  </CardContent>
+</Card>
+
+---
+
+## 📌 Resumen en una tabla
+
+| Principio                    | Idea clave                       | Ejemplo                     |
+| ---------------------------- | -------------------------------- | --------------------------- |
+| 1. Visibilidad del estado    | Mantener al usuario informado    | Barra de progreso           |
+| 2. Lenguaje del mundo real   | Hablar en términos familiares    | “Entrada/Salida” en Airbnb  |
+| 3. Control y libertad        | Salidas claras, deshacer/rehacer | “Deshacer envío” en Gmail   |
+| 4. Consistencia              | Usar patrones conocidos          | Carrito 🛒 = compras        |
+| 5. Prevención de errores     | Diseñar para evitar problemas    | Confirmación al borrar      |
+| 6. Reconocimiento > recuerdo | Opciones visibles                | Menús desplegables          |
+| 7. Flexibilidad              | Adaptarse a todos los niveles    | Atajos de teclado           |
+| 8. Minimalismo               | Evitar ruido visual              | Diseño de Apple             |
+| 9. Recuperación de errores   | Mensajes claros y útiles         | Error con solución sugerida |
+| 10. Ayuda y documentación    | Soporte accesible y breve        | Centro de ayuda de Notion   |
+
+---
+
+:::tip
+Como futuro profesional de la informática, piensa siempre en el **usuario final**.  
+No diseñes para ti mismo, diseña para alguien que nunca ha visto tu aplicación y quiere usarla sin complicaciones.
+:::
+
+---
+
+### 📚 Para saber más
+
+-   **[10 Usability Heuristics for User Interface Design](https://www.nngroup.com/articles/ten-usability-heuristics/)**: El artículo original (en inglés) de Jakob Nielsen en el sitio de Nielsen Norman Group. Es la fuente primaria y una lectura obligada.
+
+---
+
+### 📝 Ejercicio Práctico: Auditoría de Usabilidad
+
+Ahora te toca a ti. Elige una página web o una aplicación que uses con frecuencia (por ejemplo, Instagram, la web del IES Ágora, Moodle, Amazon, etc.) y realiza una pequeña auditoría de usabilidad.
+
+**Instrucciones:**
+
+1.  **Selecciona 3 de los 10 principios de usabilidad** de Nielsen.
+2.  Para cada principio seleccionado, busca en tu aplicación/web:
+    -   Un **ejemplo positivo** donde el principio se aplique correctamente.
+    -   Un **ejemplo negativo** donde el principio se ignore o se aplique mal.
+3.  Haz una captura de pantalla de cada ejemplo (6 capturas en total).
+4.  Describe brevemente por qué cada ejemplo es bueno o malo en relación con el principio de usabilidad.
+
+**Ejemplo de entrega:**
+
+> #### Principio 5: Prevención de Errores
+>
+> -   **Ejemplo positivo (Gmail):**
+>     *Captura de pantalla del diálogo de confirmación antes de eliminar un correo.*
+>     **Descripción:** Gmail me pregunta si estoy seguro antes de borrar permanentemente una conversación. Esto evita que cometa un error irreversible.
+>
+> -   **Ejemplo negativo (Web de Renfe):**
+>     *Captura de pantalla de un formulario de búsqueda de billetes que borra todos los campos si hay un error.*
+>     **Descripción:** Si me equivoco al introducir la fecha, la web borra también el origen y el destino que ya había escrito, obligándome a rellenar todo de nuevo. No previene mi frustración, la aumenta.
+
+Este ejercicio te ayudará a desarrollar un ojo crítico y a ver cómo estos principios teóricos se aplican (o no) en el mundo real.
+
+---
+
+### 🧠 Autoevaluación
+
+Pon a prueba tus conocimientos sobre los principios de usabilidad con este pequeño quiz.
+
+<Quiz client:load questions={[
+  {
+    question: "Cuando una aplicación muestra una barra de progreso al descargar un archivo, ¿qué principio de usabilidad está aplicando principalmente?",
+    options: [
+      "Flexibilidad y eficiencia de uso",
+      "Visibilidad del estado del sistema",
+      "Diseño estético y minimalista",
+      "Relación entre el sistema y el mundo real"
+    ],
+    correctAnswer: 1,
+    explanation: "La barra de progreso informa al usuario sobre lo que está ocurriendo (la descarga), lo cual es el núcleo del principio de 'Visibilidad del estado del sistema'."
+  },
+  {
+    question: "La opción 'Deshacer envío' de Gmail es un ejemplo clásico de...",
+    options: [
+      "Control y libertad del usuario",
+      "Prevención de errores",
+      "Ayuda y documentación",
+      "Consistencia y estándares"
+    ],
+    correctAnswer: 0,
+    explanation: "Este principio se basa en dar al usuario 'salidas de emergencia' para revertir acciones no deseadas, y 'Deshacer envío' es un ejemplo perfecto."
+  },
+  {
+    question: "¿Qué principio busca reducir la carga de memoria del usuario mostrando la información relevante en la interfaz?",
+    options: [
+      "Prevención de errores",
+      "Diseño estético y minimalista",
+      "Reconocimiento antes que recuerdo",
+      "Flexibilidad y eficiencia de uso"
+    ],
+    correctAnswer: 2,
+    explanation: "El reconocimiento implica que el usuario no tiene que recordar información, ya que la propia interfaz se la muestra. Los menús son un buen ejemplo."
+  }
+]} />

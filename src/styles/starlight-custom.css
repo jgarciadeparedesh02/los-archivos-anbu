@@ -1,0 +1,51 @@
+/* src/styles/starlight-custom.css */
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Open+Sans:wght@400;700&family=Poppins:wght@700&family=Cinzel:wght@400;700&display=swap');
+
+:root {
+  /* Colores */
+  --sl-color-accent: 212, 106, 106; /* Basado en el botón Jōnin (#D46A6A) */
+  --sl-color-text: 54, 54, 54; /* Basado en text-stone-800 (#363636) */
+  --sl-color-background: 249, 246, 241; /* Basado en el fondo de la tarjeta Genin (#F9F6F1) */
+  --sl-color-white: 255, 255, 255; /* Para texto blanco */
+  --sl-color-header-background: rgb(var(--sl-color-background));
+  --sl-color-navbar-background: rgb(var(--sl-color-background));
+  --sl-color-sidebar-background: rgb(var(--sl-color-background));
+  /* Fuentes */
+  --sl-font-text: 'Open Sans', sans-serif;
+  --sl-font-heading: 'Cinzel', serif;
+  --sl-font-code: 'Fira Code', monospace; /* Mantener una fuente de código estándar */
+  --sl-color-bg-nav: rgb(var(--sl-color-background));
+    --sl-color-bg-sidebar: rgb(var(--sl-color-background));
+
+}
+
+/* Sobrescribir fuentes específicas si es necesario */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cinzel', serif;
+}
+
+/* Para el título principal en la landing, si Starlight lo permite */
+.main-title { /* Asumiendo que puedes aplicar una clase a un elemento en Starlight */
+  font-family: 'Kaushan Script', cursive;
+}
+
+/* Para el texto del botón, si Starlight lo permite */
+.sl-button { /* Esto es un ejemplo, la clase real puede variar */
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+/* Apply background to body for Starlight pages */
+body {
+  background-color: rgb(var(--sl-color-background));
+}
+
+/* Force background color for Starlight header, navbar, and sidebar */
+header[data-astro-cid-*],
+nav[data-astro-cid-*],
+aside[data-astro-cid-*],
+.sl-header,
+.sl-sidebar,
+.sl-navbar {
+  background-color: rgb(var(--sl-color-background)) !important;
+}

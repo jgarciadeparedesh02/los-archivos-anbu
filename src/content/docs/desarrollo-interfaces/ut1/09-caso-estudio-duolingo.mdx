@@ -1,0 +1,108 @@
+---
+title: '09. Caso de Estudio: Duolingo'
+description: 'Análisis de la interfaz y experiencia de usuario de Duolingo, un ejemplo de diseño efectivo.'
+---
+
+import { Card, CardContent } from '@/components/ui/card';
+
+Duolingo es una de las aplicaciones para aprender idiomas más populares del mundo, y gran parte de su éxito se debe a un **diseño de interfaz (UI) y una experiencia de usuario (UX) excepcionales**. 
+
+En este caso de estudio, analizaremos cómo Duolingo aplica los conceptos que hemos visto en esta unidad para crear una experiencia de aprendizaje **adictiva, intuitiva y eficaz**.
+
+---
+
+### Análisis de Principios de Usabilidad
+
+Duolingo es una clase magistral sobre cómo aplicar las heurísticas de Nielsen.
+
+#### 1. Visibilidad del estado del sistema
+
+Duolingo informa constantemente al usuario sobre su progreso. La barra de progreso en la parte superior de cada lección indica visualmente cuánto falta para completarla, motivando al usuario a seguir adelante.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/8ZQ4V3B.png" alt="Barra de progreso en una lección de Duolingo" />
+    <p class="text-center text-sm italic mt-4">La barra de progreso es un indicador claro que reduce la incertidumbre y motiva a completar la tarea.</p>
+  </CardContent>
+</Card>
+
+#### 2. Diseño estético y minimalista
+
+La interfaz de las lecciones es increíblemente limpia. Elimina toda distracción y se centra en una sola pregunta a la vez. Esto reduce la carga cognitiva y permite al usuario concentrarse en lo único que importa: la pregunta actual.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/L3kZ6m5.png" alt="Interfaz de una lección en Duolingo" />
+    <p class="text-center text-sm italic mt-4">Solo los elementos esenciales están en pantalla: la pregunta, las opciones de respuesta y la barra de progreso.</p>
+  </CardContent>
+</Card>
+
+#### 3. Ayuda y recuperación de errores
+
+Cuando un usuario comete un error, Duolingo no se limita a decir "Incorrecto". Muestra la respuesta correcta y, a menudo, ofrece explicaciones gramaticales o consejos. Convierte el error en una oportunidad de aprendizaje, en lugar de una fuente de frustración.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/3u8g3Ff.png" alt="Corrección de un error en Duolingo" />
+    <p class="text-center text-sm italic mt-4">El feedback es inmediato, constructivo y ayuda al usuario a entender por qué se equivocó.</p>
+  </CardContent>
+</Card>
+
+---
+
+### Análisis de Patrones de Diseño
+
+Duolingo utiliza patrones de diseño probados para crear una experiencia fluida.
+
+#### 1. Onboarding Progresivo
+
+El proceso de incorporación de Duolingo no abruma al nuevo usuario con todas sus funciones. En su lugar, lo guía a través de la elección de un idioma y una meta diaria, y lo sumerge directamente en la primera lección. El resto de las funciones (rachas, ligas, tienda) se introducen de forma gradual a medida que el usuario progresa.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/sS2aD4h.png" alt="Proceso de onboarding en Duolingo" />
+    <p class="text-center text-sm italic mt-4">El onboarding se siente como parte del juego, no como una configuración tediosa.</p>
+  </CardContent>
+</Card>
+
+#### 2. Gamificación
+
+Este es el patrón más distintivo de Duolingo. Utiliza múltiples elementos de juego para motivar al usuario:
+- **Rachas (Streaks)**: Animan a usar la app todos los días.
+- **Ligas (Leaderboards)**: Fomentan la competición sana.
+- **Logros (Achievements)**: Recompensan hitos importantes.
+- **Moneda virtual (Gems)**: Permite "comprar" vidas o contenido extra.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/nN2a5jD.png" alt="Sistema de rachas de Duolingo" />
+    <p class="text-center text-sm italic mt-4">La racha es uno de los ganchos psicológicos más fuertes para que el usuario vuelva cada día.</p>
+  </CardContent>
+</Card>
+
+#### 3. Navegación por Pestañas (Bottom Navigation)
+
+La navegación principal se resuelve con un menú de pestañas en la parte inferior, un patrón estándar en aplicaciones móviles. Esto proporciona acceso rápido y predecible a las secciones clave de la app: Lecciones, Ligas, Perfil y Tienda.
+
+<Card>
+  <CardContent class="pt-6">
+    <img src="https://i.imgur.com/a7P3v7a.png" alt="Navegación inferior en Duolingo" />
+    <p class="text-center text-sm italic mt-4">Es un patrón de navegación familiar que los usuarios reconocen y saben usar al instante.</p>
+  </CardContent>
+</Card>
+
+---
+
+### Conclusión
+
+El éxito de Duolingo no es casualidad. Es el resultado de un diseño cuidadosamente elaborado que combina **principios de usabilidad sólidos** con **patrones de diseño adictivos** como la gamificación. 
+
+:::tip
+#### Claves del éxito de Duolingo:
+- **Feedback constante**: Siempre sabes cómo lo estás haciendo.
+- **Baja carga cognitiva**: Tareas simples y enfocadas.
+- **Motivación extrínseca**: La gamificación te empuja a seguir.
+- **Diseño familiar**: Usa patrones que ya conoces.
+:::
+
+Como futuros desarrolladores, analizar casos de éxito como Duolingo nos enseña que una buena interfaz no es solo la que se ve bonita, sino la que entiende la psicología del usuario y lo guía hacia sus objetivos de la forma más agradable posible.

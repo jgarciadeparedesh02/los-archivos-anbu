@@ -1,0 +1,54 @@
+--- 
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="Apuntes de FP de Informática del IES Ágora" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<ViewTransitions />
+        <style is:global>
+            @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Cinzel:wght@400;700&family=Roboto:wght@400;700&family=Open+Sans&family=Poppins:wght@700&display=swap');
+            body {
+              background-image: url("../assets/background.png");
+              background-size: cover;
+              background-position: center;
+              background-attachment: fixed;
+              background-color: #f5f5dc; /* Beige fallback */
+              font-family: "Roboto", sans-serif;
+            }
+            .font-kaushan {
+              font-family: "Kaushan Script", cursive;
+            }
+            .font-cinzel {
+              font-family: "Cinzel", serif;
+            }
+            .font-open-sans {
+              font-family: 'Open Sans', sans-serif;
+            }
+            .font-poppins-bold {
+              font-family: 'Poppins', sans-serif;
+              font-weight: 700;
+            }
+        </style>
+	</head>
+	<body class="text-[#3a3a3a] h-screen">
+        <div class="flex flex-col h-screen bg-black/10">
+            <Header />
+		    <slot />
+        </div>
+	</body>
+</html>

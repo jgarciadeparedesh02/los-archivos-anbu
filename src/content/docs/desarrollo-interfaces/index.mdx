@@ -1,0 +1,137 @@
+---
+title: ¡Bienvenido a la Documentación!
+template: splash
+editLink: false
+hero:
+  tagline: Tu guía completa para el Desarrollo de Interfaces.
+  actions:
+    - text: Empezar
+      link: /desarrollo-interfaces
+      icon: right-arrow
+      variant: primary
+---
+
+Este sitio contiene la documentación y los recursos para el módulo de **Desarrollo de Interfaces**. Aquí encontrarás todo lo necesario para aprender y dominar las tecnologías y conceptos clave en el diseño y la implementación de interfaces de usuario.
+
+Explora las diferentes Unidades de Trabajo para profundizar en cada aspecto del módulo.
+
+¡Esperamos que te sea de gran utilidad!
+
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../../components/ui/card';
+import { Button } from '../../../components/ui/button';
+import { ArrowRight, LayoutDashboard, Code, Component, FileText, BookOpen, Package, TestTube } from 'lucide-react';
+
+Este módulo te sumergirá en el fascinante mundo del diseño y la creación de interfaces de usuario. Aprenderás desde los principios fundamentales de usabilidad y experiencia de usuario hasta la implementación práctica con frameworks modernos y la realización de pruebas.
+
+Explora cada una de las Unidades de Trabajo para adquirir las habilidades necesarias y construir aplicaciones interactivas y accesibles.
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-8">
+  <Card className="flex flex-col h-full">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2"><LayoutDashboard className="h-5 w-5" /> UT1: Diseño de Interfaces y Usabilidad</CardTitle>
+      <CardDescription>Explora los fundamentos del diseño, la usabilidad y la experiencia de usuario (UX).</CardDescription>
+    </CardHeader>
+    <CardContent className="flex-grow">
+      Aprende a crear interfaces intuitivas y eficientes, aplicando principios de diseño y accesibilidad.
+    </CardContent>
+    <CardFooter>
+      <Button asChild variant="link" className="px-0">
+        <a href="/desarrollo-interfaces/ut1">Ir a UT1 <ArrowRight className="ml-2 h-4 w-4" /></a>
+      </Button>
+    </CardFooter>
+  </Card>
+
+  <Card className="flex flex-col h-full">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2"><Code className="h-5 w-5" /> UT2: Interfaces declarativas con XML y frameworks</CardTitle>
+      <CardDescription>Sumérgete en la creación de interfaces usando XML y frameworks declarativos.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex-grow">
+      Descubre cómo definir la estructura y el comportamiento de tus interfaces de manera eficiente.
+    </CardContent>
+    <CardFooter>
+      <Button asChild variant="link" className="px-0">
+        <a href="/desarrollo-interfaces/ut2">Ir a UT2 <ArrowRight className="ml-2 h-4 w-4" /></a>
+      </Button>
+    </CardFooter>
+  </Card>
+
+  <Card className="flex flex-col h-full">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2"><Component className="h-5 w-5" /> UT3: Creación y manejo de componentes con Angular-Ionic</CardTitle>
+      <CardDescription>Aprende a construir componentes reutilizables con Angular e Ionic.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex-grow">
+      Desarrolla aplicaciones multiplataforma robustas y con una excelente experiencia de usuario.
+    </CardContent>
+    <CardFooter>
+      <Button asChild variant="link" className="px-0">
+        <a href="/desarrollo-interfaces/ut3">Ir a UT3 <ArrowRight className="ml-2 h-4 w-4" /></a>
+      </Button>
+    </CardFooter>
+  </Card>
+
+  <Card className="flex flex-col h-full">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2"><FileText className="h-5 w-5" /> UT4: Reportes en Angular</CardTitle>
+      <CardDescription>Genera informes y visualizaciones de datos dentro de tus aplicaciones Angular.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex-grow">
+      Domina las técnicas para presentar información de manera clara y efectiva.
+    </CardContent>
+    <CardFooter>
+      <Button asChild variant="link" className="px-0">
+        <a href="/desarrollo-interfaces/ut4">Ir a UT4 <ArrowRight className="ml-2 h-4 w-4" /></a>
+      </Button>
+    </CardFooter>
+  </Card>
+
+  <Card className="flex flex-col h-full">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2"><BookOpen className="h-5 w-5" /> UT5: Documentación y StoryBook</CardTitle>
+      <CardDescription>Aprende a documentar tus componentes y proyectos de forma profesional.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex-grow">
+      Utiliza Storybook para desarrollar, documentar y probar componentes de UI de manera aislada.
+    </CardContent>
+    <CardFooter>
+      <Button asChild variant="link" className="px-0">
+        <a href="/desarrollo-interfaces/ut5">Ir a UT5 <ArrowRight className="ml-2 h-4 w-4" /></a>
+      </Button>
+    </CardFooter>
+  </Card>
+
+  <Card className="flex flex-col h-full">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2"><Package className="h-5 w-5" /> UT6: Empaquetado e instalación de aplicaciones</CardTitle>
+      <CardDescription>Prepara tus aplicaciones para su distribución e instalación.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex-grow">
+      Conoce las herramientas y procesos para empaquetar y desplegar tus proyectos.
+    </CardContent>
+    <CardFooter>
+      <Button asChild variant="link" className="px-0">
+        <a href="/desarrollo-interfaces/ut6">Ir a UT6 <ArrowRight className="ml-2 h-4 w-4" /></a>
+      </Button>
+    </CardFooter>
+  </Card>
+
+  <Card className="flex flex-col h-full">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2"><TestTube className="h-5 w-5" /> UT7: Realización de pruebas</CardTitle>
+      <CardDescription>Asegura la calidad de tus interfaces mediante técnicas de testing.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex-grow">
+      Implementa pruebas unitarias, de integración y end-to-end para garantizar el correcto funcionamiento.
+    </CardContent>
+    <CardFooter>
+      <Button asChild variant="link" className="px-0">
+        <a href="/desarrollo-interfaces/ut7">Ir a UT7 <ArrowRight className="ml-2 h-4 w-4" /></a>
+      </Button>
+    </CardFooter>
+  </Card>
+</div>
+
+---
+
+¡Empieza tu viaje en el Desarrollo de Interfaces hoy mismo!

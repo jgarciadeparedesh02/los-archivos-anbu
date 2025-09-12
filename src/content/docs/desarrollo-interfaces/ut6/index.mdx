@@ -1,0 +1,165 @@
+---
+title: "UT6: Empaquetado e instalación de aplicaciones"
+description: Preparación y distribución de aplicaciones para diferentes plataformas.
+sidebar:
+  label: Empaquetado e instalación de aplicaciones
+  order: 6
+---
+# UT6: Empaquetado e instalación de aplicaciones
+
+En esta unidad, aprenderás los procesos de empaquetado y distribución de aplicaciones, preparándolas para su instalación en diversas plataformas. Una vez que una aplicación ha sido desarrollada, el siguiente paso crucial es hacerla accesible a los usuarios finales. Esto implica compilar el código, agrupar todos los recursos necesarios y crear un instalador o un paquete distribuible que funcione correctamente en el entorno objetivo.
+
+## 1. Introducción al Empaquetado y Distribución
+
+El empaquetado y la distribución son las fases finales del ciclo de vida del desarrollo de software, donde la aplicación se prepara para ser entregada a los usuarios. Este proceso varía significativamente dependiendo del tipo de aplicación (web, móvil, escritorio) y la plataforma de destino.
+
+### 1.1. ¿Qué es el Empaquetado?
+
+El empaquetado es el proceso de agrupar todos los archivos y recursos necesarios para que una aplicación funcione de forma autónoma. Esto incluye el código compilado, librerías de terceros, activos (imágenes, CSS, fuentes), archivos de configuración y cualquier otro recurso que la aplicación necesite en tiempo de ejecución. El objetivo es crear un paquete autocontenido que sea fácil de distribuir y ejecutar.
+
+### 1.2. ¿Qué es la Distribución?
+
+La distribución se refiere a los métodos y canales a través de los cuales la aplicación empaquetada llega a los usuarios finales. Esto puede incluir tiendas de aplicaciones (App Store, Google Play), servidores web, repositorios de paquetes, o incluso la entrega directa de archivos.
+
+### 1.3. Desafíos Comunes
+
+*   **Dependencias:** Gestionar las dependencias de librerías y frameworks para asegurar que todas estén presentes y sean compatibles.
+*   **Configuración de Entorno:** Adaptar la aplicación a diferentes entornos (desarrollo, staging, producción) con configuraciones específicas.
+*   **Compatibilidad de Plataforma:** Asegurar que el paquete funcione en los sistemas operativos y arquitecturas de hardware objetivo.
+*   **Actualizaciones:** Proporcionar un mecanismo para que los usuarios puedan actualizar la aplicación de forma sencilla.
+*   **Seguridad:** Proteger el código y los datos, y asegurar que el proceso de instalación sea seguro.
+*   **Optimización:** Reducir el tamaño del paquete y optimizar el rendimiento de carga.
+
+## 2. Empaquetado de Aplicaciones Web (SPA/PWA)
+
+Las aplicaciones web modernas, especialmente las Single Page Applications (SPA) y Progressive Web Apps (PWA), se empaquetan de manera diferente a las aplicaciones de escritorio tradicionales. El proceso generalmente implica la compilación del código fuente (TypeScript, JSX, Vue SFCs) a JavaScript, la optimización de activos y la generación de un conjunto de archivos estáticos.
+
+### 2.1. Herramientas de Bundling (Webpack, Vite, Rollup)
+
+*   **Webpack:** Un empaquetador de módulos muy potente y configurable. Toma módulos con dependencias y genera activos estáticos que representan esos módulos. Es ampliamente utilizado en proyectos React y Angular.
+*   **Vite:** Un bundler de próxima generación que ofrece un arranque de servidor de desarrollo extremadamente rápido y una compilación optimizada para producción. Es popular en proyectos Vue y React.
+*   **Rollup:** Un empaquetador de módulos para JavaScript que compila pequeños fragmentos de código en algo más grande y complejo, como una librería o aplicación. Es conocido por su eficiencia en la generación de paquetes pequeños.
+
+### 2.2. Proceso de Build en Angular
+
+Angular utiliza su propia CLI para el proceso de build, que internamente se basa en Webpack (o Vite en versiones más recientes). El comando `ng build` compila la aplicación y genera los archivos estáticos listos para producción.
+
+```bash
+ng build --configuration=production
+```
+
+Este comando realiza varias optimizaciones:
+*   **Tree Shaking:** Elimina el código no utilizado.
+*   **Minificación:** Reduce el tamaño del código JavaScript, CSS y HTML.
+*   **Uglificación:** Renombra variables y funciones para reducir aún más el tamaño.
+*   **Generación de Hashes:** Añade hashes a los nombres de archivo para el cacheo del navegador.
+*   **Optimización de Imágenes:** Comprime imágenes.
+
+El resultado es una carpeta `dist/` (o similar) que contiene todos los archivos estáticos (HTML, CSS, JavaScript, imágenes) que se pueden desplegar en cualquier servidor web.
+
+### 2.3. Despliegue de Aplicaciones Web
+
+Las aplicaciones web empaquetadas se pueden desplegar en:
+
+*   **Servidores Web Estáticos:** Nginx, Apache, Caddy.
+*   **Servicios de Hosting en la Nube:** Netlify, Vercel, Firebase Hosting, AWS S3 + CloudFront, GitHub Pages.
+*   **Contenedores (Docker):** Empaquetar la aplicación web en una imagen Docker y desplegarla en plataformas como Kubernetes o AWS ECS.
+
+## 3. Empaquetado de Aplicaciones Móviles (Ionic/Capacitor)
+
+Las aplicaciones desarrolladas con Ionic y Capacitor se empaquetan para plataformas nativas (iOS y Android) utilizando las herramientas de desarrollo de cada plataforma.
+
+### 3.1. Proceso de Build para Android
+
+1.  **Build Web:** Primero, se construye la aplicación web de Ionic:
+    ```bash
+    ionic build --prod
+    ```
+2.  **Sincronizar Capacitor:** Se copian los archivos web a los proyectos nativos de Capacitor:
+    ```bash
+    npx cap sync android
+    ```
+3.  **Abrir Android Studio:** Se abre el proyecto Android en Android Studio:
+    ```bash
+    npx cap open android
+    ```
+4.  **Generar APK/AAB:** Desde Android Studio, se genera un APK (Android Package Kit) o un AAB (Android App Bundle) firmado para su distribución. El AAB es el formato preferido para Google Play Store.
+
+### 3.2. Proceso de Build para iOS
+
+1.  **Build Web:** Igual que para Android:
+    ```bash
+    ionic build --prod
+    ```
+2.  **Sincronizar Capacitor:** Se copian los archivos web a los proyectos nativos de Capacitor:
+    ```bash
+    npx cap sync ios
+    ```
+3.  **Abrir Xcode:** Se abre el proyecto iOS en Xcode:
+    ```bash
+    npx cap open ios
+    ```
+4.  **Generar IPA:** Desde Xcode, se genera un archivo IPA (iOS App Store Package) para su distribución a través de la App Store Connect.
+
+### 3.3. Distribución de Aplicaciones Móviles
+
+*   **Google Play Store:** Para Android, se sube el AAB a la Google Play Console.
+*   **Apple App Store:** Para iOS, se sube el IPA a App Store Connect.
+*   **Distribución Ad-hoc:** Para pruebas internas o distribución limitada, se pueden generar APKs o IPAs para instalación directa.
+
+## 4. Empaquetado de Aplicaciones de Escritorio (Electron)
+
+Electron es un framework que permite construir aplicaciones de escritorio multiplataforma utilizando tecnologías web (HTML, CSS, JavaScript). Empaqueta una aplicación web en un navegador Chromium y el entorno de ejecución de Node.js.
+
+### 4.1. Estructura Básica de una Aplicación Electron
+
+Una aplicación Electron consta de:
+
+*   **Main Process:** Un script de Node.js que controla el ciclo de vida de la aplicación, gestiona las ventanas y realiza operaciones a nivel de sistema operativo.
+*   **Renderer Process:** Una o más ventanas de navegador (Chromium) que muestran la interfaz de usuario de la aplicación web.
+
+### 4.2. Empaquetado con Electron Forge/Builder
+
+Herramientas como Electron Forge o Electron Builder simplifican el proceso de empaquetado y creación de instaladores para diferentes sistemas operativos (Windows, macOS, Linux).
+
+**Ejemplo con Electron Forge:**
+
+1.  **Instalación:**
+    ```bash
+    npm install --save-dev @electron-forge/cli
+npx electron-forge import
+    ```
+2.  **Crear Paquete:**
+    ```bash
+npm run make
+    ```
+
+Este comando generará instaladores para la plataforma actual (ej. `.exe` para Windows, `.dmg` para macOS, `.deb` para Linux) en la carpeta `out/`.
+
+### 4.3. Distribución de Aplicaciones de Escritorio
+
+*   **Sitio Web Propio:** Ofrecer los instaladores directamente desde un sitio web.
+*   **Tiendas de Aplicaciones:** Microsoft Store, Mac App Store (requiere un proceso de certificación).
+*   **Repositorios de Paquetes:** Para Linux, se pueden crear paquetes `.deb` o `.rpm` y distribuirlos a través de repositorios.
+
+## 5. Gestión de Versiones y Actualizaciones
+
+Una parte crucial de la distribución es la gestión de versiones y la capacidad de actualizar las aplicaciones de forma eficiente.
+
+### 5.1. Versionado Semántico (SemVer)
+
+El versionado semántico (MAJOR.MINOR.PATCH) es una práctica estándar para comunicar los cambios en las versiones de software:
+
+*   **MAJOR:** Cambios incompatibles con versiones anteriores.
+*   **MINOR:** Nuevas funcionalidades compatibles con versiones anteriores.
+*   **PATCH:** Correcciones de errores compatibles con versiones anteriores.
+
+### 5.2. Mecanismos de Actualización
+
+*   **Aplicaciones Web:** Las actualizaciones son automáticas; al desplegar una nueva versión en el servidor, los usuarios la obtienen al recargar la página.
+*   **Aplicaciones Móviles:** Las actualizaciones se gestionan a través de las tiendas de aplicaciones (Google Play, App Store). Los usuarios reciben notificaciones y pueden actualizar desde allí.
+*   **Aplicaciones de Escritorio:** Se pueden implementar mecanismos de actualización automática (ej. `electron-updater` para Electron) o notificar a los usuarios sobre nuevas versiones y dirigirlos a la descarga manual.
+
+## Conclusión
+
+El empaquetado y la instalación de aplicaciones son pasos esenciales para llevar el software a manos de los usuarios. Comprender las herramientas y los procesos específicos para cada plataforma (web, móvil, escritorio) es fundamental para una distribución exitosa. Desde la optimización del código y los activos hasta la creación de instaladores y la gestión de actualizaciones, cada detalle contribuye a una experiencia de usuario fluida y profesional. Esta unidad te ha proporcionado una visión integral de estas prácticas, preparándote para desplegar tus aplicaciones con confianza.
