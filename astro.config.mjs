@@ -4,8 +4,12 @@ import react from '@astrojs/react'
 import mdx from '@astrojs/mdx'
 import starlight from '@astrojs/starlight'
 import tailwindcss from '@tailwindcss/vite'
+import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
+  output: 'server',
+  adapter: vercel(),
+
   integrations: [
     starlight({
       title: 'Los Archivos Anbu',
