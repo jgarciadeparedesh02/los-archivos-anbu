@@ -3,14 +3,19 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Los Archivos ANBU - Inicio">
-  <main class="flex-grow flex items-center container mx-auto px-6">
-    <div class="max-w-lg">
-            <h1 class="text-6xl font-kaushan" transition:name="main-title">
+  <main
+    class="flex-grow flex flex-col justify-center items-center text-center lg:text-left container mx-auto px-6"
+  >
+    <div class="max-w-2xl">
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl font-kaushan"
+        transition:name="main-title"
+      >
         El conocimiento sellado en pergaminos
       </h1>
-      <p class="mt-4 text-lg font-open-sans">
-        Apuntes organizados como archivos ANBU, listos para ayudarte a
-        dominar cada asignatura.
+      <p class="mt-4 text-lg sm:text-xl font-open-sans">
+        Apuntes organizados como archivos ANBU, listos para ayudarte a dominar
+        cada asignatura.
       </p>
       <a
         href="/camino-ninja"

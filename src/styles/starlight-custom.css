@@ -10,6 +10,7 @@
   --sl-color-header-background: rgb(var(--sl-color-background));
   --sl-color-navbar-background: rgb(var(--sl-color-background));
   --sl-color-sidebar-background: rgb(var(--sl-color-background));
+  --sl-color-text-invert: 0, 0, 0; /* Para texto oscuro */
   /* Fuentes */
   --sl-font-text: 'Open Sans', sans-serif;
   --sl-font-heading: 'Cinzel', serif;
@@ -17,6 +18,10 @@
   --sl-color-bg-nav: rgb(var(--sl-color-background));
     --sl-color-bg-sidebar: rgb(var(--sl-color-background));
 
+}
+
+.title-wrapper a span {
+  font-family: 'Cinzel', serif;
 }
 
 /* Sobrescribir fuentes específicas si es necesario */

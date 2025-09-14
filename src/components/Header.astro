@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import logo from "../assets/logo/logo-with-text.png";
 ---
-<header class="container mx-auto">
+<header class="container mx-auto p-4">
   <div class="flex justify-between items-center">
     <div class="flex items-center">
       <a href="/">
@@ -15,5 +15,27 @@ import logo from "../assets/logo/logo-with-text.png";
       <a href="#" class="hover:text-red-700">JŌNIN (SUPERIOR)</a>
       <a href="#" class="hover:text-red-700">ANBU (ESPECIALIZACIÓN)</a>
     </nav>
+    <div class="md:hidden">
+      <button id="menu-btn" class="block hamburger md:hidden focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </div>
+  </div>
+  <div id="menu" class="hidden md:hidden">
+    <nav class="flex flex-col items-center space-y-4 font-cinzel mt-4">
+      <a href="#" class="hover:text-red-700">GENIN (BÁSICO)</a>
+      <a href="#" class="hover:text-red-700">CHŪNIN (MEDIO)</a>
+      <a href="#" class="hover:text-red-700">JŌNIN (SUPERIOR)</a>
+      <a href="#" class="hover:text-red-700">ANBU (ESPECIALIZACIÓN)</a>
+    </nav>
   </div>
 </header>
+
+<script>
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('menu');
+
+  btn.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
+  });
+</script>
