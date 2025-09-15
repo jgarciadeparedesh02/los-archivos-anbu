@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { cn } from '@/lib/utils';
 
+// Interfaz para una sola pregunta
 interface Question {
   question: string;
   options: string[];
@@ -9,61 +12,111 @@ interface Question {
   explanation: string;
 }
 
+// Props del componente Quiz
 interface QuizProps {
   questions: Question[];
 }
 
+// --- Lógica del Reducer ---
+
+// 1. Definición del estado
+interface QuizState {
+  currentQuestionIndex: number;
+  selectedAnswer: number | null;
+  showFeedback: boolean;
+  score: number;
+  quizFinished: boolean;
+}
+
+// 2. Definición de las acciones
+type QuizAction = 
+  | { type: 'SELECT_ANSWER'; payload: number }
+  | { type: 'SUBMIT' }
+  | { type: 'NEXT_QUESTION' }
+  | { type: 'RESTART' };
+
+// 3. Estado inicial
+const initialState: QuizState = {
+  currentQuestionIndex: 0,
+  selectedAnswer: null,
+  showFeedback: false,
+  score: 0,
+  quizFinished: false,
+};
+
+// --- Componente Principal ---
+
 const Quiz: React.FC<QuizProps> = ({ questions }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [score, setScore] = useState(0);
-  const [quizFinished, setQuizFinished] = useState(false);
 
-  const handleAnswerSelect = (answerIndex: number) => {
-    if (showFeedback) return;
-    setSelectedAnswer(answerIndex);
-  };
+  // 4. Función Reductora (definida dentro para acceder a `questions`)
+  const quizReducer = (state: QuizState, action: QuizAction): QuizState => {
+    switch (action.type) {
+      case 'SELECT_ANSWER':
+        if (state.showFeedback) return state; // No cambiar selección si ya se mostró el feedback
+        return { ...state, selectedAnswer: action.payload };
 
-  const handleSubmit = () => {
-    if (selectedAnswer === null) return;
+      case 'SUBMIT': {
+        if (state.selectedAnswer === null) return state;
+        const isCorrect = state.selectedAnswer === questions[state.currentQuestionIndex].correctAnswer;
+        return {
+          ...state,
+          showFeedback: true,
+          score: isCorrect ? state.score + 1 : state.score,
+        };
+      }
 
-    const isCorrect = selectedAnswer === questions[currentQuestionIndex].correctAnswer;
-    if (isCorrect) {
-      setScore(score + 1);
+      case 'NEXT_QUESTION': {
+        const isLastQuestion = state.currentQuestionIndex === questions.length - 1;
+        if (isLastQuestion) {
+          return { ...state, quizFinished: true };
+        }
+        return {
+          ...state,
+          currentQuestionIndex: state.currentQuestionIndex + 1,
+          selectedAnswer: null,
+          showFeedback: false,
+        };
+      }
+
+      case 'RESTART':
+        return initialState;
+
+      default:
+        return state;
     }
-    setShowFeedback(true);
   };
 
-  const handleNext = () => {
-    setShowFeedback(false);
-    setSelectedAnswer(null);
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      setQuizFinished(true);
-    }
-  };
+  // 5. Inicialización del reducer
+  const [state, dispatch] = useReducer(quizReducer, initialState);
+  const { currentQuestionIndex, selectedAnswer, showFeedback, score, quizFinished } = state;
 
-  const handleRestart = () => {
-    setCurrentQuestionIndex(0);
-    setSelectedAnswer(null);
-    setShowFeedback(false);
-    setScore(0);
-    setQuizFinished(false);
-  };
+  // --- Renderizado ---
 
   if (quizFinished) {
+    const finalPercentage = (score / questions.length) * 100;
+    let feedbackMessage = '';
+    if (finalPercentage === 100) {
+      feedbackMessage = '¡Excelente! Eres un auténtico maestro Jonin.';
+    } else if (finalPercentage >= 70) {
+      feedbackMessage = '¡Muy bien! Tienes potencial de Chunnin.';
+    } else if (finalPercentage >= 50) {
+      feedbackMessage = 'No está mal, pero un Genin necesita seguir entrenando.';
+    } else {
+      feedbackMessage = 'Necesitas repasar los conceptos básicos.';
+    }
+
     return (
-      <Card className="mt-6 border-2">
-        <CardHeader>
-          <CardTitle>¡Quiz completado!</CardTitle>
+      <Card className="mt-6 overflow-hidden">
+        <CardHeader className="text-center">
+          <CardTitle>¡Quiz Completado!</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-lg">
-            Tu puntuación final es: **{score} de {questions.length}**
-          </p>
-          <Button onClick={handleRestart} className="mt-4">
+        <CardContent className="flex flex-col items-center gap-4">
+          <div className="text-center">
+            <p className="text-muted-foreground">Tu puntuación final es:</p>
+            <p className="text-4xl font-bold">{score} / {questions.length}</p>
+          </div>
+          <p className="text-lg text-muted-foreground">{feedbackMessage}</p>
+          <Button onClick={() => dispatch({ type: 'RESTART' })} className="mt-4">
             Volver a empezar
           </Button>
         </CardContent>
@@ -74,36 +127,34 @@ const Quiz: React.FC<QuizProps> = ({ questions }) => {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <Card className="mt-6 border-2">
+    <Card className="mt-6 overflow-hidden">
       <CardHeader>
-        <CardTitle>
-          Pregunta {currentQuestionIndex + 1} de {questions.length}
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle as="h3" className="text-xl">Autoevaluación</CardTitle>
+          <Badge variant="secondary">Pregunta {currentQuestionIndex + 1} de {questions.length}</Badge>
+        </div>
       </CardHeader>
       <CardContent>
-        <p className="text-lg font-semibold mb-4">{currentQuestion.question}</p>
-        <div className="flex flex-col gap-2">
+        <p className="text-lg font-semibold mb-6">{currentQuestion.question}</p>
+        <div className="flex flex-col gap-3">
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedAnswer === index;
             const isCorrect = currentQuestion.correctAnswer === index;
-            
-            let classNames = 'justify-start text-left h-auto whitespace-normal transition-colors';
-            if (showFeedback) {
-              if (isCorrect) {
-                classNames += ' border-green-500 text-green-700 bg-green-50/50 hover:bg-green-50/80';
-              } else if (isSelected) {
-                classNames += ' border-red-500 text-red-700 bg-red-50/50 hover:bg-red-50/80';
-              }
-            } else if (isSelected) {
-              classNames += ' bg-muted hover:bg-muted/80';
-            }
 
             return (
               <Button
                 key={index}
                 variant="outline"
-                className={classNames}
-                onClick={() => handleAnswerSelect(index)}
+                className={cn(
+                  'justify-start text-left h-auto whitespace-normal p-4 transition-colors',
+                  {
+                    'bg-muted ring-2 ring-ring': isSelected && !showFeedback,
+                    'bg-primary text-primary-foreground': showFeedback && isCorrect,
+                    'bg-destructive text-destructive-foreground': showFeedback && isSelected && !isCorrect,
+                    'opacity-50': showFeedback && !isSelected && !isCorrect,
+                  }
+                )}
+                onClick={() => dispatch({ type: 'SELECT_ANSWER', payload: index })}
                 disabled={showFeedback}
               >
                 {option}
@@ -113,28 +164,29 @@ const Quiz: React.FC<QuizProps> = ({ questions }) => {
         </div>
 
         {showFeedback && (
-          <div className={`mt-4 p-4 rounded-md border-2 ${selectedAnswer === currentQuestion.correctAnswer ? 'border-green-500 bg-green-50/50' : 'border-red-500 bg-red-50/50'}`}>
-            <p className="font-semibold">
-              {selectedAnswer === currentQuestion.correctAnswer
-                ? '¡Correcto! 🎉'
-                : 'Incorrecto.'}
-            </p>
-            <p className="text-sm">{currentQuestion.explanation}</p>
+          <div className="mt-6 p-4 rounded-lg border bg-muted/50">
+            <div className="flex items-center gap-3">
+              {selectedAnswer === currentQuestion.correctAnswer ? (
+                <Badge className="bg-primary hover:bg-primary/90">¡Correcto! 🎉</Badge>
+              ) : (
+                <Badge variant="destructive">Incorrecto...</Badge>
+              )}
+            </div>
+            <p className="mt-3 text-muted-foreground">{currentQuestion.explanation}</p>
           </div>
         )}
-
-        <div className="mt-6 flex justify-end">
-          {showFeedback ? (
-            <Button onClick={handleNext}>
-              {currentQuestionIndex < questions.length - 1 ? 'Siguiente' : 'Finalizar'}
-            </Button>
-          ) : (
-            <Button onClick={handleSubmit} disabled={selectedAnswer === null}>
-              Comprobar
-            </Button>
-          )}
-        </div>
       </CardContent>
+      <CardFooter className="mt-2 flex justify-end">
+        {showFeedback ? (
+          <Button onClick={() => dispatch({ type: 'NEXT_QUESTION' })}>
+            {currentQuestionIndex < questions.length - 1 ? 'Siguiente' : 'Finalizar'}
+          </Button>
+        ) : (
+          <Button onClick={() => dispatch({ type: 'SUBMIT' })} disabled={selectedAnswer === null}>
+            Comprobar
+          </Button>
+        )}
+      </CardFooter>
     </Card>
   );
 };

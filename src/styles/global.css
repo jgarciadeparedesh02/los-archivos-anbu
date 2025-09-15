@@ -79,6 +79,10 @@
   --sidebar-ring: oklch(0.65 0.2 50);
 }
 
+:root[data-theme='dark'] {
+  --background: rgb(53, 53, 53); /* Darkest Blue/Black */
+}
+
 .dark {
   --background: rgb(1, 4, 8);        /* Darkest Blue/Black */
   --foreground: oklch(0.98 0.01 250);        /* White/Light Grey */

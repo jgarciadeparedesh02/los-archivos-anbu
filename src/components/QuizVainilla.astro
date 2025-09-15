@@ -1,0 +1,178 @@
+---
+// Este es un componente de diagnóstico que usa JavaScript puro para evitar cualquier problema
+// relacionado con la hidratación de React. El objetivo es ver si los eventos de clic básicos funcionan.
+
+// Las preguntas se definen aquí para que el componente sea autocontenido.
+const questions = [
+  {
+    question: "¿Qué patrón de navegación es más adecuado para mostrar la jerarquía de una página dentro de un sitio web complejo?",
+    options: [
+      "Menú de Hamburguesa",
+      "Pestañas (Tabs)",
+      "Migas de Pan (Breadcrumbs)",
+      "Acordeón"
+    ],
+    correctAnswer: 2,
+    explanation: "Las 'Migas de Pan' o 'Breadcrumbs' están diseñadas específicamente para mostrar la ruta jerárquica desde la página de inicio hasta la página actual."
+  },
+  {
+    question: "Si necesitas mostrar una notificación importante que requiere la atención inmediata del usuario, ¿qué patrón usarías?",
+    options: [
+      "Insignia (Badge)",
+      "Tarjeta (Card)",
+      "Carrusel (Slider)",
+      "Ventana Modal (Modal)"
+    ],
+    correctAnswer: 3,
+    explanation: "Las ventanas modales son perfectas para interrumpir el flujo del usuario y mostrar información crítica o solicitar una acción."
+  }
+];
+---
+
+<div id="quiz-vanilla-container" class="mt-6 p-6 rounded-lg border bg-card text-card-foreground shadow-sm">
+  <!-- Pantalla de Pregunta -->
+  <div id="question-screen">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-semibold">Autoevaluación (Vainilla JS)</h3>
+      <p id="question-counter" class="text-sm text-muted-foreground"></p>
+    </div>
+    <p id="question-text" class="text-lg font-semibold mb-6"></p>
+    <div id="options-container" class="flex flex-col gap-3"></div>
+    
+    <div id="feedback-container" class="mt-6 p-4 rounded-lg border bg-muted/50 hidden"> 
+      <p id="feedback-title" class="font-semibold"></p>
+      <p id="feedback-explanation" class="mt-3 text-muted-foreground"></p>
+    </div>
+
+    <div class="mt-6 flex justify-end">
+      <button id="submit-btn" class="h-9 px-4 py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 rounded-md text-sm font-medium disabled:opacity-50" disabled>Comprobar</button>
+      <button id="next-btn" class="h-9 px-4 py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 rounded-md text-sm font-medium hidden">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- Pantalla Final -->
+  <div id="finish-screen" class="hidden text-center">
+    <h3 class="text-2xl font-bold">¡Quiz Completado!</h3>
+    <p class="mt-4 text-muted-foreground">Tu puntuación final es:</p>
+    <p id="final-score" class="text-4xl font-bold"></p>
+    <button id="restart-btn" class="mt-4 h-9 px-4 py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 rounded-md text-sm font-medium">Volver a empezar</button>
+  </div>
+</div>
+
+<script define:vars={{ questions }}>
+  // --- Estado del Quiz ---
+  let currentQuestionIndex = 0;
+  let selectedAnswer = null;
+  let score = 0;
+
+  // --- Elementos del DOM ---
+  const questionScreen = document.getElementById('question-screen');
+  const finishScreen = document.getElementById('finish-screen');
+  const questionCounter = document.getElementById('question-counter');
+  const questionText = document.getElementById('question-text');
+  const optionsContainer = document.getElementById('options-container');
+  const feedbackContainer = document.getElementById('feedback-container');
+  const feedbackTitle = document.getElementById('feedback-title');
+  const feedbackExplanation = document.getElementById('feedback-explanation');
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const finalScore = document.getElementById('final-score');
+  const restartBtn = document.getElementById('restart-btn');
+
+  // --- Lógica Principal ---
+  function renderQuestion() {
+    // Reset
+    selectedAnswer = null;
+    optionsContainer.innerHTML = '';
+    feedbackContainer.classList.add('hidden');
+    submitBtn.classList.remove('hidden');
+    nextBtn.classList.add('hidden');
+    submitBtn.disabled = true;
+
+    const question = questions[currentQuestionIndex];
+    questionText.textContent = question.question;
+    questionCounter.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
+
+    question.options.forEach((option, index) => {
+      const button = document.createElement('button');
+      button.textContent = option;
+      button.dataset.index = index;
+      button.className = 'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 justify-start text-left h-auto whitespace-normal p-4 transition-colors rounded-md text-sm font-medium';
+      optionsContainer.appendChild(button);
+    });
+  }
+
+  // --- Event Listeners ---
+  optionsContainer.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.tagName !== 'BUTTON') return;
+
+    // Eliminar selección previa
+    Array.from(optionsContainer.children).forEach(child => {
+      child.classList.remove('ring-2', 'ring-ring', 'bg-muted');
+    });
+
+    // Marcar nueva selección
+    target.classList.add('ring-2', 'ring-ring', 'bg-muted');
+    selectedAnswer = parseInt(target.dataset.index, 10);
+    submitBtn.disabled = false;
+  });
+
+  submitBtn.addEventListener('click', () => {
+    if (selectedAnswer === null) return;
+
+    const question = questions[currentQuestionIndex];
+    const isCorrect = selectedAnswer === question.correctAnswer;
+
+    if (isCorrect) {
+      score++;
+      feedbackTitle.textContent = '¡Correcto! 🎉';
+      feedbackTitle.parentElement.classList.remove('border-destructive');
+      feedbackTitle.parentElement.classList.add('border-primary');
+    } else {
+      feedbackTitle.textContent = 'Incorrecto...';
+      feedbackTitle.parentElement.classList.remove('border-primary');
+      feedbackTitle.parentElement.classList.add('border-destructive');
+    }
+    feedbackExplanation.textContent = question.explanation;
+    feedbackContainer.classList.remove('hidden');
+
+    // Deshabilitar todos los botones de opción
+    Array.from(optionsContainer.children).forEach(child => {
+        child.disabled = true;
+        // Marcar visualmente la correcta y la incorrecta
+        const btnIndex = parseInt(child.dataset.index, 10);
+        if (btnIndex === question.correctAnswer) {
+            child.classList.add('bg-primary', 'text-primary-foreground');
+        } else if (btnIndex === selectedAnswer) {
+            child.classList.add('bg-destructive', 'text-destructive-foreground');
+        }
+    });
+
+    submitBtn.classList.add('hidden');
+    nextBtn.classList.remove('hidden');
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      currentQuestionIndex++;
+      renderQuestion();
+    } else {
+      questionScreen.classList.add('hidden');
+      finishScreen.classList.remove('hidden');
+      finalScore.textContent = `${score} / ${questions.length}`;
+    }
+  });
+
+  restartBtn.addEventListener('click', () => {
+    currentQuestionIndex = 0;
+    score = 0;
+    questionScreen.classList.remove('hidden');
+    finishScreen.classList.add('hidden');
+    renderQuestion();
+  });
+
+  // --- Inicialización ---
+  renderQuestion();
+
+</script>
