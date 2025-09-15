@@ -164,6 +164,29 @@ Abusar de ventanas modales o carruseles puede resultar molesto. Recuerda: **meno
 
 ---
 
+### 4. Otros Patrones Relevantes
+
+Además de los patrones de navegación, entrada y presentación, existen otros patrones conceptuales que definen la estructura y el flujo de una aplicación.
+
+- **Estructura de Página Genérica**
+  Define las áreas funcionales de una interfaz. Aunque su diseño visual puede variar enormemente, la mayoría de las webs y aplicaciones se organizan en torno a estos bloques:
+    - **Header (Encabezado):** Zona superior. Suele contener el logo, el menú de navegación principal y accesos a perfiles o login.
+    - **Nav (Navegación):** El menú principal. Puede estar en el *header*, en una *sidebar* o ser el elemento central.
+    - **Body (Cuerpo):** El contenido principal y cambiante de la página.
+    - **Sidebar (Barra lateral):** Columna a la izquierda o derecha con navegación secundaria, filtros o información contextual.
+    - **Footer (Pie de página):** Zona inferior. Contiene información legal, enlaces de contacto, redes sociales, etc.
+
+- **Registro Diferido (Lazy Registration)**
+  Es un patrón de flujo de usuario centrado en la usabilidad que retrasa el registro tanto como sea posible.
+    - **Acceso antes que registro:** El usuario puede explorar y usar las funcionalidades principales de la aplicación sin necesidad de crear una cuenta. El registro solo se solicita cuando es estrictamente necesario (ej. para guardar progreso, comprar un artículo o editar contenido).
+    - **Login automático tras registro:** Una vez que el usuario completa el formulario de registro, el sistema le da acceso inmediato sin forzarle a pasar por una pantalla de login. La aplicación ya sabe quién es y confía en él en esa primera sesión.
+
+:::tip
+El objetivo del **Registro Diferido** es eliminar barreras. Un usuario que ha probado el valor de tu aplicación estará mucho más dispuesto a registrarse que uno al que le pides sus datos solo por entrar.
+:::
+
+---
+
 ### En resumen
 
 Los **patrones de diseño de UI** son como un lenguaje visual común:  
