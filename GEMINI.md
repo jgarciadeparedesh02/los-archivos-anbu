@@ -3,7 +3,7 @@ title: "Gemini Contexto y Guía para Desarrollo de Interfaces"
 ---
 Contesta siempre en español
 Para cualquier cambio de css utiliza tailwind consultando esta documentación: https://starlight.astro.build/guides/css-and-tailwind/#styling-starlight-with-tailwind
-Cada vez que hagas un commit, anota los cambios en el archivo changelog.md y sube una versión al proyecto.
+Cada vez que te diga sube los cambios, revisa los commits, sube la versión del proyecto y anota los cambios en el archivo changelog.md.
 
 # Contexto del Proyecto
 - **Tecnologías clave**:
