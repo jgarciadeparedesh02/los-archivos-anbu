@@ -5,6 +5,7 @@ import mdx from '@astrojs/mdx'
 import starlight from '@astrojs/starlight'
 import tailwindcss from '@tailwindcss/vite'
 import vercel from '@astrojs/vercel/serverless';
+import starlightImageZoom from 'starlight-image-zoom'
 
 export default defineConfig({
   output: 'server',
@@ -51,6 +52,7 @@ export default defineConfig({
         './src/styles/global.css',
         './src/styles/starlight-custom.css',
       ],
+      plugins: [starlightImageZoom()],
     }),
     react(),
     mdx(),
