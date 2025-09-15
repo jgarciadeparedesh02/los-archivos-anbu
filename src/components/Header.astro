@@ -1,6 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../assets/logo/logo-with-text.png";
+import '../styles/global.css';
+import '../styles/starlight-custom.css';
+
 ---
 <header class="container mx-auto p-4">
   <div class="flex justify-between items-center">
@@ -10,10 +13,10 @@ import logo from "../assets/logo/logo-with-text.png";
       </a>
     </div>
     <nav class="hidden md:flex items-center space-x-8 font-cinzel">
-      <a href="#" class="hover:text-red-700">GENIN (BÁSICO)</a>
-      <a href="#" class="hover:text-red-700">CHŪNIN (MEDIO)</a>
-      <a href="#" class="hover:text-red-700">JŌNIN (SUPERIOR)</a>
-      <a href="#" class="hover:text-red-700">ANBU (ESPECIALIZACIÓN)</a>
+      <a href="#" class="hover:text-red-700  cursor-pointer no-underline">GENIN (BÁSICO)</a>
+      <a href="#" class="hover:text-red-700 cursor-pointer no-underline">CHŪNIN (MEDIO)</a>
+      <a href="#" class="hover:text-red-700 cursor-pointer no-underline">JŌNIN (SUPERIOR)</a>
+      <a href="#" class="hover:text-red-700 cursor-pointer no-underline">ANBU (ESPECIALIZACIÓN)</a>
     </nav>
     <div class="md:hidden">
       <button id="menu-btn" class="block hamburger md:hidden focus:outline-none">
@@ -23,10 +26,10 @@ import logo from "../assets/logo/logo-with-text.png";
   </div>
   <div id="menu" class="hidden md:hidden">
     <nav class="flex flex-col items-center space-y-4 font-cinzel mt-4">
-      <a href="#" class="hover:text-red-700">GENIN (BÁSICO)</a>
-      <a href="#" class="hover:text-red-700">CHŪNIN (MEDIO)</a>
-      <a href="#" class="hover:text-red-700">JŌNIN (SUPERIOR)</a>
-      <a href="#" class="hover:text-red-700">ANBU (ESPECIALIZACIÓN)</a>
+      <a href="#" class="hover:text-red-700 cursor-pointer no-underline">GENIN (BÁSICO)</a>
+      <a href="#" class="hover:text-red-700 cursor-pointer no-underline">CHŪNIN (MEDIO)</a>
+      <a href="#" class="hover:text-red-700 cursor-pointer no-underline">JŌNIN (SUPERIOR)</a>
+      <a href="#" class="hover:text-red-700 cursor-pointer no-underline">ANBU (ESPECIALIZACIÓN)</a>
     </nav>
   </div>
 </header>

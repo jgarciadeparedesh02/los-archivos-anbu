@@ -17,8 +17,28 @@
   --sl-font-code: 'Fira Code', monospace; /* Mantener una fuente de código estándar */
   --sl-color-bg-nav: rgb(var(--sl-color-background));
     --sl-color-bg-sidebar: rgb(var(--sl-color-background));
-
 }
+
+:root[data-theme='dark'] {
+  /* Colores */
+  --sl-color-accent: 212, 106, 106; /* Basado en el botón Jōnin (#D46A6A) */
+  --sl-color-text: 54, 54, 54; /* Basado en text-stone-800 (#363636) */
+  --sl-color-background: 53, 53, 53; /* Basado en el fondo de la tarjeta Genin (#F9F6F1) */
+    --sl-color-backgroundaaa: rgb(53, 53, 53); /* Basado en el fondo de la tarjeta Genin (#F9F6F1) */
+
+  --sl-color-white: 255, 255, 255; /* Para texto blanco */
+  --sl-color-header-background: rgb(var(--sl-color-background));
+  --sl-color-navbar-background: rgb(var(--sl-color-background));
+  --sl-color-sidebar-background: rgb(var(--sl-color-background));
+  --sl-color-text-invert: 0, 0, 0; /* Para texto oscuro */
+  /* Fuentes */
+  --sl-font-text: 'Open Sans', sans-serif;
+  --sl-font-heading: 'Cinzel', serif;
+  --sl-font-code: 'Fira Code', monospace; /* Mantener una fuente de código estándar */
+  --sl-color-bg-nav: rgb(var(--sl-color-background));
+    --sl-color-bg-sidebar: rgb(var(--sl-color-background));
+}
+
 
 .title-wrapper a span {
   font-family: 'Cinzel', serif;
@@ -53,4 +73,8 @@ aside[data-astro-cid-*],
 .sl-sidebar,
 .sl-navbar {
   background-color: rgb(var(--sl-color-background)) !important;
+}
+
+nav > a {
+  color: rgb(var(--sl-color-text));
 }

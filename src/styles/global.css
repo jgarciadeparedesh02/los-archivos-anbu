@@ -1,5 +1,8 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
 
 @custom-variant dark (&:is(.dark *));
 
@@ -77,7 +80,7 @@
 }
 
 .dark {
-  --background: oklch(0.10 0.02 250);        /* Darkest Blue/Black */
+  --background: rgb(1, 4, 8);        /* Darkest Blue/Black */
   --foreground: oklch(0.98 0.01 250);        /* White/Light Grey */
   --card: oklch(0.15 0.03 250);              /* Dark Blue */
   --card-foreground: oklch(0.98 0.01 250);   /* White/Light Grey */
@@ -110,6 +113,9 @@
   --sidebar-ring: oklch(0.65 0.2 50);
 }
 
+body{
+  margin: 0;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;

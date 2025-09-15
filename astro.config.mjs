@@ -48,6 +48,7 @@ export default defineConfig({
       ],
       routeMiddleware: './src/middleware/routeData.ts',
       customCss: [
+        './src/styles/global.css',
         './src/styles/starlight-custom.css',
       ],
     }),

@@ -2,6 +2,7 @@
 title: "Gemini Contexto y Guía para Desarrollo de Interfaces"
 ---
 Contesta siempre en español
+Para cualquier cambio de css utiliza tailwind consultando esta documentación: https://starlight.astro.build/guides/css-and-tailwind/#styling-starlight-with-tailwind
 
 # Contexto del Proyecto
 - **Tecnologías clave**:

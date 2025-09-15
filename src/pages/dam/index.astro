@@ -21,7 +21,7 @@ const subjects = [
         {subjects.map((subject) => (
           subject.acronym === 'DI' ? (
             <a href="/desarrollo-interfaces">
-              <Card className="bg-[#F9F6F1] hover:shadow-lg border-4 border-stone-200 transition-shadow duration-300 ease-in-out transform hover:-translate-y-1 h-full">
+              <Card className="bg-[#F9F6F1] hover:shadow-lg border-4 border-stone-200 transition-shadow duration-300 ease-in-out transform hover:-translate-y-1 h-full py-0">
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <subject.icon className="w-12 h-12 text-stone-700 mb-4" />
                   <h2 class="text-2xl font-cinzel text-stone-800 mb-2">{subject.acronym}</h2>
@@ -31,7 +31,7 @@ const subjects = [
             </a>
           ) : (
             <div className="opacity-50 cursor-not-allowed" title="En construcción">
-              <Card className="bg-[#F9F6F1] border-4 border-stone-200 h-full">
+              <Card className="bg-[#F9F6F1] border-4 border-stone-200 h-full py-0">
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <subject.icon className="w-12 h-12 text-stone-700 mb-4" />
                   <h2 class="text-2xl font-cinzel text-stone-800 mb-2">{subject.acronym}</h2>
