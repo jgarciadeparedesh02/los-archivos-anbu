@@ -45,7 +45,32 @@ export default defineConfig({
         {
           label: 'UT7: Realización de pruebas',
           autogenerate: { directory: 'desarrollo-interfaces/ut7' },
+        },
+        {
+          label: 'UT1: Análisis del sector y detección de necesidades',
+          autogenerate: { directory: 'proyecto-integrador/ut1' },
+        },
+        {
+          label: 'UT2: Diseño del proyecto de la app',
+          autogenerate: { directory: 'proyecto-integrador/ut2' },
+        },
+        {
+          label: 'UT3: Definición de la arquitectura y organización técnica',
+          autogenerate: { directory: 'proyecto-integrador/ut3' },
+        },
+        {
+          label: 'UT4: Desarrollo iterativo de la app (fase técnica)',
+          autogenerate: { directory: 'proyecto-integrador/ut4' },
+        },
+        {
+          label: 'UT5: Seguimiento, control y pruebas finales',
+          autogenerate: { directory: 'proyecto-integrador/ut5' },
+        },
+        {
+          label: 'UT6: Presentación y defensa del proyecto',
+          autogenerate: { directory: 'proyecto-integrador/ut6' },
         }
+
       ],
       routeMiddleware: './src/middleware/routeData.ts',
       customCss: [

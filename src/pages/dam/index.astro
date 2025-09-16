@@ -4,7 +4,8 @@ import { Card, CardContent } from '../../components/ui/card';
 import { BookText, BriefcaseBusiness, Smartphone, Server, Database, Lightbulb, Users } from 'lucide-react';
 
 const subjects = [
-  { acronym: 'DI', name: 'Desarrollo de Interfaces', icon: BookText },
+  { acronym: 'DI', name: 'Desarrollo de Interfaces', icon: BookText, href: '/desarrollo-interfaces' },
+  { acronym: 'PI', name: 'Proyecto Integrador', icon: Lightbulb, href: '/proyecto-integrador' },
   { acronym: 'SGE', name: 'Sistemas de Gestión Empresarial', icon: BriefcaseBusiness },
   { acronym: 'PMDM', name: 'Programación Multimedia y Dispositivos Móviles', icon: Smartphone },
   { acronym: 'PSP', name: 'Programación de Servicios y Procesos', icon: Server },
@@ -19,8 +20,8 @@ const subjects = [
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {subjects.map((subject) => (
-          subject.acronym === 'DI' ? (
-            <a href="/desarrollo-interfaces">
+          subject.href ? (
+            <a href={subject.href}>
               <Card className="bg-[#F9F6F1] hover:shadow-lg border-4 border-stone-200 transition-shadow duration-300 ease-in-out transform hover:-translate-y-1 h-full py-0">
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <subject.icon className="w-12 h-12 text-stone-700 mb-4" />
