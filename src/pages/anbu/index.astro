@@ -1,0 +1,37 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Smartphone, AppWindow, Server } from "lucide-react";
+---
+
+<Layout title="Jōnin - Grado Superior">
+    <main
+        class="container mx-auto flex-grow flex flex-col items-center justify-center px-4 text-center"
+    >
+        <h1 class="text-5xl font-cinzel text-stone-800 mb-4">Grado Superior</h1>
+        <p class="text-xl font-open-sans text-stone-600 mb-12">
+            Elige tu especialización Jōnin.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+            <!-- Card DAW -->
+            <div
+                class="bg-[#E2DED7] rounded-xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform duration-300 border-4 border-stone-300 flex flex-col items-center"
+            >
+                <AppWindow className="w-14 h-14 text-stone-700 mb-3" />
+                <h2 class="text-3xl font-cinzel text-stone-800">BDIA</h2>
+                <h3 class="font-open-sans text-stone-600 mt-2 text-base">
+                    Big Data e Inteligencia Artificial
+                </h3>
+                <p class="mt-3 text-stone-600 flex-grow min-h-[90px] text-sm">
+                    Domina la IA y las grandes cantidades de datos
+                </p>
+                <div class="mt-5">
+                    <a
+                        href="/bdia"
+                        class="mt-4 inline-block bg-stone-700 text-white py-2 px-6 rounded-md font-poppins-bold text-base no-underline transition-colors hover:bg-stone-800"
+                        >EXPLORAR</a
+                    >
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>
