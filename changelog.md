@@ -8,5 +8,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- (Your changes here)
-
+- Desarrollado el contenido completo para la UT2 de Interfaces Declarativas.
