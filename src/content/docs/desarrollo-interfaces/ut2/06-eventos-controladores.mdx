@@ -1,0 +1,142 @@
+---
+title: "06. Eventos y controladores en Ionic"
+draft: true
+---
+
+La interactividad es un pilar fundamental de cualquier interfaz de usuario. En el contexto de las interfaces declarativas, los **eventos** son las notificaciones que un componente emite cuando algo significativo ocurre (por ejemplo, un clic de botón, un cambio en un campo de texto), y los **controladores** (o manejadores de eventos) son las funciones que responden a esos eventos.
+
+### **Eventos en XML Tradicional (Contexto Histórico)**
+
+En lenguajes de descripción de interfaces basados puramente en XML, como los layouts de Android o XAML, la asociación de eventos a métodos se realiza de forma declarativa directamente en el marcado.
+
+*   **Android (XML Layouts):**
+    Se solía especificar el nombre de un método en el atributo `android:onClick` de un botón. Este método debía estar definido en la actividad (Activity) asociada a ese layout.
+
+    ```xml
+    <!-- En el layout.xml -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Haz clic"
+        android:onClick="miFuncionDeClic" />
+    ```
+
+    ```java
+    // En la Activity.java
+    public class MainActivity extends AppCompatActivity {
+        // ...
+        public void miFuncionDeClic(View view) {
+            // Lógica a ejecutar cuando se hace clic en el botón
+            Toast.makeText(this, "Botón clicado!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    ```
+
+*   **XAML (WPF):**
+    Similarmente, en XAML se puede asociar un evento a un método directamente en el marcado.
+
+    ```xml
+    <!-- En el MainWindow.xaml -->
+    <Button Content="Clic aquí" Click="Button_Click"/>
+    ```
+
+    ```csharp
+    // En el MainWindow.xaml.cs
+    public partial class MainWindow : Window
+    {
+        // ...
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Botón clicado!");
+        }
+    }
+    ```
+
+Este enfoque, aunque declarativo, a menudo acoplaba fuertemente la vista con la lógica, ya que el nombre del método estaba directamente referenciado en el XML.
+
+### **Eventos y Controladores en Angular-Ionic**
+
+Angular, y por extensión Ionic, utiliza un sistema de eventos más flexible y potente, basado en el concepto de *event binding*. Esto permite una clara separación de responsabilidades entre la plantilla (vista) y la clase del componente (controlador).
+
+#### **Sintaxis de Event Binding: `(evento)="accion()"`**
+
+En Angular-Ionic, para escuchar un evento de un elemento HTML o de un componente Ionic, se utiliza la sintaxis de paréntesis `()`. Dentro de los paréntesis se especifica el nombre del evento (ej. `click`, `ionChange`, `submit`), y en el lado derecho se invoca un método de la clase del componente.
+
+*   **Ejemplo Básico de Clic:**
+
+    ```html
+    <!-- En la plantilla HTML de un componente Angular/Ionic -->
+    <ion-button (click)="enviarFormulario()">Enviar</ion-button>
+    ```
+
+    En este caso, cuando el usuario hace clic en el `<ion-button>`, se ejecutará el método `enviarFormulario()` definido en la clase TypeScript del componente.
+
+#### **Uso de Controladores en TypeScript para Lógica Asociada**
+
+La lógica que responde a los eventos se implementa en la clase TypeScript del componente. Esta clase actúa como el "controlador" de la vista, manejando los datos y la interactividad.
+
+```typescript
+// En la clase TypeScript del componente (ej. home.page.ts)
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+})
+export class HomePage {
+
+  constructor() {}
+
+  enviarFormulario() {
+    console.log("Formulario enviado desde el controlador!");
+    // Aquí iría la lógica para procesar el formulario,
+    // como enviar datos a un servicio, navegar a otra página, etc.
+  }
+
+  // Otro ejemplo: manejar un cambio en un input
+  manejarCambioInput(event: any) {
+    console.log('Valor del input cambiado a:', event.detail.value);
+  }
+}
+```
+
+#### **Eventos Comunes en Ionic y Angular**
+
+*   **Eventos HTML Estándar:**
+    *   `click`: Cuando se hace clic en un elemento.
+    *   `change`: Cuando el valor de un elemento de formulario cambia (ej. `<input>`, `<select>`).
+    *   `submit`: Cuando se envía un formulario.
+    *   `input`: Cuando el valor de un campo de entrada cambia (en tiempo real).
+
+*   **Eventos Específicos de Componentes Ionic:**
+    Muchos componentes Ionic emiten eventos personalizados que permiten una interacción más granular. Estos eventos suelen seguir la convención `ionEvento`.
+    *   `ionChange`: Emitido por componentes como `<ion-toggle>`, `<ion-checkbox>`, `<ion-select>` cuando su valor cambia.
+    *   `ionInput`: Emitido por `<ion-input>` o `<ion-textarea>` cuando el usuario introduce texto.
+    *   `ionFocus`, `ionBlur`: Cuando un componente recibe o pierde el foco.
+    *   `ionSelect`: Emitido por `<ion-segment>` o `<ion-tabs>` cuando se selecciona un elemento.
+
+    **Ejemplo con `ionChange`:**
+
+    ```html
+    <ion-item>
+        <ion-label>Activar Notificaciones</ion-label>
+        <ion-toggle (ionChange)="toggleNotificaciones($event)"></ion-toggle>
+    </ion-item>
+    ```
+
+    ```typescript
+    // En la clase del componente
+    toggleNotificaciones(event: any) {
+      console.log('Notificaciones activadas:', event.detail.checked);
+      // Lógica para guardar la preferencia del usuario
+    }
+    ```
+
+### **Paso de Datos en Eventos**
+
+A menudo, los eventos llevan consigo información relevante sobre lo que ha ocurrido. En Angular, esta información se pasa a la función controladora a través del objeto `$event`. Para los componentes Ionic, el objeto `$event` suele contener una propiedad `detail` con los datos específicos del evento (ej. `event.detail.value`, `event.detail.checked`).
+
+### **Conclusión**
+
+El sistema de eventos y controladores en Angular-Ionic proporciona un mecanismo robusto y declarativo para manejar la interactividad en las aplicaciones. Al separar la definición de la interfaz (HTML) de la lógica de respuesta (TypeScript), se promueve un código más limpio, modular y fácil de mantener, lo cual es esencial en el desarrollo de aplicaciones complejas.
