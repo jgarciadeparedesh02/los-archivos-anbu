@@ -1,0 +1,87 @@
+---
+title: "03. Elementos básicos de las interfaces declarativas"
+draft: true
+---
+
+Las interfaces declarativas, ya sean basadas en XML o en extensiones de HTML como las utilizadas en Angular e Ionic, comparten una serie de elementos básicos que permiten construir la estructura visual y definir el comportamiento de la aplicación. Comprender estos elementos es fundamental para trabajar con cualquier framework declarativo.
+
+### **Estructura General de un Documento Declarativo (XML/HTML)**
+
+La base de una interfaz declarativa se asienta en una estructura jerárquica de elementos, similar a un árbol.
+
+#### **1. Elementos (Tags)**
+
+Los elementos son los bloques de construcción fundamentales de la interfaz. Representan componentes visuales (botones, etiquetas, campos de entrada) o contenedores (paneles, layouts) que organizan otros elementos. En XML, se definen mediante etiquetas (tags) de apertura y cierre, o etiquetas auto-cerradas.
+
+*   **Ejemplos en XML:** `<TextView>`, `<LinearLayout>`, `<Button/>`
+*   **Ejemplos en HTML/Angular-Ionic:** `<div>`, `<p>`, `<ion-button>`, `<app-componente>`
+
+#### **2. Atributos y Valores**
+
+Los atributos son propiedades que se asocian a un elemento para modificar su apariencia o comportamiento. Se definen dentro de la etiqueta de apertura del elemento y consisten en un nombre y un valor.
+
+*   **Ejemplos en XML:**
+    *   `<TextView android:text="Hola" android:textSize="16sp"/>`
+    *   Aquí, `text` y `textSize` son atributos, y `"Hola"` y `"16sp"` son sus respectivos valores.
+*   **Ejemplos en HTML/Angular-Ionic:**
+    *   `<ion-button color="primary" expand="block">`
+    *   Aquí, `color` y `expand` son atributos, y `"primary"` y `"block"` son sus valores.
+
+#### **3. Jerarquía y Anidación**
+
+Los elementos se organizan de forma jerárquica, donde un elemento puede contener a otros. Esta anidación define la relación padre-hijo y cómo los elementos se distribuyen visualmente en la pantalla.
+
+*   **Ejemplo en XML (Android Layout):**
+
+    ```xml
+    <LinearLayout android:orientation="vertical">
+        <TextView android:text="Título"/>
+        <Button android:text="Acción"/>
+    </LinearLayout>
+    ```
+    Aquí, `LinearLayout` es el padre de `TextView` y `Button`.
+
+*   **Ejemplo en HTML/Angular-Ionic:**
+
+    ```html
+    <ion-content>
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Mi Tarjeta</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                Contenido de la tarjeta.
+            </ion-card-content>
+        </ion-card>
+    </ion-content>
+    ```
+    `ion-content` contiene `ion-card`, que a su vez contiene `ion-card-header` y `ion-card-content`.
+
+### **Ejemplo Práctico y Comparativa**
+
+Consideremos un botón simple que muestra un texto, tiene un color primario y ejecuta una función al ser clicado.
+
+#### **Enfoque XML (conceptual, similar a XAML o FXML):**
+
+```xml
+<Button
+    text="Aceptar"
+    color="primary"
+    onClick="handleClick" />
+```
+
+En este ejemplo, `Button` es el elemento, `text`, `color` y `onClick` son atributos que definen su texto, color y la función a ejecutar, respectivamente.
+
+#### **Enfoque Angular-Ionic (HTML + atributos):**
+
+```html
+<ion-button color="primary" (click)="handleClick()">
+  Aceptar
+</ion-button>
+```
+
+Aquí, `ion-button` es el componente (elemento), `color="primary"` es un atributo que define su estilo, y `(click)="handleClick()"` es un *binding de evento* que asocia la función `handleClick()` del componente TypeScript al evento `click` del botón. El texto "Aceptar" es el contenido del elemento.
+
+### **Conclusión**
+
+Aunque la sintaxis específica puede variar entre XML puro y las extensiones de HTML utilizadas en frameworks modernos, los principios subyacentes son los mismos: definir la interfaz de usuario de manera declarativa mediante elementos, atributos y una estructura jerárquica. Esta aproximación facilita la creación, lectura y mantenimiento de interfaces complejas, promoviendo una clara separación de responsabilidades en el desarrollo de software.
