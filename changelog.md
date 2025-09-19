@@ -14,3 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Desarrollado el contenido completo para la UT2 de Interfaces Declarativas.
+- Integrado el módulo de Sistemas Big Data con 7 unidades.
+
+## [0.1.2] - 2025-09-19
+
+### Added
+- Integrado el módulo de Sistemas Big Data con 7 unidades.
