@@ -10,7 +10,7 @@ export const onRequest = defineRouteMiddleware((context) => {
 
   // Match pages inside a unit folder for our subjects.
   const match = url.pathname.match(
-    /^\/(desarrollo-interfaces|proyecto-integrador)\/(ut\d+)/i
+    /^\/(desarrollo-interfaces|proyecto-integrador|sistemas-big-data)\/(ut\d+)/i
   );
   if (!match) return;
 
