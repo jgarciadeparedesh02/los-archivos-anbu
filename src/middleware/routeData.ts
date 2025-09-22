@@ -9,7 +9,7 @@ export const onRequest = defineRouteMiddleware((context) => {
 
   // 📍 Detectamos la unidad en la URL
   const match = url.pathname.match(
-    /^\/(desarrollo-interfaces|proyecto-integrador)\/(ut\d+)/i
+    /^\/(desarrollo-interfaces|proyecto-integrador|sistemas-big-data)\/(ut\d+)/i
   );
   if (!match) return;
 
