@@ -1,73 +1,104 @@
 ---
 title: "01. Práctica: Prototipado Login y Registro con Figma"
-description: "Práctica de prototipado de una aplicación web con Figma, incluyendo pantallas de login, registro y validación de datos."
+description: "Práctica de prototipado de una aplicación web con Figma, incluyendo pantallas de login, registro, validación de datos y acceso a través de redes sociales."
 ---
 
 ## Introducción
 
-En esta práctica, aplicaremos los conceptos de diseño de interfaces y prototipado para crear un prototipo interactivo de alta fidelidad de una aplicación web utilizando Figma. El objetivo es diseñar las pantallas de autenticación (inicio de sesión y registro), prestando especial atención a la usabilidad, la retroalimentación al usuario y la navegación.
+En esta práctica aplicarás los conceptos de diseño de interfaces y prototipado para crear un **prototipo interactivo de alta fidelidad** en Figma. Diseñarás las pantallas de autenticación de una aplicación web (inicio de sesión y registro), prestando especial atención a la **usabilidad**, la **retroalimentación al usuario** y la **navegación entre pantallas**.
+
+Imagina que formas parte del equipo de diseño de una aplicación web ficticia (ej. una tienda online o red social) y tu tarea es construir el flujo de autenticación inicial.
 
 ## Objetivos
 
-- Familiarizarse con las herramientas básicas de diseño y prototipado de Figma.
-- Diseñar componentes de interfaz de usuario comunes como formularios, botones y barras de navegación.
-- Implementar flujos de navegación básicos entre diferentes pantallas.
-- Aplicar principios de usabilidad para la validación de datos y la retroalimentación al usuario.
+* Familiarizarte con las herramientas básicas de diseño y prototipado de Figma.
+* Diseñar componentes de interfaz de usuario comunes: formularios, botones y barra de navegación.
+* Implementar flujos de navegación básicos entre pantallas.
+* Aplicar principios de usabilidad, validación de datos y retroalimentación clara al usuario.
+* Mantener coherencia visual mediante paleta de colores, tipografía y estilo de componentes.
+* Incluir opciones de inicio de sesión y registro mediante redes sociales.
 
-## Enunciado de la Práctica
+## Enunciado de la práctica
 
-Se debe crear un prototipo en Figma que simule el flujo de autenticación de una aplicación web. El prototipo debe incluir, como mínimo, los siguientes elementos:
+Crea en Figma un **prototipo interactivo** que muestre el flujo de autenticación de una aplicación web. El prototipo debe incluir al menos lo siguiente:
 
-### 1. Estructura General
+### 1. Estructura general
 
-- **Barra de Navegación (Navbar):** Debe estar presente en la parte superior de ambas pantallas. Incluirá enlaces a secciones hipotéticas de la web como:
-    - Inicio
-    - Perfil
-    - Tienda
-    - Contacto
-- **Consistencia Visual:** Ambas pantallas deben compartir una paleta de colores, tipografía y estilo de componentes coherente.
+* **Barra de navegación (Navbar):** presente en ambas pantallas, con enlaces a secciones ficticias:
+  * Inicio
+  * Perfil
+  * Tienda
+  * Contacto
+* **Consistencia visual:** colores, tipografía y componentes deben ser coherentes en todas las pantallas.
 
-### 2. Pantalla de Inicio de Sesión (Login)
+### 2. Pantalla de inicio de sesión (Login)
 
-Esta será la pantalla principal del flujo.
+Esta es la pantalla principal del flujo.
 
-- **Campos del formulario:**
-    - Email o nombre de usuario.
-    - Contraseña.
-- **Funcionalidades y Enlaces:**
-    - Un enlace para **"Recordar contraseña"**.
-    - Un checkbox o interruptor para **"Mantener sesión iniciada"**.
-    - Un botón bien visible para **"Iniciar Sesión"**.
-    - Un enlace a la pantalla de registro, como por ejemplo: **"¿No tienes una cuenta? Regístrate"**.
-- **Validación de Errores:**
-    - Se debe mostrar un estado de error si los datos introducidos no son correctos (p. ej., el campo de email no contiene un `@` o la contraseña es demasiado corta). El mensaje de error debe ser claro y específico.
+1. **Campos del formulario:**
+   * Email o nombre de usuario.
+   * Contraseña.
+2. **Funcionalidades y enlaces:**
+   * Enlace para **“Recordar contraseña”**.
+   * Checkbox o interruptor para **“Mantener sesión iniciada”**.
+   * Botón visible para **“Iniciar sesión”**.
+   * Enlace hacia la pantalla de registro: **“¿No tienes una cuenta? Regístrate”**.
+   * Opciones de **inicio de sesión con redes sociales** (ej. Google, Facebook, Twitter).
+3. **Validaciones y retroalimentación:**
+   * Mostrar un estado de error si los datos son incorrectos (ej. email sin `@`, contraseña demasiado corta).
+   * Mensajes de error claros y específicos.
 
-### 3. Pantalla de Registro
+### 3. Pantalla de registro
 
-Esta pantalla permitirá a los nuevos usuarios crear una cuenta.
+Permite a los nuevos usuarios crear una cuenta.
 
-- **Campos del formulario:**
-    - Nombre completo.
-    - Dirección de email.
-    - Contraseña.
-    - Confirmar contraseña.
-- **Funcionalidades y Enlaces:**
-    - Un botón para **"Crear Cuenta"**.
-    - Un enlace para volver a la pantalla de login, como: **"¿Ya tienes una cuenta? Inicia Sesión"**.
-- **Validación de Errores:**
-    - Mostrar mensajes de error para casos como:
-        - Las contraseñas no coinciden.
-        - El formato del email no es válido.
-        - Algún campo obligatorio está vacío.
+1. **Campos del formulario:**
+   * Nombre completo.
+   * Dirección de email.
+   * Contraseña.
+   * Confirmar contraseña.
+2. **Funcionalidades y enlaces:**
+   * Botón para **“Crear cuenta”**.
+   * Enlace para volver al login: **“¿Ya tienes una cuenta? Inicia sesión”**.
+   * Opciones de **registro con redes sociales** (ej. Google, Facebook, Twitter).
+3. **Validaciones y retroalimentación:**
+   * Errores si:
+     * Las contraseñas no coinciden.
+     * El email no tiene formato válido.
+     * Algún campo obligatorio está vacío.
+   * Mensajes claros y específicos.
+   * Estado de éxito tras el registro (ej. “Tu cuenta ha sido creada”).
 
-### 4. Interactividad del Prototipo
+### 4. Interactividad del prototipo
 
-- El enlace "Regístrate" en la pantalla de Login debe navegar a la pantalla de Registro.
-- El enlace "Inicia Sesión" en la pantalla de Registro debe navegar de vuelta a la pantalla de Login.
+* El enlace **“Regístrate”** en la pantalla de Login debe navegar al Registro.
+* El enlace **“Inicia sesión”** en el Registro debe volver al Login.
+* Los botones deben simular interacción con retroalimentación visual (ej. hover, disabled).
+* Las opciones de acceso mediante redes sociales deben simular navegación (aunque no sea funcional).
 
-## Sugerencias
+## Sugerencias de trabajo
 
-- **Uso de Componentes:** Crea componentes en Figma para elementos reutilizables como botones, campos de texto y la barra de navegación. Esto facilitará la consistencia y la edición del diseño.
-- **Auto Layout:** Utiliza el "Auto Layout" de Figma para crear formularios y componentes que se adapten dinámicamente al contenido.
-- **Inspiración:** Busca ejemplos de pantallas de login y registro en sitios web populares para inspirarte, pero crea un diseño original.
-- **Feedback Visual:** Asegúrate de que los botones y campos interactivos tengan estados visuales claros (normal, hover, disabled).
+* **Componentes:** crea componentes en Figma para botones, campos de texto, navbar y accesos sociales, de modo que puedas reutilizarlos fácilmente.
+* **Auto Layout:** úsalo para formularios y grupos de elementos, facilitando consistencia y adaptabilidad.
+* **Inspiración:** observa ejemplos de login/registro en apps conocidas, pero desarrolla un diseño original.
+* **Feedback visual:** añade estados (normal, hover, error, éxito, disabled) para botones y campos.
+* **Accesibilidad:** asegúrate de buen contraste de colores, fuentes legibles y etiquetas claras.
+
+## Recursos para observar
+
+* [Figma Community: Ejemplo 1](https://www.figma.com/design/xIRxU32548O1l86NaTmhq8/Login--Community-?node-id=0-1&t=ykl31CS9OEAeTfKs-1)
+* [Figma Community: Ejemplo 2](https://www.figma.com/community/file/1221149708459961043/login-register-ui-design)
+* [Figma Community: Ejemplo 3](https://www.figma.com/community/file/1240254268703023422/login-forms-for-fashion-style)
+
+## Entregables
+
+* Link al prototipo interactivo en Figma.
+* Capturas de las pantallas principales (Login y Registro).
+
+## Criterios de evaluación
+
+* **Funcionalidad del flujo** (login ↔ registro con enlaces interactivos).
+* **Consistencia visual y uso de componentes.**
+* **Claridad y usabilidad** de formularios, mensajes de error y accesos sociales.
+* **Creatividad y presentación visual.**
+* **Aplicación de buenas prácticas** (feedback, accesibilidad básica, orden).
