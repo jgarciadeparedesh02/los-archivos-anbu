@@ -1,0 +1,72 @@
+---
+title: "03. Complejidad computacional"
+description: Análisis de la complejidad computacional y su impacto en el manejo eficiente de grandes volúmenes de datos.
+---
+
+## Introducción a la Complejidad Computacional
+
+Cuando programas no basta con que el algoritmo **funcione**. También importa **cómo de rápido** y **cuánta memoria** necesita para hacerlo.  
+Esto es justo lo que estudia la **complejidad computacional**: clasificar los problemas y algoritmos según los recursos que consumen.
+
+Imagina que quieres buscar una canción en tu móvil.  
+- Si la lista está ordenada, la encuentras en segundos.  
+- Si tuvieras que escuchar todas las canciones una por una hasta dar con ella, tardarías muchísimo.  
+
+Esa diferencia refleja la importancia de la complejidad.
+
+### Medidas de Complejidad
+
+- **Tiempo**: número de pasos que un algoritmo necesita para completarse.  
+  Ejemplo: recorrer tu lista de contactos de 20 personas tarda menos que si fueran 2.000.
+- **Espacio**: memoria que utiliza mientras se ejecuta.  
+  Ejemplo: una aplicación que guarda varias copias de la misma foto ocupa más memoria sin necesidad.
+
+---
+
+## Notación Asintótica
+
+No solemos medir algoritmos en segundos, sino en **cómo se comportan al crecer la cantidad de datos**.  
+Aquí entran las notaciones asintóticas:
+
+- **O (Big O)** → límite superior, el **peor caso**.  
+  Ejemplo: buscar un amigo en una lista desordenada puede obligarte a mirarlos todos.
+- **Ω (Omega)** → límite inferior, el **mejor caso**.  
+  Ejemplo: si tu amigo es el primero en la lista, acabas al instante.
+- **Θ (Theta)** → comportamiento promedio (ajustado).  
+  Ejemplo: normalmente necesitarías revisar “más o menos la mitad” de los nombres.
+
+:::tip
+La notación asintótica no mide segundos exactos, sino **cómo escala el algoritmo** a medida que aumentan los datos.
+:::
+
+---
+
+## Complejidad en Big Data
+
+En Big Data el volumen de información es tan grande que un algoritmo ineficiente deja de ser útil. Aunque funcione en teoría, en la práctica sería inviable.
+
+### Desafíos
+
+- **Escalabilidad**: el algoritmo debe seguir funcionando aunque los datos se multipliquen por mil.  
+  Ejemplo: filtrar publicaciones en una red social con millones de usuarios.
+- **Procesamiento Distribuido**: los datos se reparten en distintos nodos.  
+  Ejemplo: Spotify analiza tendencias repartiendo el trabajo entre cientos de servidores.
+- **Optimización**: elegir bien estructuras de datos y algoritmos.  
+  Ejemplo: usar un diccionario para buscar una palabra es más rápido que leer todo un texto de principio a fin.
+
+:::note
+En Big Data no se trata solo de que el algoritmo funcione, sino de que pueda hacerlo en un tiempo razonable con miles de millones de datos.
+:::
+
+---
+
+## Ejemplos de Clases de Complejidad
+
+- **P (Polinomial)**: problemas que se resuelven en tiempo “razonable”.  
+  Ejemplo: ordenar tu carpeta de fotos con un algoritmo eficiente.
+- **NP (No determinista Polinomial)**: problemas que no sabemos resolver rápido, pero sí comprobar la solución.  
+  Ejemplo: organizar el horario de todas las clases de un instituto sin solapamientos.
+
+:::tip
+Muchos problemas reales, como planificar rutas de reparto o crear horarios óptimos, son **NP-completos**: sabemos verificar una solución, pero no siempre encontramos la mejor de forma eficiente.
+:::

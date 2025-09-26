@@ -1,0 +1,117 @@
+---
+title: "02. Conceptos básicos y aplicaciones"
+description: Introducción a los fundamentos de Big Data y sus diversas aplicaciones en el mundo actual.
+---
+
+## ¿Qué es Big Data?
+
+Seguro que más de una vez te has encontrado con el problema de que tu móvil se queda sin espacio porque tienes demasiadas fotos, vídeos, audios de WhatsApp y aplicaciones instaladas. Eso es solo una pequeña muestra de lo que ocurre en el mundo digital a gran escala.  
+**Big Data** se refiere a conjuntos de datos tan grandes, diversos y complejos que las herramientas tradicionales —como una base de datos SQL en un servidor convencional— ya no son suficientes para almacenarlos ni analizarlos.  
+
+Hablamos de datos que provienen de **sensores en coches, relojes inteligentes, redes sociales, sistemas de pago, cámaras de vigilancia, registros médicos o compras online**. Toda esa información, bien tratada, puede convertirse en conocimiento útil para empresas, gobiernos o incluso para ti como usuario.
+
+:::tip
+Piensa en Big Data como en un océano inmenso de información. No basta con tener un balde para sacar agua; necesitamos barcos, radares y sistemas que nos permitan navegar y entender lo que hay dentro.
+:::
+
+---
+
+## Las 5 Vs del Big Data
+
+El concepto de Big Data suele explicarse a partir de cinco características clave, conocidas como las **5 Vs**:
+
+- **Volumen**: hablamos de cantidades masivas de datos. Cada minuto se envían millones de mensajes en WhatsApp, se suben horas infinitas de vídeo a YouTube y se hacen miles de compras online.  
+- **Velocidad**: la rapidez con la que los datos se generan y deben ser procesados. Piensa en los radares de tráfico de Cáceres, que necesitan procesar la información casi en tiempo real para detectar infracciones.  
+- **Variedad**: los datos no son siempre tablas ordenadas. Pueden ser fotos, audios, vídeos, documentos PDF, sensores de temperatura o incluso datos semiestructurados como los correos electrónicos.  
+- **Veracidad**: no toda la información que circula es fiable. Seguro que te ha llegado algún bulo por redes sociales. En Big Data es fundamental filtrar y garantizar la calidad de los datos.  
+- **Valor**: de nada sirve acumular datos si no obtenemos conclusiones útiles. El verdadero reto está en transformar datos en **decisiones y acciones concretas**.
+
+:::note
+No hay nada más frustrante que pulsar un botón y que no ocurra “nada visible”.  
+Un *loading spinner* puede evitar que pienses que la aplicación está colgada.
+:::
+
+:::tip
+En los orígenes se hablaba solo de **3 Vs** (volumen, velocidad y variedad). Con el tiempo se añadieron **veracidad** y **valor**, porque sin ellas los datos serían poco útiles.
+:::
+
+---
+
+## Diferencias con bases de datos tradicionales
+
+En tu día a día en clase, has trabajado con bases de datos tradicionales como **MySQL** o **PostgreSQL**. Estas herramientas funcionan muy bien para información estructurada: por ejemplo, la base de datos de alumnos del IES Ágora, con sus nombres, apellidos, direcciones y notas.
+
+Sin embargo, Big Data trabaja con **datos no estructurados o semiestructurados**. Por ejemplo:
+
+- Los vídeos que subes a TikTok.  
+- Los registros de actividad de una app de deporte como Strava.  
+- Los logs de los servidores de una empresa que recibe millones de visitas por hora.  
+
+Mientras que un SQL clásico se queda corto ante tanta información, las tecnologías de Big Data (como **Hadoop** o **Spark**) permiten procesar estos datos en paralelo en cientos o miles de servidores al mismo tiempo.
+
+:::tip
+No confundas **Big Data** con “una base de datos grande”. Es mucho más: implica nuevas técnicas, nuevas herramientas y, sobre todo, **nuevas formas de pensar en la información**.
+:::
+
+---
+
+## Aplicaciones del Big Data
+
+El Big Data está mucho más cerca de tu vida diaria de lo que parece. Veamos algunos ejemplos prácticos:
+
+### 1. Salud
+
+Los relojes inteligentes que miden tu pulso o el número de pasos generan una enorme cantidad de datos. Con ellos, los médicos pueden anticipar posibles problemas cardiovasculares o recomendar rutinas de ejercicio personalizadas.  
+En hospitales, se utilizan algoritmos para **detectar patrones en radiografías o resonancias**, ayudando a diagnosticar enfermedades de forma más rápida y precisa.
+
+### 2. Finanzas
+
+Seguro que has visto que tu banco te avisa si haces una compra sospechosa. Eso es Big Data en acción: algoritmos que analizan miles de transacciones en segundos y detectan comportamientos anómalos que podrían indicar fraude.  
+También se utiliza para calcular riesgos de inversión o para conceder préstamos con mayor seguridad.
+
+### 3. Comercio y marketing
+
+Cada vez que buscas un producto en Amazon o miras ropa en Zalando, se guardan tus interacciones. Luego, esos datos se usan para recomendarte productos similares o lanzarte anuncios personalizados en Instagram.  
+Esto no es casualidad: es Big Data trabajando para **predecir tus gustos y aumentar las ventas**.
+
+### 4. Transporte
+
+Piensa en Google Maps o Waze. Estas aplicaciones recogen información de miles de móviles en tiempo real para detectar atascos en la carretera y proponerte rutas alternativas.  
+En el transporte público, también se utilizan datos para ajustar horarios y mejorar la frecuencia de autobuses según la demanda.
+
+### 5. Educación
+
+En plataformas educativas como Moodle o Khan Academy, se recopila información sobre tu ritmo de estudio, los ejercicios en los que fallas o los contenidos que revisas más. Así, pueden recomendarte recursos específicos o detectar en qué área necesitas reforzarte.  
+Incluso en nuestro centro, el IES Ágora, herramientas similares podrían ayudar a personalizar la enseñanza y hacerla más efectiva.
+
+### 6. Ciudades inteligentes
+
+Muchas ciudades ya utilizan Big Data para gestionar recursos: sensores en contenedores que avisan cuando están llenos, sistemas de alumbrado que se regulan según la presencia de personas o aplicaciones que informan del estado del transporte público en tiempo real.
+
+---
+
+## Desafíos del Big Data
+
+Trabajar con Big Data no es solo cuestión de “tener muchos datos”. Existen varios retos clave:
+
+- **Almacenamiento**: los datos crecen de forma exponencial. ¿Dónde guardarlos y cómo hacerlo de manera eficiente? Aquí entran en juego servicios en la nube como AWS o Google Cloud.  
+- **Procesamiento**: no basta con tener la información; hay que analizarla rápido. Para eso se necesitan algoritmos y sistemas distribuidos capaces de trabajar en paralelo.  
+- **Seguridad**: los datos personales deben protegerse. Imagina que alguien accede a tu historial médico o a tus compras online: sería un grave problema de privacidad.  
+- **Análisis**: extraer conclusiones útiles no es fácil. A veces los datos son ruidosos, incompletos o contradictorios, y los algoritmos deben aprender a manejarlos.
+
+:::tip
+Un buen profesional en Big Data no es solo un técnico que sabe programar. También debe tener sentido crítico, saber interpretar resultados y comunicarlos de forma clara a los demás.
+:::
+
+---
+
+## Reflexión final
+
+El Big Data no es un concepto lejano ni reservado a grandes empresas de Silicon Valley. Está presente en tu vida diaria: en los anuncios que ves, en los vídeos que te recomienda YouTube, en las rutas que sigues con Google Maps o en cómo tu banco protege tus compras.  
+
+Como futuro profesional de la informática, entender cómo funciona el Big Data te dará una visión más amplia de hacia dónde va la tecnología. Piensa que dentro de unos años podrías estar trabajando en proyectos de análisis de datos en sanidad, banca, comercio o incluso en aplicaciones educativas que mejoren la enseñanza en centros como el nuestro.
+
+:::tip
+Como futuro profesional de la informática, piensa siempre en el **usuario final**.  
+No diseñes para ti mismo, diseña para alguien que nunca ha visto tu aplicación y quiere usarla sin complicaciones.
+:::

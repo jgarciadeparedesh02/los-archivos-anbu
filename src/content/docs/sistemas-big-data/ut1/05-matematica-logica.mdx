@@ -1,0 +1,160 @@
+---
+title: "05. Matemática discreta y lógica algorítmica"
+description: Exploración de la matemática discreta y la lógica algorítmica como bases para el análisis de datos en Big Data.
+---
+
+Cuando piensas en informática seguramente te venga a la cabeza programar, usar bases de datos o incluso montar un PC.  
+Pero detrás de todo esto se esconden unas bases mucho más abstractas: **la matemática discreta y la lógica algorítmica**.  
+Sin ellas sería imposible diseñar aplicaciones como Instagram, resolver rutas en Google Maps o hacer que Spotify te recomiende canciones.
+
+Como estudiante de FP en informática en el **IES Ágora de Cáceres**, este tema es esencial para tu futuro: aquí aprendes a **pensar como informático**, no solo a “teclear código”.
+
+---
+
+## Fundamentos de Matemática Discreta
+
+La matemática discreta se ocupa de elementos que pueden **contarse, ordenarse y separarse**. No hablamos de funciones continuas o derivadas, sino de piezas individuales, como ocurre en la programación con bits, listas o grafos.
+
+### Conceptos clave
+
+- **Conjuntos**  
+  Son colecciones de elementos.  
+  Ejemplo: el conjunto de alumnos de tu clase podría ser [Lucía, Juan, Pedro, María].  
+  Este concepto aparece en arrays, listas o colecciones de cualquier lenguaje de programación.
+
+- **Relaciones y funciones**  
+  Una **relación** conecta elementos: “ser amigo de”, “haber aprobado con”.  
+  Una **función** asigna a cada elemento un valor único. En un boletín de notas, cada alumno tiene asociada su calificación final.
+
+- **Lógica proposicional y de predicados**  
+  Permite trabajar con enunciados como:  
+  - “Si estudias, entonces apruebas.”  
+  - “María pertenece al conjunto de aprobados.”  
+  Estas expresiones son las que más tarde traducimos en instrucciones condicionales: `si`, `sino`, `mientras`.
+
+- **Combinatoria**  
+  Se encarga de contar y organizar posibilidades.  
+  Por ejemplo: si tu contraseña debe tener 4 cifras distintas, la combinatoria te permite calcular cuántas combinaciones son posibles y cuán segura es esa clave.
+
+- **Teoría de grafos**  
+  Un grafo es un conjunto de nodos conectados por aristas.  
+  Las redes sociales, los mapas de carreteras o incluso la red de aulas del instituto se pueden modelar como grafos.
+
+:::tip
+La matemática discreta funciona como un Lego: cada pieza por sí sola es simple, pero al combinarlas construimos estructuras inmensas y complejas.
+:::
+
+---
+
+## Lógica Algorítmica
+
+La lógica algorítmica responde a una pregunta muy sencilla:  
+**¿Cuál es la secuencia de pasos para resolver un problema?**
+
+Un algoritmo no es más que eso: un conjunto de instrucciones claras.  
+Ejemplo cotidiano:  
+1. Abres Google Maps.  
+2. Escribes tu destino.  
+3. El sistema calcula rutas posibles.  
+4. Te muestra la más rápida en ese momento.
+
+Ese proceso, llevado al mundo del Big Data, es lo que permite procesar millones de datos en segundos.
+
+### Importancia en Big Data
+
+- **Diseño de algoritmos distribuidos**  
+  Métodos como *MapReduce* o *Spark* dividen el trabajo entre muchas máquinas y logran procesar volúmenes enormes de información.  
+
+- **Optimización de consultas**  
+  En bases de datos NoSQL se busca que las preguntas al sistema sean rápidas aunque haya millones de registros.  
+
+- **Análisis de complejidad**  
+  No es lo mismo un algoritmo que tarda 2 segundos en analizar datos que otro que necesitaría varios meses. Aquí se estudia qué tan eficiente es un método.  
+
+- **Minería de datos**  
+  Aplicar reglas lógicas para encontrar patrones: “los clientes que compran refrescos también suelen comprar pizza”.
+
+:::note
+No hay nada más frustrante que pulsar un botón y que no ocurra nada.  
+Mostrar un *loading spinner* es un detalle de diseño, pero en el fondo refleja la misma idea: los algoritmos deben dar siempre señales claras de lo que están haciendo.
+:::
+
+---
+
+## Ejemplos de aplicación
+
+### Teoría de grafos
+- **Redes sociales**: Facebook detecta comunidades de amigos analizando cómo se conectan los usuarios.  
+- **Transporte en Cáceres**: si quieres ir del centro al instituto en autobús, el sistema de rutas funciona con un grafo: paradas como nodos, trayectos como aristas.
+
+### Lógica
+- **Filtros en bases de datos**: la condición “mostrar solo alumnos con nota mayor a 7” es lógica pura.  
+- **Recomendaciones**: Netflix decide qué proponerte según reglas de este estilo: “si viste una serie de ciencia ficción y la valoraste bien, recomendar más del mismo género”.
+
+### Combinatoria
+- **Contraseñas**: calcular cuántas combinaciones existen para saber si una clave es fácil de romper.  
+- **Muestras en Big Data**: cuando no puedes procesar millones de registros, necesitas una muestra representativa; aquí entra en juego la combinatoria.
+
+### Algoritmos en acción
+- **Motores de búsqueda**: Google usa algoritmos basados en grafos para ordenar páginas web.  
+- **E-commerce**: Amazon analiza tus clics anteriores y con lógica algorítmica predice qué podrías querer comprar.
+
+:::tip
+Como futuro profesional de la informática, piensa siempre en el **usuario final**.  
+No diseñes para ti mismo: piensa en alguien que nunca ha usado tu aplicación y espera que funcione sin complicaciones.
+:::
+
+---
+
+## Conexión con Big Data
+
+Los conceptos de matemática discreta y lógica algorítmica no son piezas aisladas. En Big Data:
+
+- **Conjuntos** permiten organizar datos en categorías.  
+- **Lógica** establece filtros y reglas de análisis.  
+- **Combinatoria** ayuda a elegir muestras representativas.  
+- **Grafos** modelan redes sociales, transportes o telecomunicaciones.  
+
+Sin estos fundamentos sería imposible extraer valor de la información masiva que se genera cada segundo.
+
+---
+
+## Ejemplo práctico narrado
+
+Supón que quieres representar las amistades en tu clase:
+
+- Juan es amigo de María y de Lucía.  
+- María es amiga de Antonio.  
+- Antonio es amigo de Lucía.  
+
+Esto puede dibujarse como un grafo de cuatro nodos conectados por aristas.  
+Ahora pregúntate: **¿quiénes son amigos de María?**  
+Con solo mirar el grafo ves que Juan y Antonio.  
+
+Ese mismo mecanismo, aplicado a millones de personas, es lo que utilizan plataformas como LinkedIn para sugerirte contactos.
+
+---
+
+## Desafíos en el aprendizaje
+
+- **Abstracción**: pasar de ejemplos reales (amigos, rutas, contraseñas) a expresiones matemáticas requiere práctica.  
+- **Aplicación práctica**: a veces la teoría parece alejada, pero todo tiene conexión con programación, seguridad y análisis de datos.  
+- **Escalabilidad**: lo que en clase haces con 10 nodos, en la vida real puede implicar millones, y ahí entra en juego la lógica algorítmica.
+
+:::note
+Cuando programes, no olvides al usuario.  
+Un simple mensaje de “Cargando datos…” marca la diferencia entre una aplicación útil y una que desespera.
+:::
+
+---
+
+## Reflexión final
+
+La matemática discreta y la lógica algorítmica son el **alfabeto de la informática**.  
+Gracias a ellas podemos construir algoritmos, entender estructuras de datos y trabajar con sistemas tan complejos como el Big Data.
+
+En el **IES Ágora de Cáceres**, tu reto no es solo aprender a programar, sino aprender a **razonar como informático**: con rigor, lógica y creatividad.
+
+:::tip
+Recuerda: los algoritmos y las estructuras no se diseñan para quedar bonitos en un papel, sino para resolver problemas reales que mejoren la vida de las personas.
+:::

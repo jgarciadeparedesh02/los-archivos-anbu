@@ -1,0 +1,74 @@
+---
+title: "04. Hadoop, Spark y ecosistema"
+description: Estudio de las principales arquitecturas Big Data, incluyendo Hadoop, Spark y sus componentes.
+---
+
+## Arquitecturas Big Data
+
+Las arquitecturas Big Data están diseñadas para **almacenar, procesar y analizar grandes volúmenes de datos** de forma distribuida y escalable.  
+En otras palabras: en vez de que un solo ordenador haga todo el trabajo, se reparten las tareas entre muchos.
+
+Imagina que en clase os encargan **ordenar todos los libros de la biblioteca del instituto**:  
+- Si lo hace una sola persona, tardará horas o incluso días.  
+- Si repartimos el trabajo entre toda la clase, en poco tiempo estaría todo terminado.  
+
+Ese es el espíritu de Big Data.
+
+---
+
+### Apache Hadoop
+
+Hadoop es un **framework de código abierto** que permite procesar grandes conjuntos de datos usando clústeres (conjuntos de ordenadores trabajando juntos).
+
+- **HDFS (Hadoop Distributed File System)**: un sistema de archivos distribuido. Divide los datos en bloques y los reparte entre varias máquinas.  
+  Ejemplo: como cuando guardas una película en varias memorias USB para después volver a unirla.
+- **MapReduce**: un modelo de programación para procesar datos en paralelo.  
+  Ejemplo: si varios alumnos cuentan las palabras en distintas páginas de un libro y luego juntamos los resultados.
+- **YARN (Yet Another Resource Negotiator)**: gestor de recursos que decide cómo repartir el trabajo en el clúster.  
+  Ejemplo: el profesor que organiza quién se encarga de qué tarea para no repetir esfuerzos.
+
+:::note
+Hadoop fue pionero en Big Data, pero hoy en día muchas empresas prefieren alternativas más rápidas como Spark.
+:::
+
+---
+
+### Apache Spark
+
+Spark es un motor de procesamiento unificado, también **open source**, pero mucho más **rápido y versátil** que MapReduce.
+
+- **Velocidad**: procesa los datos en memoria, evitando escribir y leer constantemente del disco.  
+  Ejemplo: es como estudiar con apuntes en la mesa en lugar de ir cada minuto a buscarlos al armario.
+- **Versatilidad**: soporta SQL, streaming de datos en tiempo real, machine learning y hasta análisis de grafos.  
+- **APIs**: ofrece interfaces en varios lenguajes (Java, Scala, Python, R), lo que lo hace accesible a más desarrolladores.
+
+:::tip
+Cuando escuches que una empresa analiza “en directo” lo que publican sus usuarios (como Twitter o Netflix), probablemente haya un **Spark** detrás procesando esos datos.
+:::
+
+---
+
+## Ecosistema Big Data
+
+El ecosistema Big Data es amplio y evoluciona constantemente. No se trata solo de Hadoop o Spark, sino de un conjunto de **herramientas que trabajan juntas** para dar solución a diferentes problemas.
+
+### Componentes Clave
+
+- **Bases de Datos NoSQL**: MongoDB, Cassandra, HBase → pensadas para almacenar datos que no encajan bien en tablas.  
+  Ejemplo: guardar los “likes” de Instagram de millones de usuarios.
+- **Ingesta de Datos**: Apache Kafka, Apache Flume → para recopilar y mover datos de distintas fuentes.  
+  Ejemplo: recoger en tiempo real los datos de sensores de una fábrica.
+- **Almacenamiento de Datos**: Data Lakes y Data Warehouses → espacios donde se guarda la información para luego analizarla.  
+  Ejemplo: como una gran carpeta donde guardas todos tus apuntes antes de clasificarlos.
+- **Procesamiento de Datos**: Apache Flink, Apache Storm → especializados en datos en tiempo real.  
+  Ejemplo: procesar las transacciones de un banco al instante para detectar fraudes.
+- **Machine Learning**: Apache Mahout, MLlib (de Spark) → bibliotecas para entrenar modelos de aprendizaje automático.  
+  Ejemplo: sistemas de recomendación como el de Spotify.
+- **Visualización**: Tableau, Power BI, Apache Superset → transformar datos en gráficos comprensibles.  
+  Ejemplo: como los paneles de notas que usamos para ver de un vistazo la evolución de una clase.
+
+---
+
+:::tip
+Lo importante no es aprender todas las herramientas del ecosistema, sino **entender el papel que juega cada una**: almacenamiento, procesamiento, ingesta, análisis y visualización.
+:::

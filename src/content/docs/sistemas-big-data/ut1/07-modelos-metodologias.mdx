@@ -1,0 +1,94 @@
+---
+title: "07. Modelos y metodologías: CRISP-DM, SEMMA"
+description: Descripción de modelos y metodologías para proyectos Big Data como CRISP-DM y SEMMA.
+---
+
+## Modelos y Metodologías en Big Data
+
+En proyectos de Big Data no basta con tener datos y algoritmos. Necesitamos una **metodología clara** que nos guíe paso a paso, desde entender qué problema queremos resolver hasta poner la solución en marcha.  
+
+Piensa en cuando organizas un viaje con tus amigos:  
+- Primero decidís **a dónde vais y qué queréis hacer**.  
+- Después miráis los **medios de transporte y alojamientos**.  
+- Finalmente, vais afinando los detalles hasta tener todo listo.  
+
+Los proyectos de datos siguen un camino parecido, y ahí entran metodologías como **CRISP-DM** y **SEMMA**.
+
+---
+
+### CRISP-DM (Cross-Industry Standard Process for Data Mining)
+
+CRISP-DM es la metodología más utilizada en proyectos de minería de datos y Data Science. Es **iterativa**, lo que significa que puedes volver atrás si detectas problemas en alguna fase.
+
+Las seis fases principales son:
+
+1. **Comprensión del Negocio**  
+   Entender qué se quiere conseguir.  
+   Ejemplo: una tienda online quiere **recomendar productos** para aumentar las ventas.
+
+2. **Comprensión de los Datos**  
+   Recoger y explorar los datos.  
+   Ejemplo: analizar el histórico de compras y comprobar si faltan registros o hay valores erróneos.
+
+3. **Preparación de los Datos**  
+   Limpiar y transformar los datos para que sean útiles.  
+   Ejemplo: estandarizar formatos de fechas o eliminar duplicados de clientes.
+
+4. **Modelado**  
+   Aplicar algoritmos y ajustar parámetros.  
+   Ejemplo: probar un modelo de clasificación para recomendar productos.
+
+5. **Evaluación**  
+   Ver si el modelo cumple con los objetivos iniciales.  
+   Ejemplo: comprobar si las recomendaciones realmente aumentan las ventas.
+
+6. **Despliegue**  
+   Poner el modelo en producción.  
+   Ejemplo: que el sistema de recomendaciones aparezca en la web en tiempo real.
+
+:::tip
+CRISP-DM no es una receta fija, es una **guía flexible** que puedes adaptar según el proyecto.
+:::
+
+---
+
+### SEMMA (Sample, Explore, Modify, Model, Assess)
+
+SEMMA fue creada por **SAS Institute** y está más centrada en la parte técnica. Se enfoca en **cómo manipular los datos y modelarlos**, más que en la visión de negocio.
+
+Sus fases son:
+
+1. **Sample (Muestreo)**  
+   Seleccionar un conjunto de datos representativo.  
+   Ejemplo: elegir un grupo de clientes que refleje bien el comportamiento de toda la base.
+
+2. **Explore (Exploración)**  
+   Analizar datos para encontrar patrones o errores.  
+   Ejemplo: descubrir que muchos clientes compran más a final de mes.
+
+3. **Modify (Modificación)**  
+   Transformar y crear nuevas variables.  
+   Ejemplo: añadir un campo “días desde la última compra”.
+
+4. **Model (Modelado)**  
+   Construir modelos predictivos.  
+   Ejemplo: prever qué clientes dejarán de comprar pronto.
+
+5. **Assess (Evaluación)**  
+   Medir la fiabilidad y utilidad del modelo.  
+   Ejemplo: comprobar si el modelo acierta en al menos un 80% de los casos.
+
+:::note
+SEMMA es muy práctico en entornos donde ya se tiene claro el objetivo técnico, pero **no cubre tanto la parte de negocio** como CRISP-DM.
+:::
+
+---
+
+## Comparación y Aplicación
+
+- **CRISP-DM**: visión más global, abarca desde los objetivos de negocio hasta el despliegue.  
+- **SEMMA**: enfoque más técnico, pensado para trabajar directamente con los datos.
+
+:::tip
+En la práctica, muchas empresas combinan lo mejor de ambos: la **visión estratégica de CRISP-DM** con el **rigor técnico de SEMMA**.
+:::
