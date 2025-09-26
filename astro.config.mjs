@@ -71,37 +71,32 @@ export default defineConfig({
           autogenerate: { directory: 'proyecto-integrador/ut6' },
         },
         {
-          label: 'Sistemas Big Data',
-          items: [
-            {
-              label: 'UT1: Introducción a Big Data y Ecosistema Hadoop',
-              autogenerate: { directory: 'sistemas-big-data/ut1' },
-            },
-            {
-              label: 'UT2: Almacenamiento Distribuido con HDFS y NoSQL',
-              autogenerate: { directory: 'sistemas-big-data/ut2' },
-            },
-            {
-              label: 'UT3: Procesamiento de Datos con MapReduce y Spark',
-              autogenerate: { directory: 'sistemas-big-data/ut3' },
-            },
-            {
-              label: 'UT4: Bases de Datos NoSQL y sus Aplicaciones',
-              autogenerate: { directory: 'sistemas-big-data/ut4' },
-            },
-            {
-              label: 'UT5: Ingesta y Procesamiento de Datos en Tiempo Real',
-              autogenerate: { directory: 'sistemas-big-data/ut5' },
-            },
-            {
-              label: 'UT6: Visualización y Análisis de Datos con Herramientas BI',
-              autogenerate: { directory: 'sistemas-big-data/ut6' },
-            },
-            {
-              label: 'UT7: Cuadros de Mando Programados',
-              autogenerate: { directory: 'sistemas-big-data/ut7' },
-            },
-          ],
+          label: 'UT1: Introducción a Big Data y Ecosistema Hadoop',
+          autogenerate: { directory: 'sistemas-big-data/ut1' },
+        },
+        {
+          label: 'UT2: Almacenamiento Distribuido con HDFS y NoSQL',
+          autogenerate: { directory: 'sistemas-big-data/ut2' },
+        },
+        {
+          label: 'UT3: Procesamiento de Datos con MapReduce y Spark',
+          autogenerate: { directory: 'sistemas-big-data/ut3' },
+        },
+        {
+          label: 'UT4: Bases de Datos NoSQL y sus Aplicaciones',
+          autogenerate: { directory: 'sistemas-big-data/ut4' },
+        },
+        {
+          label: 'UT5: Ingesta y Procesamiento de Datos en Tiempo Real',
+          autogenerate: { directory: 'sistemas-big-data/ut5' },
+        },
+        {
+          label: 'UT6: Visualización y Análisis de Datos con Herramientas BI',
+          autogenerate: { directory: 'sistemas-big-data/ut6' },
+        },
+        {
+          label: 'UT7: Cuadros de Mando Programados',
+          autogenerate: { directory: 'sistemas-big-data/ut7' },
         },
       ],
       routeMiddleware: './src/middleware/routeData.ts',
