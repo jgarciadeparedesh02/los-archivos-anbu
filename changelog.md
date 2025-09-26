@@ -14,7 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Desarrollado el contenido completo para la UT2 de Interfaces Declarativas.
-- Integrado el módulo de Sistemas Big Data con 7 unidades.
+
+## [0.1.3] - 2025-09-26
+
+### Added
+- Añadidos archivos de contenido para UT1 de Sistemas Big Data.
+- Actualizada la configuración del sidebar para Sistemas Big Data.
+
+### Changed
+- Corregido el contenido de index.mdx para Sistemas Big Data.
+
+### Chore
+- Actualizados prompts para Gemini.
 
 ## [0.1.2] - 2025-09-19
 
