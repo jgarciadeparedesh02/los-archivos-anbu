@@ -6,9 +6,7 @@ import starlight from '@astrojs/starlight'
 import tailwindcss from '@tailwindcss/vite'
 import vercel from '@astrojs/vercel/serverless';
 import starlightImageZoom from 'starlight-image-zoom'
-import mdx from '@astrojs/mdx';
-import expressiveCode from "astro-expressive-code";
-import remarkMermaid from 'remark-mermaidjs'
+import mermaid from 'astro-mermaid';
 
 export default defineConfig({
   output: 'server',
@@ -108,10 +106,10 @@ export default defineConfig({
     ],
 
     plugins: [starlightImageZoom()],
-  }), react(), expressiveCode(), mdx()],
-  markdown: {
-    remarkPlugins: [remarkMermaid],
-  },
+  }), react(), mdx(), mermaid({
+    theme: 'forest',
+    autoTheme: true
+  })],
   vite: {
     plugins: [tailwindcss()],
   }
