@@ -7,8 +7,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "postinstall": "playwright install --with-deps"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.4",
