@@ -1,6 +1,7 @@
 ---
-title: "01. Práctica: Gestor playlist"
-description: "Práctica de prototipado de una aplicación web con Figma, incluyendo pantallas de login, registro, validación de datos y acceso a través de redes sociales."
+title: "01. Práctica: Gestor de Playlist"
+description: "Práctica para construir un gestor de canciones con persistencia de datos en el navegador."
+draft: true
 ---
 
 Vas a construir un **gestor de canciones** que permita **Añadir, Editar, Eliminar y Guardar** la lista de canciones en el navegador.
@@ -13,36 +14,35 @@ Vas a construir un **gestor de canciones** que permita **Añadir, Editar, Elimin
 
 ### Funcionalidad (JavaScript)
 
-*   **Añadir Canción**: Al enviar el formulario, valida que los campos no estén vacíos. Luego, agrega la nueva canción a la lista visible.
-*   **Eliminar Canción**: Cada canción en la lista debe tener un botón para `Eliminar`. Al pulsarlo, la canción desaparece de la lista.
-*   **Editar Canción**: Cada canción también necesita un botón para `Editar`. Al hacer clic, los datos de la canción (título y artista) deben cargarse de nuevo en el formulario. Al guardar los cambios desde el formulario, la canción existente en la lista debe actualizarse, no crearse una nueva.
+-   **Añadir Canción**: Al enviar el formulario, valida que los campos no estén vacíos. Luego, agrega la nueva canción a la lista visible.
+-   **Eliminar Canción**: Cada canción en la lista debe tener un botón para `Eliminar`. Al pulsarlo, la canción desaparece de la lista.
+-   **Editar Canción**: Cada canción también necesita un botón para `Editar`. Al hacer clic, los datos de la canción (título y artista) deben cargarse de nuevo en el formulario. Al guardar los cambios desde el formulario, la canción existente en la lista debe actualizarse, no crearse una nueva.
 
 ### Persistencia de Datos (LocalStorage)
 
-*   Cada vez que la lista de canciones se modifique (al añadir, editar o eliminar), debes guardar la lista actualizada en **LocalStorage**.
-*   Al cargar la página, el gestor debe leer los datos de LocalStorage y mostrar las canciones que ya estaban guardadas.
+-   Cada vez que la lista de canciones se modifique (al añadir, editar o eliminar), debes guardar la lista actualizada en **LocalStorage**.
+-   Al cargar la página, el gestor debe leer los datos de LocalStorage y mostrar las canciones que ya estaban guardadas.
 
-**Objetivo**
-Practicar **formularios, validación, eventos, manipulación del DOM, arrays como estado, repintado optimizado y persistencia en LocalStorage**.
+**Objetivo**: Practicar **formularios, validación, eventos, manipulación del DOM, arrays como estado, repintado optimizado y persistencia en LocalStorage**.
 
 ---
 
-## 🗂️ Sección Extra: ¿Qué es y cómo usar LocalStorage?
+## Extra: ¿Qué es y cómo usar LocalStorage?
 
 **LocalStorage** es una API del navegador que permite guardar información en el dispositivo del usuario de forma **persistente** (no se borra al cerrar el navegador o recargar la página).
 
 Características principales:
 
-*   Guarda pares **clave–valor** como cadenas de texto.
-*   Tiene un límite de unos **5MB** por dominio.
-*   Solo almacena **texto**, así que si queremos guardar arrays u objetos debemos transformarlos en JSON con `JSON.stringify()` y recuperarlos con `JSON.parse()`.
+-   Guarda pares **clave–valor** como cadenas de texto.
+-   Tiene un límite de unos **5MB** por dominio.
+-   Solo almacena **texto**, así que si queremos guardar arrays u objetos debemos transformarlos en JSON con `JSON.stringify()` y recuperarlos con `JSON.parse()`.
 
 ### Métodos principales
 
-*   `localStorage.setItem("clave", valor)` → Guarda un valor.
-*   `localStorage.getItem("clave")` → Recupera un valor.
-*   `localStorage.removeItem("clave")` → Elimina un valor.
-*   `localStorage.clear()` → Borra todo el almacenamiento.
+-   `localStorage.setItem("clave", valor)`: Guarda un valor.
+-   `localStorage.getItem("clave")`: Recupera un valor.
+-   `localStorage.removeItem("clave")`: Elimina un valor.
+-   `localStorage.clear()`: Borra todo el almacenamiento.
 
 ### Ejemplo con un array de canciones
 
@@ -58,5 +58,5 @@ localStorage.setItem("playlist", JSON.stringify(canciones));
 const datos = localStorage.getItem("playlist");
 const playlist = datos ? JSON.parse(datos) : [];
 console.log(playlist); 
-// 👉 [ { titulo: "Blinding Lights", artista: "The Weeknd" }, ... ]
+// Muestra: [ { titulo: "Blinding Lights", artista: "The Weeknd" }, ... ]
 ```

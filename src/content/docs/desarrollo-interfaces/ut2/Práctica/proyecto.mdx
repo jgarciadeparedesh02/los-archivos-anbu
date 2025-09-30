@@ -1,7 +1,93 @@
 ---
-title: Proyecto de la Unidad
-description: Enunciado del proyecto final de la unidad 1, donde se aplicarán todos los conceptos de diseño y prototipado.
+title: "Proyecto: Mi Primera Pokédex"
+description: "Proyecto final de la UT2 para aplicar los conocimientos de manipulación del DOM con JavaScript."
 draft: true
 ---
 
-Práctica con una Pokedex de pokemon, darles json sacado de pokeapi o generado con chatgpt
+## Descripción del Proyecto
+
+En este proyecto, construirás una versión simplificada de una Pokédex utilizando HTML, CSS y JavaScript puro. El objetivo es aplicar todos los conceptos aprendidos en la unidad: selección de elementos, creación y manipulación del DOM, gestión de eventos y optimización del rendimiento.
+
+La aplicación mostrará una lista de Pokémon a partir de un array de datos (JSON) y permitirá al usuario ver los detalles de cada uno al hacer clic en ellos.
+
+---
+
+## Requisitos Funcionales
+
+1.  **Visualización de la Lista**: Al cargar la página, se debe generar dinámicamente una lista o una cuadrícula de tarjetas, donde cada tarjeta representa un Pokémon.
+2.  **Información en la Tarjeta**: Cada tarjeta debe mostrar, como mínimo, el nombre del Pokémon y su imagen.
+3.  **Vista de Detalle**: Al hacer clic en la tarjeta de un Pokémon, se debe mostrar una vista de detalle con más información: número, tipo(s), altura y peso.
+4.  **Componente de Detalle**: La vista de detalle puede ser un modal, un panel lateral o una sección dedicada en la página que se actualiza dinámicamente.
+5.  **Cerrar Detalle**: El usuario debe poder cerrar la vista de detalle para volver a la lista principal.
+
+---
+
+## Estructura de Datos (JSON)
+
+Utiliza el siguiente array de objetos como fuente de datos. Deberás tener este array en tu archivo JavaScript para poder trabajar con él.
+
+```javascript
+const pokemonData = [
+  {
+    "id": 1,
+    "name": "Bulbasaur",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+    "types": ["Planta", "Veneno"],
+    "height": 7,
+    "weight": 69
+  },
+  {
+    "id": 4,
+    "name": "Charmander",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
+    "types": ["Fuego"],
+    "height": 6,
+    "weight": 85
+  },
+  {
+    "id": 7,
+    "name": "Squirtle",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
+    "types": ["Agua"],
+    "height": 5,
+    "weight": 90
+  },
+  {
+    "id": 25,
+    "name": "Pikachu",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+    "types": ["Eléctrico"],
+    "height": 4,
+    "weight": 60
+  }
+  // Puedes añadir más Pokémon si lo deseas
+];
+```
+
+---
+
+## Pasos Recomendados
+
+1.  **Maquetación (HTML/CSS)**: Crea la estructura base de tu HTML, incluyendo un contenedor para la lista de Pokémon y un contenedor para la vista de detalle (puede estar oculto inicialmente). Añade estilos básicos para que la interfaz sea agradable.
+2.  **Generar la Lista (JS)**: 
+    - Selecciona el contenedor de la lista.
+    - Utiliza un `DocumentFragment` para optimizar el rendimiento.
+    - Recorre el array `pokemonData` y, por cada Pokémon, crea una tarjeta (un `div` o `article`) con su nombre e imagen.
+    - Añade un `data-id` a cada tarjeta con el ID del Pokémon para identificarlo fácilmente.
+    - Añade todas las tarjetas al `DocumentFragment` y, finalmente, el fragmento al DOM.
+3.  **Gestionar Eventos (JS)**:
+    - Añade un `addEventListener` al contenedor de la lista (delegación de eventos) para escuchar los clics.
+    - Cuando se haga clic, comprueba si el objetivo es una tarjeta de Pokémon.
+    - Si lo es, obtén su `data-id` y busca el Pokémon correspondiente en el array `pokemonData`.
+4.  **Mostrar Detalles (JS)**:
+    - Crea una función que reciba un objeto de Pokémon y actualice el contenido del contenedor de detalles con su información (nombre, imagen, tipos, etc.).
+    - Llama a esta función cuando se haga clic en una tarjeta.
+
+---
+
+## Evaluación
+
+- **Correcta manipulación del DOM**: El código debe ser limpio y seguir las buenas prácticas vistas en la unidad.
+- **Eficiencia**: Se valorará el uso de `DocumentFragment` para la creación masiva de elementos.
+- **Interactividad**: La aplicación debe ser funcional y responder a las acciones del usuario como se espera.
+- **Claridad del código**: El código JavaScript debe estar bien organizado y ser fácil de leer.

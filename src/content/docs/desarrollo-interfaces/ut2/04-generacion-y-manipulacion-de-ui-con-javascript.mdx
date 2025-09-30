@@ -3,24 +3,84 @@ title: '04. Generación y Manipulación de UI con JavaScript'
 description: 'Manipulando el DOM para construir interfaces dinámicas, interactivas y vivas.'
 ---
 
-Si HTML nos permitió **dibujar los planos de nuestra casa** y CSS decorarla, ahora llega el momento de instalar la **electricidad y los electrodomésticos** ⚡.  
-Con JavaScript vamos a dar vida a nuestras páginas: ya no serán estáticas, sino que **reaccionarán a la interacción del usuario**.
+Si HTML nos permitió dibujar los planos de nuestra casa y CSS decorarla, ahora llega el momento de instalar la electricidad y los electrodomésticos.  
+Con JavaScript vamos a dar vida a nuestras páginas: ya no serán estáticas, sino que reaccionarán a la interacción del usuario.
 
-Cuando usamos JavaScript entramos en el **paradigma imperativo**:  
-dejamos de decir *qué queremos* y empezamos a dar instrucciones precisas:  
-👉 “Crea este elemento, ponle este texto, añádelo aquí, escucha si el usuario hace clic…”
-
-Un enfoque poderoso, pero también más complejo.  
+Cuando usamos JavaScript entramos en el paradigma imperativo: dejamos de decir *qué queremos* y empezamos a dar instrucciones precisas: “Crea este elemento, ponle este texto, añádelo aquí, escucha si el usuario hace clic…”. Un enfoque poderoso, pero también más complejo.  
 
 ---
 
-## 🌳 El DOM: Tu Página Convertida en un Objeto
+## Cómo Enlazar tu Código JavaScript
 
-El navegador no trabaja directamente con tu archivo `.html`.  
-Lo interpreta y lo transforma en una estructura de árbol en memoria: el **DOM (Document Object Model)**.  
+Para que tu código JavaScript pueda interactuar con tu HTML, primero debes enlazarlo. Tienes varias formas de hacerlo, cada una con sus ventajas.
 
-JavaScript manipula este árbol en vivo:  
-cada cambio que hagas se refleja instantáneamente en pantalla.  
+### 1. Script Externo (La mejor práctica)
+
+La forma más común y recomendada es mantener tu código en un archivo separado con extensión `.js` y enlazarlo desde el HTML.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mi Página</title>
+</head>
+<body>
+  <!-- Contenido de la página -->
+
+  <script src="mi-script.js"></script>
+</body>
+</html>
+```
+
+:::tip 
+**¿Por qué al final del `<body>`?**
+
+Colocar el `<script>` justo antes de cerrar la etiqueta `</body>` asegura que el navegador haya cargado y construido todo el DOM de la página antes de intentar ejecutar el JavaScript. Si tu script intenta manipular un elemento que aún no existe, ¡dará un error!
+:::
+
+### 2. Script Interno (Inline)
+
+Puedes escribir tu código JavaScript directamente dentro de una etiqueta `<script>` en tu archivo HTML. Es útil para pruebas rápidas o scripts muy pequeños, pero no es ideal para código complejo.
+
+```html
+<button onclick="saludar()">Haz clic</button>
+
+<script>
+  function saludar() {
+    alert('¡Hola desde un script interno!');
+  }
+</script>
+```
+
+### Atributos `async` y `defer`: Optimizando la Carga
+
+Cuando enlazas un script externo, puedes controlar *cómo* y *cuándo* se carga y ejecuta con los atributos `async` y `defer`.
+
+- **`defer`**: El script se descarga en segundo plano mientras el HTML se sigue procesando. Se ejecutará solo cuando el DOM esté completamente construido, justo antes del evento `DOMContentLoaded`. Si hay varios scripts con `defer`, se ejecutarán en el orden en que aparecen en el HTML.
+
+  ```html
+  <script src="script-largo.js" defer></script>
+  ```
+
+- **`async`**: El script se descarga en segundo plano y se ejecuta tan pronto como se completa la descarga, sin importar si el HTML ha terminado de procesarse. Esto puede bloquear la renderización de la página momentáneamente. No garantiza ningún orden de ejecución si hay varios scripts `async`.
+
+  ```html
+  <script src="analiticas.js" async></script>
+  ```
+
+:::note 
+**¿Cuándo usar cada uno?**
+- Usa `defer` para scripts que necesitan acceder al DOM y cuyo orden de ejecución es importante (la mayoría de los casos).
+- Usa `async` para scripts independientes que no dependen del DOM ni de otros scripts, como los de analíticas o seguimiento.
+:::
+
+---
+
+## El DOM: Tu Página Convertida en un Objeto
+
+El navegador no trabaja directamente con tu archivo `.html`. Lo interpreta y lo transforma en una estructura de árbol en memoria: el **DOM (Document Object Model)**.  
+
+JavaScript manipula este árbol en vivo: cada cambio que hagas se refleja instantáneamente en pantalla.  
 
 ```mermaid
 graph TD
@@ -32,13 +92,13 @@ graph TD
   D --> D3[ul]
   D3 --> L1[li: Elemento 1]
   D3 --> L2[li: Elemento 2]
-````
+```
 
-> 💡 Piensa en el DOM como una **maqueta 3D en miniatura** de tu página, lista para ser modificada en tiempo real.
+> Piensa en el DOM como una maqueta 3D en miniatura de tu página, lista para ser modificada en tiempo real.
 
 ---
 
-## 🛠️ El Arsenal del DOM: Herramientas Clave
+## El Arsenal del DOM: Herramientas Clave
 
 ### 1. Seleccionar elementos
 
@@ -53,8 +113,9 @@ const title = document.querySelector('.title');
 const items = document.querySelectorAll('.user-item');
 ```
 
-> ⚠️ `querySelector` devuelve el **primer** elemento.
-> Usa `querySelectorAll` si necesitas varios.
+:::caution
+`querySelector` devuelve el **primer** elemento que coincide. Usa `querySelectorAll` si necesitas una lista de todos los elementos que coinciden.
+:::
 
 ---
 
@@ -77,27 +138,32 @@ document.querySelector('.user-list').appendChild(newUser);
 ```javascript
 const title = document.querySelector('.title');
 
-// Texto seguro
+// Cambiar el texto de forma segura
 title.textContent = 'Nuevo título';
 
-// Estilos directos
+// Aplicar estilos directamente (CSS in JS)
 title.style.color = 'blue';
 
-// Manipular clases
+// Manipular clases CSS
 title.classList.add('main-title');
+title.classList.remove('old-title');
+title.classList.toggle('active');
 
-// Atributos
+// Trabajar con atributos
 const input = document.querySelector('input');
 input.setAttribute('placeholder', 'Escribe tu nombre');
 ```
 
-> ⚠️ Evita abusar de `innerHTML`. Es potente, pero puede abrir la puerta a ataques XSS.
+:::danger 
+**Cuidado con `innerHTML`**
+Evita usar `innerHTML` para insertar contenido que provenga del usuario. Es potente, pero puede exponer tu aplicación a ataques de Cross-Site Scripting (XSS) si no se sanea adecuadamente. `textContent` es siempre la opción más segura.
+:::
 
 ---
 
 ### 4. Escuchar eventos
 
-Los eventos son la clave de la **interactividad**.
+Los eventos son la clave de la interactividad. Permiten que tu código reaccione a las acciones del usuario.
 
 ```html
 <button id="miBoton">Haz clic</button>
@@ -117,9 +183,9 @@ boton.addEventListener('click', () => {
 
 ---
 
-## ⚡ Patrones Imperativos en Acción
+## Patrones Imperativos en Acción
 
-En HTML (declarativo):
+En HTML (declarativo), describes el resultado final:
 
 ```html
 <ul>
@@ -128,25 +194,26 @@ En HTML (declarativo):
 </ul>
 ```
 
-En JS (imperativo):
+En JavaScript (imperativo), das las instrucciones paso a paso:
 
 ```javascript
 const li = document.createElement('li');
 li.textContent = 'Usuario 1';
 document.querySelector('ul').appendChild(li);
+// ... y repetir para el Usuario 2
 ```
 
 ---
 
-## 🚀 Optimización: DocumentFragment
+## Optimización: DocumentFragment
 
-Cada vez que haces `appendChild` en el DOM real, el navegador recalcula la página (*reflow*).
-En listas grandes, esto es costoso.
+Cada vez que haces `appendChild` en el DOM real, el navegador tiene que recalcular y redibujar parte de la página (un proceso llamado *reflow*). Si haces esto muchas veces seguidas (por ejemplo, en un bucle), puede ralentizar tu aplicación.
 
-👉 Solución: construir en un **DocumentFragment** y añadirlo de una sola vez.
+La solución es usar un **DocumentFragment**, un contenedor de nodos "fuera del DOM". Puedes añadirle todos los elementos que quieras y, al final, añadir el fragmento completo al DOM de una sola vez.
 
 ```javascript
 const fragment = document.createDocumentFragment();
+const lista = document.querySelector('ul');
 
 ['Ana', 'Luis', 'Carla'].forEach(nombre => {
   const li = document.createElement('li');
@@ -154,14 +221,15 @@ const fragment = document.createDocumentFragment();
   fragment.appendChild(li);
 });
 
-document.querySelector('ul').appendChild(fragment);
+// Solo hay un reflow, al final
+lista.appendChild(fragment);
 ```
 
-> 💡 Es como armar un mueble fuera de la sala y luego meterlo ya montado.
+> Es como montar un mueble de IKEA entero en el garaje y luego meterlo en la habitación, en lugar de llevar las piezas una por una y montarlo dentro.
 
 ---
 
-## 🧑‍💻 Casos Prácticos
+## Casos Prácticos
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 

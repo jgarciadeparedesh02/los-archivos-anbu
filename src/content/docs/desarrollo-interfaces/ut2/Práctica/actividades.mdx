@@ -1,92 +1,66 @@
 ---
 title: Actividades Propuestas
-description: Ejercicios y casos de estudio propuestos en la UT1 sobre Diseño de Interfaces y Usabilidad.
+description: Ejercicios y casos de estudio propuestos en la UT2 sobre Generación de Interfaces con JavaScript.
 ---
 
-Esta sección centraliza todos los ejercicios prácticos y actividades propuestos a lo largo de la Unidad de Trabajo 1. Utiliza estos enlaces para acceder directamente a cada tarea y poner a prueba tus conocimientos.
+Esta sección centraliza todos los ejercicios prácticos y actividades propuestos a lo largo de la Unidad de Trabajo 2. Utiliza estos enlaces para acceder directamente a cada tarea y poner a prueba tus conocimientos.
 
 ---
-## 🔹 Tareas Básicas
+## Tareas Básicas
 
 1. **Seleccionar elementos**  
-   - Crea un HTML con:  
-     - Un título `<h1>` con el texto: `Biblioteca Online`.  
-     - Un párrafo `<p>` con el texto: `Explora los libros disponibles en nuestra colección.`  
-     - Una lista `<ul>` con tres elementos `<li>`: `El Quijote`, `Cien Años de Soledad`, `La Odisea`.  
-   - Desde JavaScript:  
-     - Selecciona el `<h1>` usando `getElementById`.  
-     - Selecciona todos los `<li>` usando `querySelectorAll`.  
+   - Crea un HTML con un `<h1>` (ID: `titulo`), un `<p>` y una `<ul>` con tres `<li>`.
+   - Desde JavaScript, selecciona el `<h1>` por su ID y todos los `<li>` con `querySelectorAll`.
 
 2. **Modificar contenido**  
-   - Cambia el texto del `<h1>` a: `Catálogo de la Biblioteca`.  
-   - Cambia el contenido del párrafo a: `Encuentra clásicos y novedades en nuestra colección.`  
-   - Añade estilos en línea al párrafo: `color: green` y `fontWeight: bold`.  
+   - Cambia el texto del `<h1>` y del `<p>`.
+   - Añade estilos en línea al párrafo para que tenga color verde y esté en negrita.
 
 ---
 
-## 🔹 Tareas de Creación
+## Tareas de Creación
 
 3. **Añadir un libro a la lista**  
-   - Con `createElement`, genera un `<li>` con el texto: `Don Juan Tenorio`.  
-   - Añádelo al final de la lista de libros con `appendChild`.  
+   - Con `createElement`, genera un nuevo `<li>` y añádelo al final de la lista `<ul>`.
 
 4. **Insertar un libro destacado al inicio**  
-   - Crea un `<li>` con el texto: `Libro Destacado: La Divina Comedia`.  
-   - Colócalo como primer elemento de la lista usando `insertBefore`.  
+   - Crea un `<li>` y colócalo como primer elemento de la lista usando `insertBefore`.
 
 ---
 
-## 🔹 Tareas de Modificación Avanzada
+## Tareas de Modificación Avanzada
 
 5. **Atributos y clases**  
-   - Añade un `<input>` de tipo texto con `id="buscador"`.  
-   - Usa `setAttribute` para añadir un `placeholder` con el texto: `Buscar libro...`.  
-   - Añade al `<h1>` la clase `titulo-principal` usando `classList.add()`.  
-   - Alterna la clase `resaltado` en el párrafo con `classList.toggle()`.  
+   - Añade un `<input>` de tipo texto.
+   - Usa `setAttribute` para añadirle un `placeholder`.
+   - Añade una clase al `<h1>` y alterna (añade/quita) otra clase en el `<p>`.
 
 6. **innerHTML con precaución**  
-   - Selecciona un `<div>` vacío con `id="info"`.  
-   - Rellénalo con `innerHTML` para que contenga:  
-     ```html
-     <h2>Información de la Biblioteca</h2>
-     <p>Horario: Lunes a Viernes de 9:00 a 20:00</p>
-     ```  
-   - Reflexiona: ¿qué pasaría si el contenido del párrafo viniera de un usuario desconocido?  
+   - Rellena un `<div>` vacío usando `innerHTML` para que contenga un `<h2>` y un `<p>`.
+   - Reflexiona: ¿qué pasaría si el contenido viniera de un usuario desconocido?
 
 ---
 
-## 🔹 Tareas con Eventos
+## Tareas con Eventos
 
 7. **Contador de visitas**  
-   - Crea un botón `<button>` con el texto: `Registrar visita`.  
-   - Crea un párrafo vacío `<p>` con `id="visitas"`.  
-   - Cada vez que el botón sea presionado, incrementa un contador y actualiza el párrafo con el texto:  
-     `Visitas registradas: X`.  
+   - Crea un botón y un párrafo. Cada vez que se pulse el botón, incrementa un contador y muestra el valor en el párrafo.
 
 8. **Marcar libros leídos**  
-   - Haz que al hacer clic en un `<li>` de la lista de libros se le añada o quite la clase `leido`.  
-   - Si el `<li>` tiene la clase `leido`, su texto debería aparecer tachado gracias a CSS.  
+   - Haz que al hacer clic en un `<li>` de la lista de libros se le añada o quite una clase `leido`.
+   - Usa CSS para que los elementos con la clase `leido` aparezcan tachados.
 
 ---
 
-## 🔹 Tareas de Rendimiento
+## Tareas de Rendimiento
 
 9. **Añadir muchos libros de golpe**  
-   - Usa un `DocumentFragment` para generar 50 elementos `<li>` con los textos:  
-     `Libro 1`, `Libro 2`, … `Libro 50`.  
-   - Añádelos todos de golpe al final de la lista de libros.  
-   - Compara con hacerlo uno por uno.  
+   - Usa un `DocumentFragment` para generar 50 `<li>` y añadirlos todos de una sola vez a la lista.
 
 ---
 
-## 🔹 Proyecto Integrador
+## Proyecto Integrador
 
 10. **Gestor de Biblioteca**  
-    - Crea un formulario con:  
-      - Un `<input>` con `id="titulo"` y `placeholder="Título del libro"`.  
-      - Un botón con el texto: `Añadir Libro`.  
-    - Cada vez que se envíe el formulario:  
-      - Añade un nuevo `<li>` con el título escrito.  
-      - Ese `<li>` debe tener también un botón `Eliminar` que borre el libro de la lista al hacer clic.  
-
----
+    - Crea un formulario para añadir libros a una lista.
+    - Cada libro en la lista debe tener un botón "Eliminar" que lo borre del DOM al hacer clic.

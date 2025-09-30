@@ -3,11 +3,11 @@ title: '03. El Lienzo: HTML y la Estructura del DOM'
 description: 'Dominando el HTML como lenguaje estructural y entendiendo el DOM como el mapa para la manipulación con JavaScript.'
 ---
 
-Seguimos nuestro viaje 🚀.  
+Seguimos nuestro viaje.  
 Ya diferenciamos entre pensar de forma **imperativa** y **declarativa**.  
 Ahora toca conocer a fondo la herramienta declarativa que sostiene toda la web: **HTML**.  
 
-Imagina que HTML es un set de **LEGOs**.  
+Imagina que HTML es un set de **piezas de construcción**.  
 Cada pieza (`<h1>`, `<p>`, `<div>`, `<button>`) ya está fabricada.  
 Tu tarea no es inventarlas, sino **combinarlas con sentido** para construir una interfaz.  
 
@@ -15,25 +15,24 @@ La magia es que, al encajar esas piezas, el navegador sabe **qué significan** y
 
 ---
 
-## 📐 HTML: Lenguaje Declarativo para Interfaces
+## HTML: Lenguaje Declarativo para Interfaces
 
 HTML no es un lenguaje para calcular o procesar datos.  
 Es un lenguaje diseñado para **estructurar interfaces de usuario** con significado semántico.
 
 ```html
 <h1>Mi Título</h1>
-````
+```
 
-Con esto declaras:
-👉 “Esto es un encabezado principal”.
+Con esto declaras: “Esto es un encabezado principal”.
 
 No dices “píntalo grande y en negrita”: eso ya lo sabe el navegador.
 
-> 💡 HTML es un lenguaje declarativo porque describes **qué es** cada pieza, no cómo dibujarla.
+> HTML es un lenguaje declarativo porque describes **qué es** cada pieza, no cómo dibujarla.
 
 ---
 
-## 🌳 La Jerarquía Padre-Hijo: El Árbol DOM
+## La Jerarquía Padre-Hijo: El Árbol DOM
 
 Cuando el navegador interpreta tu HTML, lo transforma en un **árbol de nodos en memoria**: el **DOM**.
 
@@ -46,56 +45,38 @@ Cuando el navegador interpreta tu HTML, lo transforma en un **árbol de nodos en
 </main>
 ```
 
-* `<main>` es el nodo raíz de tu contenido.
-* `<section>` es hijo de `<main>`.
-* `<h2>` y `<p>` son hijos de `<section>`.
+- `<main>` es el nodo raíz de tu contenido.
+- `<section>` es hijo de `<main>`.
+- `<h2>` y `<p>` son hijos de `<section>`.
 
 Esta jerarquía es **fundamental**, porque es la que usaremos luego con JavaScript para seleccionar, modificar y añadir elementos.
 
 ---
 
-## 🏗️ Buenas Prácticas: Cimientos Sólidos
+## Buenas Prácticas: Cimientos Sólidos
 
-Escribir HTML es fácil.
-Escribir **buen HTML** es lo que distingue a un desarrollador profesional.
+Escribir HTML es fácil. Escribir **buen HTML** es lo que distingue a un desarrollador profesional.
 
-* **Semántica primero**
-  Usa etiquetas con su propósito real:
+- **Semántica primero**: Usa etiquetas con su propósito real (`<nav>` para navegación, `<main>` para contenido principal, `<article>` o `<section>` para bloques independientes).
+- **Accesibilidad (a11y)**: Usa `alt` en imágenes (`<img>`) para describirlas y asocia `<label>` con `<input>` para mejorar la experiencia.
+- **Validación y limpieza**: Pasa tu código por un validador como el de W3C e indenta y organiza para que la jerarquía se entienda de un vistazo.
 
-  * `<nav>` para navegación.
-  * `<main>` para contenido principal.
-  * `<article>` o `<section>` para bloques independientes.
-
-* **Accesibilidad (a11y)**
-
-  * Usa `alt` en imágenes (`<img>`) para describirlas.
-  * Asocia `<label>` con `<input>` para mejorar la experiencia.
-
-* **Validación y limpieza**
-
-  * Pasa tu código por [W3C Validator](https://validator.w3.org/).
-  * Indenta y organiza para que la jerarquía se entienda de un vistazo.
-
-> 🎯 Un HTML semántico mejora la accesibilidad, el SEO y la mantenibilidad.
+> Un HTML semántico mejora la accesibilidad, el SEO y la mantenibilidad.
 
 ---
 
-## ✍️ Formularios: El Corazón de la Interacción
+## Formularios: El Corazón de la Interacción
 
-Los formularios son la puerta de entrada para que el usuario hable con la web.
+Los formularios son la puerta de entrada para que el usuario interactúe con la web.
 
-* **El dúo `<label>` + `<input>`**: siempre juntos.
+- **El dúo `<label>` + `<input>`**: siempre juntos.
 
   ```html
   <label for="nombre">Nombre:</label>
   <input id="nombre" type="text" required />
   ```
 
-* **Validación declarativa (HTML5)**:
-
-  * `required`: obliga a completar el campo.
-  * `minlength` / `maxlength`: controlan la longitud.
-  * `pattern`: validación mediante expresiones regulares.
+- **Validación declarativa (HTML5)**: `required`, `minlength`, `maxlength`, `pattern`...
 
 Ejemplo: un email válido.
 
@@ -110,13 +91,13 @@ Ejemplo: un email válido.
 
 ---
 
-## 🏷️ Atributos: Metadatos y Ganchos
+## Atributos: Metadatos y Ganchos
 
-Los atributos son como **notas al margen** de cada etiqueta.
+Los atributos son información adicional para cada etiqueta.
 
-* **`id`** → único, como el DNI del elemento. Útil para JS (`getElementById`).
-* **`class`** → agrupa elementos. Perfecta para CSS o `querySelectorAll`.
-* **`data-*`** → cajón de sastre para guardar metadatos personalizados.
+- **`id`**: único, como el DNI del elemento. Útil para JS (`getElementById`).
+- **`class`**: agrupa elementos. Perfecta para CSS o `querySelectorAll`.
+- **`data-*`**: para guardar metadatos personalizados.
 
 ```html
 <button data-user-id="42" data-action="delete">
