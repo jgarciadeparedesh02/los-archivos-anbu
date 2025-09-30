@@ -1,0 +1,95 @@
+---
+title: '05. Limitaciones y el Siguiente Paso: Los Frameworks'
+description: 'Entendiendo por qué el diseño declarativo, potenciado por los frameworks, es el estándar de la industria.'
+---
+
+# 🚀 Limitaciones y el Siguiente Paso: Los Frameworks
+
+Hemos llegado al clímax de esta unidad 🎉.  
+Recorrimos el camino desde los **planos declarativos** de HTML hasta la **maquinaria imperativa** de JavaScript.  
+
+Ya sabes crear, modificar y eliminar elementos del DOM a mano.  
+Ese poder es enorme… pero trae consigo un problema: la **complejidad**.  
+
+Administrar manualmente el estado y sincronizarlo con el DOM es como dirigir una orquesta 🎻:  
+dar instrucciones a cada músico, en cada nota, en todo momento. Posible, sí. ¿Escalable? No tanto.
+
+---
+
+## ⚠️ El Problema: Sincronización Manual
+
+Imagina que construyes un feed estilo red social con JavaScript puro:
+
+1. **Renderizado inicial**  
+   Tienes un array de 100 posts.  
+   Para cada uno, debes crear manualmente sus nodos (`<div>`, `<h2>`, `<p>`, `<span>`, `<button>`).  
+
+2. **Interactividad**  
+   Ahora tienes 100 botones de "like".  
+   Eso implica 100 `addEventListener`.  
+
+3. **Actualización del estado**  
+   Cuando alguien hace clic en el post #57:  
+   - Identificas cuál fue.  
+   - Actualizas el array (`posts[57].likes++`).  
+   - Buscas en el DOM el `<span>` correcto.  
+   - Cambias su contenido.  
+
+👉 Resultado: código verboso, repetitivo, difícil de mantener.  
+Esto es lo que llamamos **código espagueti** 🍝.
+
+---
+
+## ✨ La Idea que Cambió Todo: `UI = f(estado)`
+
+Los frameworks modernos (React, Vue, Angular) nacieron para resolver este dolor.  
+Introdujeron un concepto simple y brillante:
+
+```text
+UI = f(state)
+````
+
+* **`state` (estado)** → los datos puros de tu app (ej: el array `posts`).
+* **`f` (función)** → un componente declarativo que describe cómo debe verse la UI para ese estado.
+* **`UI` (interfaz)** → el resultado renderizado en pantalla.
+
+Con este enfoque, tu única tarea es **modificar el estado**.
+Si alguien da "like", actualizas el objeto de datos.
+El framework se encarga de reflejarlo en el DOM de forma automática y eficiente.
+
+---
+
+## 🪄 El Secreto: Declarativo por Encima, Imperativo por Debajo
+
+> 💡 Los frameworks son como un traductor mágico:
+> Tú escribes código **declarativo y simple** (“quiero que la lista muestre estos posts”),
+> y el framework hace por debajo todas las manipulaciones **imperativas y optimizadas**.
+
+En la práctica, parece que reescribes toda la UI en cada cambio…
+pero el framework solo actualiza lo necesario, gracias a técnicas como el **DOM Virtual**.
+
+---
+
+## ✅ Ventajas de Usar Frameworks
+
+* **Código más simple y legible** → describes qué quieres ver, no cómo lograrlo.
+* **Mantenimiento más fácil** → menos lógica repetitiva, más componentes reutilizables.
+* **Escalabilidad** → manejar cientos o miles de elementos sin perder el control.
+* **Eficiencia interna** → optimizaciones que manualmente serían muy costosas.
+
+---
+
+## 🔗 Cierre de la Unidad
+
+Hemos completado el círculo:
+
+* Viste la diferencia entre **imperativo y declarativo**.
+* Conociste el **HTML y el DOM** como base.
+* Practicaste la **manipulación directa con JavaScript**.
+* Y entendiste por qué el enfoque manual se vuelve insostenible en proyectos grandes.
+
+✨ Los frameworks modernos son el siguiente paso lógico: nos permiten pensar de manera declarativa, mientras ellos hacen el trabajo duro.
+
+👉 En la próxima unidad daremos el salto al mundo de los **componentes** y exploraremos cómo los frameworks cambian la forma de construir aplicaciones web modernas.
+
+¡Aquí comienza el verdadero viaje! 🚀

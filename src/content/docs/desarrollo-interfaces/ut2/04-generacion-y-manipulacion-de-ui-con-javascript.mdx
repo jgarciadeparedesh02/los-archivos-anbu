@@ -1,0 +1,283 @@
+---
+title: '04. Generación y Manipulación de UI con JavaScript'
+description: 'Manipulando el DOM para construir interfaces dinámicas, interactivas y vivas.'
+---
+
+Si HTML nos permitió **dibujar los planos de nuestra casa** y CSS decorarla, ahora llega el momento de instalar la **electricidad y los electrodomésticos** ⚡.  
+Con JavaScript vamos a dar vida a nuestras páginas: ya no serán estáticas, sino que **reaccionarán a la interacción del usuario**.
+
+Cuando usamos JavaScript entramos en el **paradigma imperativo**:  
+dejamos de decir *qué queremos* y empezamos a dar instrucciones precisas:  
+👉 “Crea este elemento, ponle este texto, añádelo aquí, escucha si el usuario hace clic…”
+
+Un enfoque poderoso, pero también más complejo.  
+
+---
+
+## 🌳 El DOM: Tu Página Convertida en un Objeto
+
+El navegador no trabaja directamente con tu archivo `.html`.  
+Lo interpreta y lo transforma en una estructura de árbol en memoria: el **DOM (Document Object Model)**.  
+
+JavaScript manipula este árbol en vivo:  
+cada cambio que hagas se refleja instantáneamente en pantalla.  
+
+```mermaid
+graph TD
+  A[Document] --> B[html]
+  B --> C[head]
+  B --> D[body]
+  D --> D1[h1]
+  D --> D2[p]
+  D --> D3[ul]
+  D3 --> L1[li: Elemento 1]
+  D3 --> L2[li: Elemento 2]
+````
+
+> 💡 Piensa en el DOM como una **maqueta 3D en miniatura** de tu página, lista para ser modificada en tiempo real.
+
+---
+
+## 🛠️ El Arsenal del DOM: Herramientas Clave
+
+### 1. Seleccionar elementos
+
+Antes de cambiar algo, necesitas encontrarlo.
+
+```javascript
+// Por ID
+const app = document.getElementById('app');
+
+// Por clase o selector CSS
+const title = document.querySelector('.title');
+const items = document.querySelectorAll('.user-item');
+```
+
+> ⚠️ `querySelector` devuelve el **primer** elemento.
+> Usa `querySelectorAll` si necesitas varios.
+
+---
+
+### 2. Crear y añadir elementos
+
+El patrón siempre es el mismo: **Crear → Configurar → Añadir**.
+
+```javascript
+const newUser = document.createElement('li');
+newUser.textContent = 'Nuevo usuario';
+newUser.classList.add('user-item');
+
+document.querySelector('.user-list').appendChild(newUser);
+```
+
+---
+
+### 3. Modificar contenido y atributos
+
+```javascript
+const title = document.querySelector('.title');
+
+// Texto seguro
+title.textContent = 'Nuevo título';
+
+// Estilos directos
+title.style.color = 'blue';
+
+// Manipular clases
+title.classList.add('main-title');
+
+// Atributos
+const input = document.querySelector('input');
+input.setAttribute('placeholder', 'Escribe tu nombre');
+```
+
+> ⚠️ Evita abusar de `innerHTML`. Es potente, pero puede abrir la puerta a ataques XSS.
+
+---
+
+### 4. Escuchar eventos
+
+Los eventos son la clave de la **interactividad**.
+
+```html
+<button id="miBoton">Haz clic</button>
+<p id="mensaje"></p>
+```
+
+```javascript
+const boton = document.getElementById('miBoton');
+const mensaje = document.getElementById('mensaje');
+let count = 0;
+
+boton.addEventListener('click', () => {
+  count++;
+  mensaje.textContent = `Has hecho clic ${count} veces.`;
+});
+```
+
+---
+
+## ⚡ Patrones Imperativos en Acción
+
+En HTML (declarativo):
+
+```html
+<ul>
+  <li>Usuario 1</li>
+  <li>Usuario 2</li>
+</ul>
+```
+
+En JS (imperativo):
+
+```javascript
+const li = document.createElement('li');
+li.textContent = 'Usuario 1';
+document.querySelector('ul').appendChild(li);
+```
+
+---
+
+## 🚀 Optimización: DocumentFragment
+
+Cada vez que haces `appendChild` en el DOM real, el navegador recalcula la página (*reflow*).
+En listas grandes, esto es costoso.
+
+👉 Solución: construir en un **DocumentFragment** y añadirlo de una sola vez.
+
+```javascript
+const fragment = document.createDocumentFragment();
+
+['Ana', 'Luis', 'Carla'].forEach(nombre => {
+  const li = document.createElement('li');
+  li.textContent = nombre;
+  fragment.appendChild(li);
+});
+
+document.querySelector('ul').appendChild(fragment);
+```
+
+> 💡 Es como armar un mueble fuera de la sala y luego meterlo ya montado.
+
+---
+
+## 🧑‍💻 Casos Prácticos
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+	<Card title="Tabla de usuarios" icon="open-book">
+		Crea una tabla de usuarios dinámicamente a partir de un array de datos.
+		<details>
+			<summary>Ver código</summary>
+			```javascript
+			const usuarios = [
+			  { id: 1, nombre: 'Elena' },
+			  { id: 2, nombre: 'Marcos' }
+			];
+
+			const table = document.createElement('table');
+			const tbody = document.createElement('tbody');
+
+			usuarios.forEach(u => {
+			  const row = document.createElement('tr');
+			  row.innerHTML = `<td>${u.id}</td><td>${u.nombre}</td>`;
+			  tbody.appendChild(row);
+			});
+
+			table.appendChild(tbody);
+			document.body.appendChild(table);
+			```
+		</details>
+		<form action="https://codepen.io/pen/define" method="POST" target="_blank">
+		  <input type="hidden" name="data" value='{"title":"Tabla de Usuarios","html":"<h3>Tabla de Usuarios</h3>","js":"const usuarios = [\n  { id: 1, nombre: &apos;Elena&apos; },\n  { id: 2, nombre: &apos;Marcos&apos; }\n];\n\nconst table = document.createElement(&apos;table&apos;);\nconst tbody = document.createElement(&apos;tbody&apos;);\n\nusuarios.forEach(u => {\n  const row = document.createElement(&apos;tr&apos;);\n  row.innerHTML = `<td>${u.id}</td><td>${u.nombre}</td>`;\n  tbody.appendChild(row);\n});\n\ntable.appendChild(tbody);\ndocument.body.appendChild(table);"}'/>
+		  <input type="submit" value="Abrir en CodePen"/>
+		</form>
+	</Card>
+	<Card title="Lista de tareas (To-Do)" icon="list-checks">
+		Un clásico: añade y marca tareas como completadas.
+		<details>
+			<summary>Ver código</summary>
+			```html
+			<form id="form">
+			  <input id="task" placeholder="Nueva tarea" required />
+			  <button>Añadir</button>
+			</form>
+			<ul id="list"></ul>
+			```
+			```javascript
+			const form = document.getElementById('form');
+			const task = document.getElementById('task');
+			const list = document.getElementById('list');
+
+			form.addEventListener('submit', e => {
+			  e.preventDefault();
+			  const li = document.createElement('li');
+			  li.textContent = task.value;
+			  li.addEventListener('click', () => li.classList.toggle('done'));
+			  list.appendChild(li);
+			  task.value = '';
+			});
+			```
+		</details>
+		<form action="https://codepen.io/pen/define" method="POST" target="_blank">
+		  <input type="hidden" name="data" value='{"title":"Lista de Tareas","html":"<form id=\"form\">\n  <input id=\"task\" placeholder=\"Nueva tarea\" required />\n  <button>Añadir</button>\n</form>\n<ul id=\"list\"></ul>","js":"const form = document.getElementById(&apos;form&apos;);\nconst task = document.getElementById(&apos;task&apos;);\nconst list = document.getElementById(&apos;list&apos;);\n\nform.addEventListener(&apos;submit&apos;, e => {\n  e.preventDefault();\n  const li = document.createElement(&apos;li&apos;);\n  li.textContent = task.value;\n  li.addEventListener(&apos;click&apos;, () => li.classList.toggle(&apos;done&apos;));\n  list.appendChild(li);\n  task.value = &apos;&apos;;\n});"}'/>
+		  <input type="submit" value="Abrir en CodePen"/>
+		</form>
+	</Card>
+	<Card title="Galería de imágenes" icon="image">
+		Genera una galería de imágenes a partir de un array de URLs.
+		<details>
+			<summary>Ver código</summary>
+			```javascript
+			const imagenes = ['https://via.placeholder.com/150', 'https://via.placeholder.com/150', 'https://via.placeholder.com/150'];
+			const gallery = document.createElement('div');
+			gallery.classList.add('gallery');
+
+			imagenes.forEach(src => {
+			  const img = document.createElement('img');
+			  img.src = src;
+			  img.alt = 'Imagen de galería';
+			  gallery.appendChild(img);
+			});
+
+			document.body.appendChild(gallery);
+			```
+		</details>
+		<form action="https://codepen.io/pen/define" method="POST" target="_blank">
+		  <input type="hidden" name="data" value='{"title":"Galería de Imágenes","html":"<h3>Galería de Imágenes</h3>","js":"const imagenes = [&apos;https://placehold.co/150&apos;, &apos;https://placehold.co/150&apos;, &apos;https://placehold.co/150&apos;];\nconst gallery = document.createElement(&apos;div&apos;);\ngallery.classList.add(&apos;gallery&apos;);\n\nimagenes.forEach(src => {\n  const img = document.createElement(&apos;img&apos;);\n  img.src = src;\n  img.alt = &apos;Imagen de galería&apos;;\n  gallery.appendChild(img);\n});\n\ndocument.body.appendChild(gallery);"}'/>
+		  <input type="submit" value="Abrir en CodePen"/>
+		</form>
+	</Card>
+	<Card title="Contador interactivo" icon="plus-minus">
+		Un botón que incrementa un contador en pantalla.
+		<details>
+			<summary>Ver código</summary>
+			```html
+			<button id="btn">Incrementar</button>
+			<p id="contador">0</p>
+			```
+			```javascript
+			const btn = document.getElementById('btn');
+			const contador = document.getElementById('contador');
+			let valor = 0;
+
+			btn.addEventListener('click', () => {
+			  valor++;
+			  contador.textContent = valor;
+			});
+			```
+		</details>
+		<form action="https://codepen.io/pen/define" method="POST" target="_blank">
+		  <input type="hidden" name="data" value='{"title":"Contador Interactivo","html":"<button id=\"btn\">Incrementar</button>\n<p id=\"contador\">0</p>","js":"const btn = document.getElementById(&apos;btn&apos;);\nconst contador = document.getElementById(&apos;contador&apos;);\nlet valor = 0;\n\nbtn.addEventListener(&apos;click&apos;, () => {\n  valor++;\n  contador.textContent = valor;\n});"}'/>
+		  <input type="submit" value="Abrir en CodePen"/>
+		</form>
+	</Card>
+</CardGrid>
+
+---
+
+Ya dominas cómo manipular el DOM imperativamente.
+Pero a medida que la aplicación crece, el código se complica y mantener el estado manualmente es un reto.
+
+En el próximo capítulo veremos por qué **los frameworks modernos** (React, Vue, Angular) se han convertido en el estándar, y cómo nos ayudan a simplificar todo este trabajo.

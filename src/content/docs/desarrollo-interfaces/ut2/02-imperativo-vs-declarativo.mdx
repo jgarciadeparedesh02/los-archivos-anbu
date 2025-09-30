@@ -1,0 +1,173 @@
+---
+title: '02. Imperativo vs. Declarativo: Dos Formas de Pensar la Programación'
+description: 'Entendiendo los paradigmas fundamentales que dan forma al desarrollo de interfaces.'
+---
+
+Antes de escribir una sola línea de código, necesitamos entender **cómo pensamos** cuando programamos.  
+Existen dos grandes estilos, dos formas de razonar que marcan el rumbo: el **imperativo** y el **declarativo**.  
+
+Para aterrizar la idea, usemos una metáfora sencilla: **la pizza** 🍕.
+
+- **Imperativo**: Llamas a la pizzería y das instrucciones paso a paso.  
+  > "Extiende la masa, añade salsa de tomate, coloca mozzarella, ahora 8 rodajas de pepperoni…"  
+  Eres tú quien dicta **cómo** se hace.  
+
+- **Declarativo**: Simplemente pides:  
+  > "Quiero una pizza de pepperoni mediana".  
+  Tú defines el **qué** y confías en que el cocinero se encargue del resto.  
+
+En programación, esta diferencia es crucial. Cambia la forma en que escribimos, leemos y mantenemos el código.
+
+---
+
+## 🔨 El Paradigma Imperativo: Dando Órdenes Directas
+
+El **imperativo** es el camino más natural al comenzar a programar:  
+describes **cómo** debe ejecutarse cada paso.
+
+👉 Ejemplo: construir una lista en HTML con JavaScript imperativo.
+
+```javascript
+const lista = document.createElement('ul');
+
+const item1 = document.createElement('li');
+item1.textContent = 'Ana';
+lista.appendChild(item1);
+
+const item2 = document.createElement('li');
+item2.textContent = 'Luis';
+lista.appendChild(item2);
+
+document.body.appendChild(lista);
+````
+
+Aquí controlamos cada movimiento: crear, configurar, insertar.
+
+> ⚠️ Ventaja: tienes control total.
+> ⚠️ Desventaja: el código crece rápido y puede volverse difícil de mantener.
+
+---
+
+## 🎨 El Paradigma Declarativo: Describiendo el Resultado Final
+
+En el **declarativo** describes lo que quieres, no cómo lograrlo.
+
+👉 La misma lista anterior, en HTML declarativo:
+
+```html
+<ul>
+  <li>Ana</li>
+  <li>Luis</li>
+</ul>
+```
+
+El navegador interpreta tu intención: *“quiero una lista con dos elementos”*.
+
+Otro gran ejemplo es **CSS**:
+
+```css
+.titulo {
+  color: blue;
+}
+```
+
+No dices *“busca elementos con clase título y cambia su estilo uno por uno”*.
+Declaras el **qué** y el navegador lo aplica.
+
+> 💡 Lo declarativo aumenta el nivel de abstracción: te enfocas en el resultado, no en el proceso.
+
+---
+
+## 🔑 Diferencias Clave
+
+| Característica | Imperativo (Cómo)           | Declarativo (Qué)                |
+| -------------- | --------------------------- | -------------------------------- |
+| **Enfoque**    | Secuencia de pasos          | Estado final deseado             |
+| **Nivel**      | Bajo, cercano a la máquina  | Alto, abstrae detalles           |
+| **Estado**     | Lo gestionas manualmente    | El sistema lo interpreta         |
+| **Ejemplos**   | JS manipulando DOM, C, Java | HTML, CSS, SQL, React            |
+| **Analogía**   | Receta paso a paso          | Pedir un plato en un restaurante |
+
+---
+
+## 🌐 Declarativo en la Web: HTML y CSS
+
+HTML es **declarativo por naturaleza**.
+
+```html
+<form>
+  <label for="nombre">Nombre:</label>
+  <input type="text" id="nombre" />
+  <button>Enviar</button>
+</form>
+```
+
+No dices *“pinta una caja de texto y un botón”*. Declaras su existencia y el navegador lo resuelve.
+
+Del mismo modo, CSS permite reglas simples que se aplican en cascada.
+Ejemplo:
+
+```css
+input:required {
+  border: 2px solid red;
+}
+```
+
+---
+
+## ⚡ Imperativo en la Web: Manipulación con JavaScript
+
+La otra cara es cuando usamos **JavaScript** para manipular el DOM.
+
+```html
+<button id="mi-boton">Añadir</button>
+<ul id="mi-lista"></ul>
+```
+
+```javascript
+const boton = document.getElementById('mi-boton');
+const lista = document.getElementById('mi-lista');
+
+boton.addEventListener('click', () => {
+  const nuevo = document.createElement('li');
+  nuevo.textContent = 'Nuevo ítem';
+  lista.appendChild(nuevo);
+});
+```
+
+Aquí damos órdenes específicas al navegador: **crea, escribe, añade**.
+
+---
+
+## ✅ Pros y Contras
+
+### Declarativo
+
+✔ Más legible y predecible.
+✔ Menos propenso a errores.
+✔ Fácil de mantener.
+✘ Menos control en casos complejos.
+✘ A veces se siente como una “caja negra”.
+
+### Imperativo
+
+✔ Control total sobre cada paso.
+✔ Flexibilidad máxima.
+✘ Código verboso y repetitivo.
+✘ Escalar es complicado.
+✘ La gestión del estado puede ser un dolor de cabeza.
+
+---
+
+## 🤝 El Equilibrio en el Desarrollo Moderno
+
+No se trata de elegir uno u otro, sino de **combinarlos con inteligencia**.
+
+* Usamos **HTML y CSS (declarativo)** para definir la estructura y apariencia.
+* Usamos **JavaScript (imperativo)** para la lógica detallada e interacciones.
+* Y frameworks modernos (React, Vue, Angular) para **fusionar lo mejor de ambos mundos**.
+
+---
+
+Ya entendemos cómo piensan estos dos paradigmas.
+En el próximo capítulo nos enfocaremos en el **lienzo declarativo por excelencia: HTML**, y veremos cómo su estructura da vida al **DOM**, el mapa que JavaScript manipula.

@@ -38,10 +38,6 @@ export const onRequest = defineRouteMiddleware((context) => {
 
   // 📝 Solo aplicamos si encontramos algo
   if (filteredSidebar.length > 0) {
-    console.log(
-      `✅ Sidebar filtrado para ${subjectPath}/${unitSlug}:`,
-      JSON.stringify(filteredSidebar, null, 2)
-    );
     route.sidebar = filteredSidebar;
   } else {
     console.warn(`⚠️ No se encontró sidebar para ${subjectPath}/${unitSlug}`);
