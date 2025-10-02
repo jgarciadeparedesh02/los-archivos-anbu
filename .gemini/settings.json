@@ -1,0 +1,10 @@
+{
+    "mcpServers": {
+        "imagen": {
+            "command": "npx",
+            "args": [
+                "@google/mcp-imagen"
+            ]
+        }
+    }
+}

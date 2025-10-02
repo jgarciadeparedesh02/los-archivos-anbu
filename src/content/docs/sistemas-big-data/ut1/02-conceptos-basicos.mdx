@@ -1,117 +1,154 @@
 ---
-title: "02. Conceptos básicos y aplicaciones"
-description: Introducción a los fundamentos de Big Data y sus diversas aplicaciones en el mundo actual.
+title: "02. Conceptos Fundamentales del Big Data"
+description: Exploramos los pilares del Big Data, sus características clave y cómo se diferencia de los sistemas de datos tradicionales.
 ---
 
-## ¿Qué es Big Data?
+import { Card, CardGrid } from '@astrojs/starlight/components';
 
-Seguro que más de una vez te has encontrado con el problema de que tu móvil se queda sin espacio porque tienes demasiadas fotos, vídeos, audios de WhatsApp y aplicaciones instaladas. Eso es solo una pequeña muestra de lo que ocurre en el mundo digital a gran escala.  
-**Big Data** se refiere a conjuntos de datos tan grandes, diversos y complejos que las herramientas tradicionales —como una base de datos SQL en un servidor convencional— ya no son suficientes para almacenarlos ni analizarlos.  
+## ¿Qué es Big Data? Una Realidad Cotidiana
 
-Hablamos de datos que provienen de **sensores en coches, relojes inteligentes, redes sociales, sistemas de pago, cámaras de vigilancia, registros médicos o compras online**. Toda esa información, bien tratada, puede convertirse en conocimiento útil para empresas, gobiernos o incluso para ti como usuario.
+Cada minuto, se suben cientos de horas de vídeo a YouTube, se envían millones de mensajes por WhatsApp y se realizan miles de transacciones bancarias. Toda esta actividad genera una cantidad ingente de información. El **Big Data** no es solo una moda; es la capacidad de manejar, procesar y extraer valor de estos conjuntos de datos tan grandes, diversos y complejos que las herramientas tradicionales —como una base de datos SQL en un único servidor— ya no son suficientes.
 
-:::tip
-Piensa en Big Data como en un océano inmenso de información. No basta con tener un balde para sacar agua; necesitamos barcos, radares y sistemas que nos permitan navegar y entender lo que hay dentro.
-:::
-
----
-
-## Las 5 Vs del Big Data
-
-El concepto de Big Data suele explicarse a partir de cinco características clave, conocidas como las **5 Vs**:
-
-- **Volumen**: hablamos de cantidades masivas de datos. Cada minuto se envían millones de mensajes en WhatsApp, se suben horas infinitas de vídeo a YouTube y se hacen miles de compras online.  
-- **Velocidad**: la rapidez con la que los datos se generan y deben ser procesados. Piensa en los radares de tráfico de Cáceres, que necesitan procesar la información casi en tiempo real para detectar infracciones.  
-- **Variedad**: los datos no son siempre tablas ordenadas. Pueden ser fotos, audios, vídeos, documentos PDF, sensores de temperatura o incluso datos semiestructurados como los correos electrónicos.  
-- **Veracidad**: no toda la información que circula es fiable. Seguro que te ha llegado algún bulo por redes sociales. En Big Data es fundamental filtrar y garantizar la calidad de los datos.  
-- **Valor**: de nada sirve acumular datos si no obtenemos conclusiones útiles. El verdadero reto está en transformar datos en **decisiones y acciones concretas**.
-
-:::note
-No hay nada más frustrante que pulsar un botón y que no ocurra “nada visible”.  
-Un *loading spinner* puede evitar que pienses que la aplicación está colgada.
-:::
+Piensa en ello: tu reloj inteligente recoge datos de tu actividad física, Netflix te recomienda series basándose en tus gustos, y Google Maps te sugiere la mejor ruta en tiempo real. Detrás de todo esto, hay sistemas de Big Data trabajando incansablemente para convertir esa avalancha de información en algo útil y significativo.
 
 :::tip
-En los orígenes se hablaba solo de **3 Vs** (volumen, velocidad y variedad). Con el tiempo se añadieron **veracidad** y **valor**, porque sin ellas los datos serían poco útiles.
+Imagina que el Big Data es como un gigantesco río de información. No basta con un cubo para recoger el agua; necesitamos presas, canales y sistemas de filtrado para aprovechar su caudal y entender lo que transporta.
 :::
 
 ---
 
-## Diferencias con bases de datos tradicionales
+## Las 7 Vs del Big Data: Más Allá de lo Básico
 
-En tu día a día en clase, has trabajado con bases de datos tradicionales como **MySQL** o **PostgreSQL**. Estas herramientas funcionan muy bien para información estructurada: por ejemplo, la base de datos de alumnos del IES Ágora, con sus nombres, apellidos, direcciones y notas.
+Tradicionalmente, el Big Data se explicaba con las "3 Vs": Volumen, Velocidad y Variedad. Sin embargo, para entender su complejidad y potencial real, es crucial añadir más dimensiones. Hablemos de las **7 Vs**:
 
-Sin embargo, Big Data trabaja con **datos no estructurados o semiestructurados**. Por ejemplo:
+<CardGrid>
+  <Card title="Volumen" icon="database">
+    La cantidad masiva de datos generados y almacenados. Estamos hablando de terabytes, petabytes o incluso exabytes de información. Por ejemplo, cada día se generan 2.5 quintillones de bytes de datos a nivel mundial.
+    <img
+      src="/images/sistemas-big-data/ut1/02-conceptos-basicos/volumen.png"
+      alt="Representación visual del volumen de Big Data"
+      className="max-w-xs h-auto mx-auto mt-4"
+      loading="lazy"
+      decoding="async"
+    />
+  </Card>
+  <Card title="Velocidad" icon="zap">
+    La rapidez con la que los datos se generan, recopilan y deben ser procesados. En muchos casos, se requiere un procesamiento en tiempo real o casi real, como en la detección de fraudes bancarios o la monitorización de sensores IoT.
+    <img
+      src="/images/sistemas-big-data/ut1/02-conceptos-basicos/velocidad.png"
+      alt="Representación visual de la velocidad del Big Data"
+      className="max-w-xs h-auto mx-auto mt-4"
+      loading="lazy"
+      decoding="async"
+    />
+  </Card>
+  <Card title="Variedad" icon="layout-grid">
+    Los diferentes formatos y tipos de datos. Pueden ser estructurados (bases de datos relacionales), semiestructurados (JSON, XML) o no estructurados (texto libre, imágenes, vídeos, audios, logs de servidores).
+    <img
+      src="/images/sistemas-big-data/ut1/02-conceptos-basicos/variedad.png"
+      alt="Representación visual de la variedad de datos en Big Data"
+      className="max-w-xs h-auto mx-auto mt-4"
+      loading="lazy"
+      decoding="async"
+    />
+  </Card>
+  <Card title="Veracidad" icon="shield-check">
+    La fiabilidad y calidad de los datos. ¿Son los datos precisos, consistentes y dignos de confianza? Los datos erróneos o sesgados pueden llevar a conclusiones y decisiones equivocadas.
+    <img
+      src="/images/sistemas-big-data/ut1/02-conceptos-basicos/veracidad.png"
+      alt="Representación visual de la veracidad de los datos en Big Data"
+      className="max-w-xs h-auto mx-auto mt-4"
+      loading="lazy"
+      decoding="async"
+    />
+  </Card>
+  <Card title="Valor" icon="trending-up">
+    La capacidad de transformar los datos en conocimiento, ideas y, en última instancia, en decisiones y acciones concretas que generen un beneficio. Sin valor, el resto de las Vs carecen de sentido.
+    <img
+      src="/images/sistemas-big-data/ut1/02-conceptos-basicos/valor.png"
+      alt="Representación visual del valor extraído del Big Data"
+      className="max-w-xs h-auto mx-auto mt-4"
+      loading="lazy"
+      decoding="async"
+    />
+  </Card>
+  <Card title="Variabilidad" icon="line-chart">
+    Los datos pueden cambiar de significado o formato con el tiempo, o tener picos y valles estacionales. Por ejemplo, las tendencias de búsqueda en Google varían enormemente según la época del año o los eventos actuales.
+    <img
+      src="/images/sistemas-big-data/ut1/02-conceptos-basicos/variabilidad.png"
+      alt="Representación visual de la variabilidad de los datos en Big Data"
+      className="max-w-xs h-auto mx-auto mt-4"
+      loading="lazy"
+      decoding="async"
+    />
+  </Card>
+  <Card title="Visualización" icon="bar-chart-2">
+    La capacidad de representar los datos de forma clara e intuitiva para facilitar su comprensión y el descubrimiento de patrones. Un buen gráfico puede comunicar más que miles de filas de datos.
+    <img
+      src="/images/sistemas-big-data/ut1/02-conceptos-basicos/visualizacion.png"
+      alt="Representación visual de la visualización de datos en Big Data"
+      className="max-w-xs h-auto mx-auto mt-4"
+      loading="lazy"
+      decoding="async"
+    />
+  </Card>
+</CardGrid>
 
-- Los vídeos que subes a TikTok.  
-- Los registros de actividad de una app de deporte como Strava.  
-- Los logs de los servidores de una empresa que recibe millones de visitas por hora.  
 
-Mientras que un SQL clásico se queda corto ante tanta información, las tecnologías de Big Data (como **Hadoop** o **Spark**) permiten procesar estos datos en paralelo en cientos o miles de servidores al mismo tiempo.
+### Las 7 Vs en la Cafetería del IES Ágora
 
-:::tip
-No confundas **Big Data** con “una base de datos grande”. Es mucho más: implica nuevas técnicas, nuevas herramientas y, sobre todo, **nuevas formas de pensar en la información**.
-:::
+Volvamos a nuestro caso práctico para ver cómo estas 7 Vs se manifiestan en la cafetería del IES Ágora:
+
+-   **Volumen**: Cada venta de un bocadillo, refresco o café genera un registro. A lo largo de un curso escolar, son miles y miles de transacciones. Si añadimos datos de sensores de movimiento para medir las colas, el volumen crecería exponencialmente.
+-   **Velocidad**: Las ventas se producen en tiempo real, especialmente durante el recreo. Un sistema de análisis debería procesar estos datos al segundo para, por ejemplo, mostrar en una pantalla qué productos se están agotando o predecir la afluencia.
+-   **Variedad**: No solo tendríamos los datos estructurados de las ventas (producto, precio, fecha). Podríamos añadir encuestas de satisfacción (texto libre), fotos de los productos más populares en redes sociales, datos de sensores de temperatura de las neveras o incluso el tiempo meteorológico para predecir la venta de bebidas frías.
+-   **Veracidad**: ¿Qué pasa si un día la caja registradora funciona mal y no guarda las ventas? ¿O si un alumno introduce una opinión falsa en una encuesta? Garantizar que los datos son correctos y fiables es fundamental antes de tomar decisiones.
+-   **Valor**: De nada sirve almacenar todos los tickets si no extraemos conclusiones. El valor real aparece cuando, gracias a los datos, decidimos poner una oferta en el bocadillo menos vendido, añadir una segunda persona en la caja durante la hora punta para reducir las colas, o ajustar el stock de productos según la demanda prevista.
+-   **Variabilidad**: La demanda de productos en la cafetería no es constante. Varía por días de la semana, por la época del año (más helados en verano, más cafés en invierno) o por eventos especiales (partidos de fútbol, exámenes). El sistema debe ser capaz de adaptarse a estos cambios.
+-   **Visualización**: Un panel de control con gráficos claros que muestren las ventas por hora, los productos más populares o la evolución de las colas, permitiría al personal de la cafetería tomar decisiones rápidas y efectivas sin tener que analizar tablas de datos complejas.
+
+---
+
+## Big Data vs. Bases de Datos Tradicionales: Una Comparativa
+
+En tu día a día en clase, has trabajado con bases de datos relacionales como **MySQL** o **PostgreSQL**. Funcionan muy bien para información estructurada y volúmenes de datos manejables. Sin embargo, el Big Data opera bajo premisas diferentes. Aquí te mostramos una tabla comparativa para entender mejor sus diferencias:
+
+| Característica      | Bases de Datos Tradicionales (SQL) | Big Data (NoSQL, Hadoop, Spark) |
+| :------------------ | :--------------------------------- | :------------------------------ |
+| **Volumen**         | Gigabytes a Terabytes              | Terabytes a Exabytes y más      |
+| **Velocidad**       | Procesamiento por lotes, consultas | Tiempo real o casi real         |
+| **Variedad**        | Principalmente estructurados      | Estructurados, semiestructurados, no estructurados |
+| **Escalabilidad**   | Vertical (más potente servidor)   | Horizontal (más servidores)     |
+| **Esquema**         | Rígido, predefinido                | Flexible, dinámico (schema-on-read) |
+| **Consistencia**    | Fuerte (ACID)                      | Eventual (BASE)                 |
+| **Ejemplos**        | MySQL, PostgreSQL, Oracle          | MongoDB, Cassandra, Hadoop, Spark |
 
 ---
 
 ## Aplicaciones del Big Data
 
-El Big Data está mucho más cerca de tu vida diaria de lo que parece. Veamos algunos ejemplos prácticos:
+El Big Data está mucho más cerca de tu vida diaria de lo que parece:
 
-### 1. Salud
-
-Los relojes inteligentes que miden tu pulso o el número de pasos generan una enorme cantidad de datos. Con ellos, los médicos pueden anticipar posibles problemas cardiovasculares o recomendar rutinas de ejercicio personalizadas.  
-En hospitales, se utilizan algoritmos para **detectar patrones en radiografías o resonancias**, ayudando a diagnosticar enfermedades de forma más rápida y precisa.
-
-### 2. Finanzas
-
-Seguro que has visto que tu banco te avisa si haces una compra sospechosa. Eso es Big Data en acción: algoritmos que analizan miles de transacciones en segundos y detectan comportamientos anómalos que podrían indicar fraude.  
-También se utiliza para calcular riesgos de inversión o para conceder préstamos con mayor seguridad.
-
-### 3. Comercio y marketing
-
-Cada vez que buscas un producto en Amazon o miras ropa en Zalando, se guardan tus interacciones. Luego, esos datos se usan para recomendarte productos similares o lanzarte anuncios personalizados en Instagram.  
-Esto no es casualidad: es Big Data trabajando para **predecir tus gustos y aumentar las ventas**.
-
-### 4. Transporte
-
-Piensa en Google Maps o Waze. Estas aplicaciones recogen información de miles de móviles en tiempo real para detectar atascos en la carretera y proponerte rutas alternativas.  
-En el transporte público, también se utilizan datos para ajustar horarios y mejorar la frecuencia de autobuses según la demanda.
-
-### 5. Educación
-
-En plataformas educativas como Moodle o Khan Academy, se recopila información sobre tu ritmo de estudio, los ejercicios en los que fallas o los contenidos que revisas más. Así, pueden recomendarte recursos específicos o detectar en qué área necesitas reforzarte.  
-Incluso en nuestro centro, el IES Ágora, herramientas similares podrían ayudar a personalizar la enseñanza y hacerla más efectiva.
-
-### 6. Ciudades inteligentes
-
-Muchas ciudades ya utilizan Big Data para gestionar recursos: sensores en contenedores que avisan cuando están llenos, sistemas de alumbrado que se regulan según la presencia de personas o aplicaciones que informan del estado del transporte público en tiempo real.
+-   **Salud**: Los relojes inteligentes recogen datos de pulso para anticipar problemas médicos y los hospitales analizan historiales para mejorar diagnósticos.
+-   **Finanzas**: Tu banco analiza miles de transacciones por segundo para detectar fraudes y personalizar ofertas de productos.
+-   **Comercio**: Amazon o Netflix te recomiendan productos o series basándose en tu historial y en el comportamiento de millones de usuarios similares.
+-   **Transporte**: Google Maps o Waze usan datos de miles de móviles para detectar atascos en tiempo real y optimizar rutas.
+-   **Educación**: Plataformas como Moodle pueden detectar en qué temas necesitas más refuerzo analizando tus ejercicios y patrones de estudio.
 
 ---
 
 ## Desafíos del Big Data
 
-Trabajar con Big Data no es solo cuestión de “tener muchos datos”. Existen varios retos clave:
+Trabajar con Big Data implica varios retos:
 
-- **Almacenamiento**: los datos crecen de forma exponencial. ¿Dónde guardarlos y cómo hacerlo de manera eficiente? Aquí entran en juego servicios en la nube como AWS o Google Cloud.  
-- **Procesamiento**: no basta con tener la información; hay que analizarla rápido. Para eso se necesitan algoritmos y sistemas distribuidos capaces de trabajar en paralelo.  
-- **Seguridad**: los datos personales deben protegerse. Imagina que alguien accede a tu historial médico o a tus compras online: sería un grave problema de privacidad.  
-- **Análisis**: extraer conclusiones útiles no es fácil. A veces los datos son ruidosos, incompletos o contradictorios, y los algoritmos deben aprender a manejarlos.
-
-:::tip
-Un buen profesional en Big Data no es solo un técnico que sabe programar. También debe tener sentido crítico, saber interpretar resultados y comunicarlos de forma clara a los demás.
-:::
+-   **Almacenamiento**: ¿Dónde guardar terabytes de información de forma eficiente y accesible?
+-   **Procesamiento**: ¿Cómo analizar esos datos en un tiempo razonable, incluso en tiempo real?
+-   **Seguridad**: ¿Cómo proteger la privacidad de los datos personales y cumplir con regulaciones como el RGPD?
+-   **Análisis**: ¿Cómo extraer conclusiones útiles de datos ruidosos, incompletos o sesgados?
+-   **Talento**: La necesidad de profesionales con habilidades en ciencia de datos, ingeniería de datos y análisis.
 
 ---
 
 ## Reflexión final
 
-El Big Data no es un concepto lejano ni reservado a grandes empresas de Silicon Valley. Está presente en tu vida diaria: en los anuncios que ves, en los vídeos que te recomienda YouTube, en las rutas que sigues con Google Maps o en cómo tu banco protege tus compras.  
-
-Como futuro profesional de la informática, entender cómo funciona el Big Data te dará una visión más amplia de hacia dónde va la tecnología. Piensa que dentro de unos años podrías estar trabajando en proyectos de análisis de datos en sanidad, banca, comercio o incluso en aplicaciones educativas que mejoren la enseñanza en centros como el nuestro.
-
-:::tip
-Como futuro profesional de la informática, piensa siempre en el **usuario final**.  
-No diseñes para ti mismo, diseña para alguien que nunca ha visto tu aplicación y quiere usarla sin complicaciones.
-:::
+El Big Data no es un concepto lejano. Está presente en los anuncios que ves, los vídeos que te recomienda YouTube o las rutas que sigues con Google Maps. Como futuro profesional de la informática, entender cómo funciona te dará una visión más amplia de hacia dónde va la tecnología y te permitirá resolver problemas complejos en cualquier sector. Ahora que hemos sentado las bases, ¡prepárate para adentrarte en la **complejidad** que supone manejar estos volúmenes de datos!

@@ -1,0 +1,11 @@
+Fecha,Producto,Categoria,Precio,Cantidad,ID_Transaccion
+2023-10-01 08:30:00,Café con Leche,Bebidas,1.20,1,T001
+2023-10-01 08:30:00,Bocadillo de Tortilla,Bocadillos,2.50,1,T001
+2023-10-01 08:32:00,Croissant,Bollería,1.00,1,T002
+2023-10-01 10:30:00,Refresco de Cola,Bebidas,1.50,1,T003
+2023-10-01 10:30:00,Bocadillo de Lomo,Bocadillos,3.00,1,T003
+2023-10-01 10:31:00,Zumo de Naranja,Bebidas,1.80,1,T004
+2023-10-02 08:28:00,Café Solo,Bebidas,1.00,1,T005
+2023-10-02 08:29:00,Bocadillo de Tortilla,Bocadillos,2.50,2,T006
+2023-10-02 10:35:00,Agua,Bebidas,0.80,1,T007
+2023-10-02 10:35:00,Bocadillo Mixto,Bocadillos,2.20,1,T007
