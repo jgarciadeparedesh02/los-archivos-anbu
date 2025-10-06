@@ -1,0 +1,84 @@
+---
+title: "01: Listado de Pokémon con PokeAPI"
+description: "Crea una aplicación web para listar Pokémon, mostrando su número, imagen y tipos utilizando la PokeAPI, con mejoras visuales e interactivas."
+draft: true
+---
+
+Para esta tarea, vamos a aplicar lo que hemos aprendido sobre interfaces declarativas y peticiones a APIs para crear una pequeña "Pokédex" web. Utilizaremos la famosa [PokeAPI](https://pokeapi.co/), una fuente de datos increíblemente completa sobre el universo Pokémon.
+
+## Objetivo
+
+El objetivo es construir una página web que muestre una lista de los primeros 151 Pokémon (la primera generación, para los nostálgicos). Por cada Pokémon, deberás mostrar como mínimo:
+- Su número oficial en la Pokédex.
+- Una imagen del Pokémon.
+- Sus tipos (por ejemplo, "Planta", "Veneno"), **visualmente diferenciados (como insignias o badges con colores)**.
+- **[Ampliación]** Al pasar el ratón por encima de la imagen del Pokémon, esta deberá cambiar para mostrar su sprite trasero.
+
+## Requisitos
+
+- La página debe realizar una petición a la PokeAPI para obtener la lista de Pokémon.
+- Por cada Pokémon en la lista, se debe hacer una petición adicional para obtener sus detalles.
+- **[Ampliación]** La imagen del Pokémon debe cambiar a su sprite trasero (`sprites.back_default`) al pasar el ratón por encima, y volver al frontal (`sprites.front_default`) al quitarlo.
+- El código JavaScript debe ser limpio y estar bien comentado, explicando la lógica de las peticiones y la manipulación del DOM.
+
+## Pistas y Pasos Sugeridos
+
+Aquí te dejo una guía para que no te pierdas en el camino:
+
+### 1. Obtener la lista de Pokémon
+
+Para empezar, necesitas obtener la lista de los primeros 151 Pokémon. Puedes hacerlo con una petición `GET` a la siguiente URL:
+
+```
+https://pokeapi.co/api/v2/pokemon?limit=151
+```
+
+La respuesta de esta petición será un objeto JSON con una propiedad `results`, que es un array. Cada objeto de este array contiene el `name` del Pokémon y una `url` para obtener sus detalles.
+
+### 2. Obtener los detalles de cada Pokémon
+
+Ahora viene lo interesante. Debes iterar sobre el array `results` del paso anterior. Por cada Pokémon, tendrás que hacer una nueva petición `fetch` a la `url` que te proporcionó la API.
+
+:::tip[¡Peticiones en bucle!]
+Recuerda que `fetch` es asíncrono. Si usas un bucle `for`, puedes lanzar múltiples peticiones. Investiga cómo manejar un array de promesas con `Promise.all()` para que tu aplicación sea más eficiente y espere a que todas las peticiones se completen antes de renderizar los resultados.
+:::
+
+#### Ejemplo de código
+
+```js
+// Supongamos que tenemos varias URLs de ejemplo
+const urls = [
+  "https://jsonplaceholder.typicode.com/posts/1",
+  "https://jsonplaceholder.typicode.com/posts/2",
+  "https://jsonplaceholder.typicode.com/posts/3"
+];
+
+async function obtenerDatos() {
+  // Crear un array de promesas con fetch
+  const promesas = urls.map(url => fetch(url).then(res => res.json()));
+
+  // Esperar a que todas las promesas terminen
+  const resultados = await Promise.all(promesas);
+
+  // Aquí ya tenemos un array con las 3 respuestas
+  console.log(resultados);
+}
+
+obtenerDatos();
+```
+
+### 3. Extraer la información necesaria
+
+Una vez que recibas la respuesta de la petición de detalle de un Pokémon, tendrás un JSON enorme con muchísima información. ¡No te asustes! La información que necesitas está en estos campos:
+
+- **Número:** Lo encontrarás en el campo `id`.
+- **Imagen:** La URL de la imagen principal está en `sprites.front_default`. **También puedes encontrar el sprite trasero en `sprites.back_default`.**
+- **Tipos:** Es un array llamado `types`. Cada objeto dentro de este array tiene una propiedad `type` que, a su vez, contiene el `name` del tipo en español. Deberás recorrer este array para obtener todos los tipos de un Pokémon.
+
+### 4. Renderizar en el DOM
+
+Con toda la información en tu poder, es hora de crear los elementos HTML dinámicamente y añadirlos a tu página. Puedes crear un `div` principal que actúe como contenedor y, dentro de él, ir añadiendo una "tarjeta" por cada Pokémon con su imagen, número y tipos.
+
+:::tip[¡Hazlo visual e interactivo!]
+- Para el efecto de la imagen, puedes añadir atributos `onmouseover` y `onmouseout` a la etiqueta `<img>` en el HTML generado. Estos atributos pueden cambiar el `src` de la imagen entre `pokemon.sprites.front_default` y `pokemon.sprites.back_default`. ¡No olvides añadir una clase de transición de Tailwind para un efecto suave!
+:::

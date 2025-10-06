@@ -73,7 +73,7 @@ graph TD
         C --> D[Termina Tarea Larga];
         D --> E[Ejecuta Tarea Siguiente];
     end
-```
+````
 
 ```mermaid
 graph TD
@@ -123,12 +123,6 @@ async function obtenerPersonajes() {
 obtenerPersonajes();
 ```
 
-:::tip[Manejo de Errores con `fetch`]
-`fetch` solo rechaza una promesa si hay un error de red (ej. sin conexión). Si el servidor responde con un error (como un 404 "No encontrado" o un 500 "Error del servidor"), la promesa de `fetch` **se resuelve correctamente**.
-
-Por eso es crucial comprobar siempre `respuesta.ok` y lanzar un error manualmente para que sea capturado por nuestro bloque `catch`.
-:::
-
 ### 2. `.then() / .catch()` (El estilo clásico)
 
 Antes de `async/await`, las promesas se encadenaban con el método `.then()`, que recibe una función a ejecutar cuando la promesa se resuelve. El método `.catch()` captura cualquier error en la cadena.
@@ -150,6 +144,75 @@ fetch('https://rickandmortyapi.com/api/character')
 ```
 
 Ambos enfoques logran lo mismo, pero `async/await` suele resultar en un código más fácil de leer y depurar, ya que se parece más al código síncrono tradicional.
+
+---
+
+## Promesas y el Método `.map()`
+
+Antes de seguir, necesitamos detenernos un momento en dos conceptos que aparecen constantemente cuando trabajamos con APIs: **promesas** y el método **`.map()`**.
+
+### ¿Qué es una Promesa?
+
+Una **promesa** en JavaScript es un objeto que representa un valor que estará disponible en el futuro.
+Ese valor puede terminar en dos estados:
+
+* **Resuelta (fulfilled):** Todo salió bien y tenemos el resultado.
+* **Rechazada (rejected):** Algo falló y tenemos un error.
+
+Cuando usamos `fetch()`, no recibimos directamente los datos, sino una **promesa** que nos dirá *más tarde* si la petición funcionó o no.
+
+```js
+const promesa = fetch('https://api.example.com/data');
+
+promesa
+  .then(respuesta => respuesta.json()) // cuando se resuelve
+  .then(datos => console.log(datos))   // procesamos los datos
+  .catch(error => console.error(error)); // si falla
+```
+
+El poder de las promesas es que nos permiten **trabajar de forma asíncrona**, sin bloquear la interfaz mientras esperamos la respuesta.
+
+---
+
+### El Método `.map()`
+
+Cuando recibimos datos de una API, normalmente vienen en forma de **array de objetos**.
+El método `.map()` es una función de los arrays que nos permite **transformar cada elemento del array en otra cosa** y devolver un **nuevo array** con esos resultados.
+
+```js
+const numeros = [1, 2, 3, 4];
+const cuadrados = numeros.map(n => n * n);
+
+console.log(cuadrados); // [1, 4, 9, 16]
+```
+
+Lo importante es entender que:
+
+* `.map()` **no modifica** el array original.
+* Devuelve un **nuevo array** con los valores transformados.
+* Es muy útil para "traducir" datos de la API a fragmentos de HTML, a objetos simplificados o a cualquier otra representación.
+
+---
+
+### Promesas + `.map()` en Acción
+
+Un caso típico es cuando recibimos un array de resultados desde una API y queremos convertirlos en HTML:
+
+```js
+fetch('https://jsonplaceholder.typicode.com/users')
+  .then(res => res.json())
+  .then(usuarios => {
+    const lista = usuarios.map(user => `<li>${user.name}</li>`).join('');
+    document.body.innerHTML = `<ul>${lista}</ul>`;
+  })
+  .catch(err => console.error(err));
+```
+
+Aquí ocurre la magia:
+
+* `fetch` devuelve una **promesa**.
+* Cuando se resuelve, usamos `.map()` para transformar cada usuario en un `<li>`.
+* Con `.join('')` unimos todas las piezas en un único string de HTML.
 
 ---
 
@@ -260,7 +323,3 @@ Aquí tienes el código completo. Puedes guardarlo en un archivo `index.html` y 
 ```
 
 Este ejemplo es la culminación de todo lo que hemos visto en la unidad. Usamos JavaScript de forma **imperativa** (`createElement`, `appendChild`, etc., aunque aquí abreviamo con `innerHTML`) para manipular el DOM, pero esta vez los datos no están inventados en nuestro código, sino que vienen de una fuente externa y real.
-
----
-
-Hemos cerrado el círculo. Ahora nuestras interfaces no solo son interactivas, sino que también están conectadas al mundo.
