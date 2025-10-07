@@ -1,0 +1,99 @@
+---
+title: "06. Normativa y Seguridad: Protegiendo el Activo Más Valioso"
+description: "Aprende sobre la importancia de la seguridad de los datos y el cumplimiento normativo en entornos de Big Data, con un enfoque especial en el RGPD y las mejores prácticas."
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Hemos construido una maquinaria impresionante: sabemos cómo ingerir, almacenar y procesar cantidades masivas de datos. Pero todo este poder conlleva una gran responsabilidad. Los datos, especialmente los datos personales, son un activo extremadamente valioso y sensible. Protegerlos no es una opción, es una **obligación legal y ética**.
+
+En este último capítulo de la unidad, abordaremos dos de los aspectos más críticos y, a menudo, subestimados del Big Data: la **seguridad** y el **cumplimiento normativo**. Un fallo en la seguridad puede llevar a fugas de datos con consecuencias catastróficas para la reputación de una empresa y la privacidad de sus usuarios. El incumplimiento de la ley puede acarrear multas millonarias.
+
+:::danger
+Imagina que en los datos de la cafetería del IES Ágora no solo guardamos las ventas, sino también información sobre alérgenos de cada alumno para personalizar los menús. Si esa información se filtrara, podría exponer datos de salud sensibles. La confianza de los alumnos (y sus padres) en el instituto quedaría destrozada.
+:::
+
+---
+
+## El RGPD: La Ley que Cambió las Reglas del Juego
+
+La normativa más importante en materia de protección de datos en Europa es el **Reglamento General de Protección de Datos (RGPD)**, o GDPR en inglés. Entró en vigor en 2018 y establece un marco estricto sobre cómo las organizaciones deben recopilar, procesar y almacenar los datos personales de los ciudadanos de la UE.
+
+### Principios Fundamentales del RGPD
+
+El RGPD se basa en varios principios clave que debes conocer:
+
+-   **Licitud, lealtad y transparencia**: Debes informar a los usuarios de qué datos recopilas, por qué y cómo los usas, de una forma clara y sencilla.
+-   **Limitación de la finalidad**: Solo puedes usar los datos para el propósito específico para el que los recogiste. No puedes recopilar datos de ventas de la cafetería para luego venderlos a una empresa de marketing.
+-   **Minimización de datos**: Solo debes recopilar los datos estrictamente necesarios para cumplir con esa finalidad. ¿Realmente necesitas la fecha de nacimiento de un alumno para venderle un bocadillo?
+-   **Exactitud**: Los datos deben ser precisos y estar actualizados.
+-   **Limitación del plazo de conservación**: No puedes almacenar los datos para siempre. Debes eliminarlos cuando ya no sean necesarios para la finalidad para la que se recogieron.
+-   **Integridad y confidencialidad**: Debes tomar las medidas de seguridad adecuadas para proteger los datos contra el acceso no autorizado, la pérdida o la destrucción.
+
+### Derechos de los Interesados
+
+El RGPD otorga a los usuarios (los "interesados") un control sin precedentes sobre sus datos. Tienen derecho a:
+
+-   **Acceso**: Saber qué datos tienes sobre ellos.
+-   **Rectificación**: Corregir datos incorrectos.
+-   **Supresión (Olvido)**: Pedir que elimines sus datos.
+-   **Limitación del tratamiento**: Restringir cómo usas sus datos.
+-   **Portabilidad**: Recibir sus datos en un formato estándar para poder llevarlos a otro servicio.
+-   **Oposición**: Oponerse a que uses sus datos para ciertos fines, como el marketing directo.
+
+<Card title="¿Qué es un Dato Personal?" icon="user">
+  Según el RGPD, un dato personal es **cualquier información sobre una persona física identificada o identificable**. Esto no es solo el nombre o el DNI. Puede ser una dirección de correo electrónico, una dirección IP, un dato de localización, una cookie de navegador o incluso información sobre su salud, sus opiniones políticas o sus hábitos de compra. 
+</Card>
+
+--- 
+
+## Estrategias de Seguridad en Entornos Big Data
+
+Proteger un clúster de Big Data es un desafío complejo. La seguridad debe abordarse en múltiples capas, lo que se conoce como **defensa en profundidad**.
+
+<CardGrid>
+  <Card title="Autenticación y Autorización" icon="lock">
+    **Autenticación**: ¿Quién eres? Es el proceso de verificar la identidad de un usuario o servicio. En el ecosistema Hadoop, la herramienta estándar para esto es **Kerberos**. Kerberos proporciona un sistema de "tickets" que permite a los usuarios y servicios demostrar su identidad de forma segura.
+    <br/>
+    **Autorización**: ¿Qué puedes hacer? Una vez autenticado, necesitas controlar a qué datos y recursos puede acceder. **Apache Ranger** y **Apache Sentry** son dos proyectos populares que proporcionan un control de acceso centralizado para el ecosistema Hadoop. Permiten definir políticas como "el usuario 'pepe' solo puede leer la columna 'producto' de la tabla 'ventas', pero no la columna 'precio'".
+  </Card>
+  <Card title="Cifrado de Datos" icon="shield-check">
+    El cifrado es fundamental para proteger los datos contra accesos no autorizados, incluso si un atacante logra acceder físicamente a los discos.
+    <br/>
+    - **Cifrado en reposo (at rest)**: Los datos se cifran antes de escribirse en HDFS. HDFS Transparent Data Encryption (TDE) es la solución nativa para esto. Los datos en los DataNodes están cifrados, y solo el NameNode gestiona las claves.
+    - **Cifrado en tránsito (in transit)**: Los datos se cifran mientras viajan por la red (por ejemplo, entre el cliente y el clúster, o entre los nodos del clúster). Esto se logra usando protocolos como TLS/SSL.
+  </Card>
+  <Card title="Técnicas de Anonimización y Pseudonimización" icon="eye-off">
+    Para los científicos de datos, a menudo no es necesario trabajar con los datos personales en bruto. Podemos aplicar técnicas para proteger la privacidad:
+    <br/>
+    - **Anonimización**: Elimina irreversiblemente la información de identificación personal. Por ejemplo, eliminar por completo la columna del nombre del alumno.
+    - **Pseudonimización**: Reemplaza los identificadores personales por seudónimos o "tokens". Por ejemplo, reemplazar el nombre "Juan Pérez" por un identificador aleatorio como `A8B3C1`. El dato sigue siendo útil para análisis (podemos seguir todas las compras de `A8B3C1`), pero no se puede identificar a la persona sin una tabla de mapeo adicional, que debe estar protegida de forma segura.
+  </Card>
+  <Card title="Auditoría y Monitorización" icon="clipboard-list">
+    Es crucial registrar quién accede a qué datos y cuándo. Los sistemas de auditoría, como los que proporciona Apache Ranger, generan logs detallados de cada acceso a los datos. Estos logs son vitales para detectar actividades sospechosas, investigar incidentes de seguridad y demostrar el cumplimiento normativo.
+  </Card>
+</CardGrid>
+
+---
+
+## La Seguridad en el Proyecto de la Cafetería
+
+¿Cómo aplicaríamos estos principios a nuestro Data Lake de la cafetería?
+
+1.  **Minimización de datos**: Al ingerir los datos de ventas, ¿necesitamos el ID del alumno? Si solo queremos análisis agregados, quizás no. Si queremos análisis de comportamiento, podríamos **pseudonimizar** el ID del alumno para no trabajar con el dato real.
+2.  **Control de Acceso con Apache Ranger**: 
+    -   Definiríamos políticas para que el personal de la cafetería solo pueda ver dashboards agregados.
+    -   Los científicos de datos podrían tener acceso a los datos de ventas pseudonimizados, pero no a la tabla que mapea los seudónimos con los IDs reales.
+    -   Solo un administrador de datos tendría acceso a esa tabla de mapeo.
+3.  **Cifrado**: 
+    -   Habilitaríamos el **cifrado en reposo** en HDFS para que todos los ficheros de ventas estén cifrados en disco.
+    -   Configuraríamos el **cifrado en tránsito** para que todas las comunicaciones con el clúster (consultas de Spark, ingesta con Sqoop) estén protegidas.
+4.  **Auditoría**: Apache Ranger registraría cada consulta que se lanza contra los datos. Si detectamos que alguien intenta acceder a datos para los que no tiene permiso, se generaría una alerta.
+
+## Conclusión de la Unidad
+
+¡Felicidades! Has completado un recorrido intensivo por la sala de máquinas del Big Data. Has aprendido que no hay una única base de datos para gobernarlos a todos, sino una caja de herramientas con soluciones **SQL y NoSQL** para diferentes problemas. Sabes cómo construir **pipelines de ingesta** para traer datos a tu sistema, ya sea en lotes o en tiempo real.
+
+Entiendes cómo **HDFS** proporciona un almacenamiento masivo y tolerante a fallos, y cómo conceptos como el **Data Lake** nos dan la flexibilidad para la ciencia de datos. Has visto el poder de **Spark** para procesar terabytes de datos en memoria a velocidades de vértigo. Y, lo más importante, has comprendido que todo este poder debe ir de la mano de una sólida estrategia de **seguridad y cumplimiento normativo**.
+
+Ahora tienes los cimientos técnicos para empezar a construir tus propias soluciones de Big Data. En las próximas unidades, profundizaremos en herramientas específicas y casos de uso más avanzados. ¡El viaje no ha hecho más que empezar!

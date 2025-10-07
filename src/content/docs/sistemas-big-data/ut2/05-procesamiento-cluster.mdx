@@ -1,0 +1,125 @@
+---
+title: "05. Procesamiento en Clúster: La Fuerza de la Colmena"
+description: "Descubre cómo frameworks como MapReduce y Apache Spark procesan terabytes de datos en paralelo distribuyendo el trabajo en un clúster de ordenadores."
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Tenemos nuestros datos almacenados de forma distribuida en HDFS. Ahora llega el momento de la verdad: **¿cómo los procesamos para responder a preguntas de negocio?** No podemos simplemente abrir un fichero de 500 GB en un editor de texto o cargarlo en la memoria de un solo ordenador. Necesitamos una forma de procesar los datos **en paralelo**, utilizando la potencia de todos los nodos del clúster.
+
+Aquí es donde entran en juego los **frameworks de procesamiento en clúster**. La idea central es simple y ya la hemos mencionado: **mover el código a donde están los datos**. En lugar de traer los datos al programa, el framework envía el programa a los nodos que almacenan los datos que necesita procesar. Cada nodo trabaja sobre un pequeño subconjunto de los datos, y luego los resultados parciales se combinan para obtener el resultado final.
+
+:::tip
+Imagina que tienes que contar todas las palabras de una biblioteca de un millón de libros. Sería una locura llevar todos los libros a tu mesa (mover los datos). En su lugar, contratas a mil personas (los nodos del clúster). A cada persona le das una estantería (un bloque de datos), le pides que cuente las palabras de sus libros (procesamiento local) y te entregue su total. Finalmente, solo tienes que sumar los mil totales para obtener el resultado final. ¡Eso es el procesamiento distribuido!
+:::
+
+---
+
+## MapReduce: El Pionero del Procesamiento Distribuido
+
+**MapReduce** es el modelo de programación original introducido por Google y es el corazón de **Apache Hadoop**. Proporciona un framework simple pero increíblemente robusto para escribir aplicaciones que procesan grandes volúmenes de datos en paralelo.
+
+Un trabajo de MapReduce se divide en dos fases principales, que el programador debe definir:
+
+1.  **Fase de MAP (Mapeo)**:
+    -   **Entrada**: El framework lee los datos de HDFS y los divide en fragmentos. Cada fragmento se envía a una tarea *Mapper*.
+    -   **Lógica del Mapper**: El programador escribe el código del Mapper. Su trabajo es procesar la entrada y emitir pares **clave-valor** intermedios. Por ejemplo, para contar palabras, el Mapper leería cada línea, la dividiría en palabras y por cada palabra emitiría un par `(palabra, 1)`.
+    -   **Paralelismo**: Se ejecutan cientos o miles de tareas Mapper en paralelo en los nodos del clúster, cada una sobre un trozo de los datos.
+
+2.  **Fase de REDUCE (Reducción)**:
+    -   **Fase intermedia (Shuffle and Sort)**: El framework recoge todas las salidas de los Mappers y las agrupa por clave. Todos los valores asociados a la misma clave se juntan en una lista. Por ejemplo, todos los `1` de la palabra "café" se agruparían: `("café", [1, 1, 1, 1, ...])`.
+    -   **Lógica del Reducer**: El programador escribe el código del Reducer. Su trabajo es procesar una clave y su lista de valores asociados para producir un resultado final. En nuestro ejemplo, el Reducer sumaría todos los `1` de la lista para obtener el conteo total de la palabra "café".
+    -   **Salida**: El resultado final se escribe de nuevo en HDFS.
+
+<img src="/images/sistemas-big-data/ut2/05-procesamiento-cluster/mapreduce-wordcount.png" alt="Diagrama de MapReduce para Word Count" class="w-full h-auto mx-auto mt-4" loading="lazy" decoding="async" />
+
+### Fortalezas y Debilidades de MapReduce
+
+-   **Fortalezas**:
+    -   **Escalabilidad masiva y tolerancia a fallos**: Es extremadamente robusto. Si un nodo falla a mitad de un trabajo, Hadoop simplemente reasigna su tarea a otro nodo.
+    -   **Simplicidad**: Reduce problemas complejos a dos pasos simples: Map y Reduce.
+
+-   **Debilidades**:
+    -   **Lentitud**: MapReduce escribe los resultados intermedios en disco después de cada fase (Map y Reduce), lo que genera una gran sobrecarga de I/O. 
+    -   **Rigidez**: No es eficiente para algoritmos iterativos (como los de Machine Learning) que necesitan pasar los datos por múltiples etapas, ya que cada etapa es un trabajo MapReduce completo que lee y escribe de disco.
+    -   **Verbosidad**: Escribir un trabajo MapReduce en Java es bastante verboso y complejo.
+
+---
+
+## Apache Spark: La Evolución del Procesamiento en Clúster
+
+**Apache Spark** nació como una respuesta a las limitaciones de MapReduce. Es un framework de procesamiento distribuido de nueva generación, mucho más rápido, flexible y fácil de usar.
+
+La gran innovación de Spark es el concepto de **procesamiento en memoria**. En lugar de escribir los datos intermedios en disco, Spark intenta mantenerlos en la memoria RAM del clúster tanto como sea posible. Esto reduce drásticamente la latencia y lo hace hasta **100 veces más rápido** que MapReduce para ciertas aplicaciones.
+
+<Card title="Spark: Un Motor Unificado para Big Data" icon="zap">
+  Spark no es solo una alternativa a MapReduce, es un ecosistema completo que incluye librerías para diferentes tareas de Big Data:
+  - **Spark Core**: El motor principal, con la API de RDDs y DataFrames.
+  - **Spark SQL**: Para ejecutar consultas SQL sobre los datos.
+  - **Spark Streaming**: Para el procesamiento de datos en tiempo real.
+  - **MLlib**: Una librería de Machine Learning con algoritmos optimizados para ejecutarse en clúster.
+  - **GraphX**: Para el procesamiento de grafos.
+  <br/>
+  Esta unificación permite construir pipelines complejos que combinan análisis SQL, Machine Learning y procesamiento en streaming en una única aplicación.
+</Card>
+
+### El Corazón de Spark: RDDs y DataFrames
+
+Spark se basa en dos abstracciones de datos principales:
+
+-   **RDD (Resilient Distributed Dataset)**: Es la abstracción original de Spark. Un RDD es una colección de elementos inmutable y distribuida. Spark puede crear RDDs a partir de ficheros en HDFS o de cualquier otra fuente de datos. Sobre los RDDs se pueden aplicar dos tipos de operaciones:
+    -   **Transformaciones**: Crean un nuevo RDD a partir de uno existente (ej: `map`, `filter`, `groupByKey`). Son *lazy* (perezosas), es decir, no se ejecutan hasta que se necesita un resultado.
+    -   **Acciones**: Desencadenan el cómputo y devuelven un resultado al programa principal o lo escriben en disco (ej: `count`, `collect`, `saveAsTextFile`).
+
+-   **DataFrame y Dataset API**: Son una abstracción de más alto nivel introducida posteriormente. Un DataFrame organiza los datos en columnas con nombre, como una tabla en una base de datos relacional. Esta estructura adicional permite a Spark optimizar la ejecución de las consultas de una forma que no es posible con los RDDs (gracias a un optimizador llamado **Catalyst**). Los DataFrames son la API recomendada para la mayoría de los casos de uso hoy en día.
+
+### MapReduce vs. Spark
+
+| Característica | Hadoop MapReduce | Apache Spark | 
+| :--- | :--- | :--- | 
+| **Procesamiento** | En disco | Principalmente en memoria | 
+| **Velocidad** | Lento | Muy rápido (hasta 100x más) | 
+| **API** | Verbosa y de bajo nivel (Java) | APIs de alto nivel (Scala, Python, R, SQL) | 
+| **Interactividad** | No interactivo (solo batch) | Soporta un shell interactivo (ideal para exploración) | 
+| **Ecosistema** | Limitado a MapReduce | Ecosistema unificado (SQL, Streaming, ML) | 
+
+---
+
+## Procesamiento en la Cafetería del IES Ágora con Spark
+
+Imaginemos que queremos responder a la pregunta: **"¿Cuál es el bocadillo más vendido en la cafetería?"** usando los datos de ventas que hemos almacenado en nuestro Data Lake en HDFS.
+
+Así lo haríamos con **Apache Spark** y su API de DataFrames (usando PySpark, la API de Python):
+
+1.  **Crear una SparkSession**: Es el punto de entrada a cualquier funcionalidad de Spark.
+
+2.  **Cargar los datos**: Leemos los ficheros CSV de ventas de nuestro Data Lake en un DataFrame.
+    ```python
+    ventas_df = spark.read.csv("/datalake/cafeteria/ventas/raw/*/*/*/")
+    ```
+    Spark es lo suficientemente inteligente como para leer los datos de todas las carpetas de año, mes y día.
+
+3.  **Procesar los datos**: Usamos transformaciones de DataFrame para realizar el análisis. El código es muy parecido a usar `pandas` o `SQL`.
+    ```python
+    # Renombrar columnas para más claridad
+    ventas_df = ventas_df.withColumnRenamed("_c0", "id_venta") \
+                         .withColumnRenamed("_c1", "id_producto") \
+                         .withColumnRenamed("_c2", "cantidad")
+
+    # Agrupar por producto y sumar las cantidades
+    ranking_productos_df = ventas_df.groupBy("id_producto") \
+                                    .sum("cantidad") \
+                                    .withColumnRenamed("sum(cantidad)", "total_vendido")
+
+    # Ordenar para ver el más vendido
+    top_producto_df = ranking_productos_df.orderBy("total_vendido", ascending=False)
+    ```
+
+4.  **Mostrar el resultado**: Usamos una acción para ver el resultado.
+    ```python
+    top_producto_df.show(1)
+    ```
+
+Lo increíble de esto es que, aunque el código parece simple y secuencial, **Spark lo ha paralelizado todo por debajo**. Ha distribuido la carga de los datos, las agrupaciones y las sumas entre todos los nodos del clúster para obtener el resultado de la forma más eficiente posible.
+
+Ya sabemos almacenar y procesar datos a una escala masiva. Pero, ¿estamos tratando estos datos de forma segura y legal? El último pilar de nuestra unidad es la **normativa y la seguridad**.

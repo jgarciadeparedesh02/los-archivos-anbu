@@ -1,0 +1,106 @@
+---
+title: "03. Extracción e Ingesta de Datos: El Comienzo del Viaje"
+description: "Descubre cómo recolectar datos de diversas fuentes y cargarlos en un sistema de Big Data, explorando las fases, arquitecturas y herramientas clave del proceso de ingesta."
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Ya sabemos qué es el Big Data y qué tipos de bases de datos podemos usar para almacenarlo. Pero hay una pregunta fundamental que aún no hemos respondido: **¿de dónde vienen los datos y cómo los introducimos en nuestro sistema?**
+
+Este proceso se conoce como **extracción e ingesta de datos**. Es el primer paso práctico en cualquier proyecto de Big Data y, a menudo, uno de los más complejos. Consiste en mover datos desde su lugar de origen (una base de datos, un archivo de log, una red social, sensores IoT) hasta un sistema de destino donde puedan ser almacenados y analizados, como un Data Lake o un Data Warehouse.
+
+:::tip
+Imagina que eres el chef de un gran restaurante. La ingesta de datos es como recibir los ingredientes crudos de tus proveedores. Algunos llegan en camiones refrigerados (bases de datos), otros en pequeñas furgonetas (APIs) y otros los cultivas tú mismo (logs). Tu trabajo es recogerlos, clasificarlos y prepararlos para la cocina.
+:::
+
+---
+
+## Fases del Proceso de Ingesta
+
+Un proceso de ingesta de datos, aunque varía según la fuente y el destino, generalmente sigue estas fases:
+
+1.  **Extracción**: Consiste en conectarse a la fuente de datos y leer la información. Puede ser tan simple como leer un fichero CSV o tan complejo como consultar una API que devuelve datos en un formato enrevesado.
+2.  **Transporte**: Una vez extraídos, los datos viajan a través de la red desde el sistema de origen hasta el de destino. Aquí es crucial asegurar que no se pierdan datos por el camino y que el proceso sea seguro.
+3.  **Procesamiento (Opcional)**: A veces, los datos se transforman o enriquecen durante la ingesta. Esto puede incluir cambiar formatos de fecha, limpiar valores nulos o unir información de varias fuentes. Hablaremos de dos arquitecturas clave para esto: ETL y ELT.
+4.  **Carga**: El paso final, donde los datos se escriben en el sistema de almacenamiento de destino (por ejemplo, se guarda un fichero en HDFS o se inserta un documento en MongoDB).
+
+--- 
+
+## Arquitecturas de Ingesta: ETL vs. ELT
+
+Una de las decisiones más importantes en un pipeline de datos es **cuándo** se realizan las transformaciones. Esto da lugar a dos patrones arquitectónicos principales:
+
+  <Card title="ETL (Extract, Transform, Load)" icon="arrow-down-up">
+    **El enfoque tradicional.** Primero, los datos se **extraen** de la fuente. Luego, se **transforman** en un servidor intermedio (un *staging area*) para limpiarlos, darles formato y aplicar reglas de negocio. Finalmente, los datos ya procesados se **cargan** en el sistema de destino, normalmente un Data Warehouse.
+    <br/>
+    **Ventajas**: El sistema de destino recibe datos limpios y estructurados, listos para el análisis. Es más seguro, ya que los datos sensibles pueden ser anonimizados antes de cargarse.
+    <br/>
+    **Desventajas**: Es rígido. Si necesitas un nuevo análisis, puede que tengas que rediseñar todo el proceso de transformación. No aprovecha la potencia de cómputo de los sistemas de Big Data modernos.
+  </Card>
+  <Card title="ELT (Extract, Load, Transform)" icon="arrow-up-down">
+    **El enfoque moderno del Big Data.** Primero, los datos se **extraen** de la fuente. Inmediatamente después, se **cargan** en bruto (*raw data*) en un sistema de almacenamiento masivo como un Data Lake. Las **transformaciones** se realizan después, directamente sobre el Data Lake, usando la potencia de frameworks como Spark.
+    <br/>
+    **Ventajas**: Es extremadamente flexible. Al tener los datos en bruto, puedes aplicar diferentes transformaciones para diferentes propósitos sin tener que volver a cargarlos. Es mucho más rápido para la ingesta.
+    <br/>
+    **Desventajas**: Requiere una gobernanza de datos más estricta para no convertir el Data Lake en un "pantano de datos" (*Data Swamp*), un repositorio caótico de datos inútiles.
+  </Card>
+
+:::note
+En el mundo del Big Data, **ELT es el rey**. La capacidad de almacenar datos en bruto a bajo coste y transformarlos bajo demanda es lo que da a los científicos de datos la flexibilidad que necesitan para explorar y experimentar.
+:::
+
+--- 
+
+## Tipos de Ingesta: Batch vs. Streaming
+
+Otra dimensión clave es la **frecuencia** con la que se mueven los datos:
+
+-   **Ingesta en Lotes (Batch)**:
+    -   **Qué es**: Los datos se recopilan y procesan en grandes bloques o "lotes" a intervalos programados (por ejemplo, cada noche a las 3 AM).
+    -   **Casos de uso**: Procesos que no requieren inmediatez, como la facturación mensual, el cálculo de nóminas o la generación de informes de ventas del día anterior.
+    -   **Herramientas**: Apache Sqoop, scripts personalizados (Python, Bash), herramientas ETL tradicionales.
+
+-   **Ingesta en Tiempo Real (Streaming)**:
+    -   **Qué es**: Los datos se capturan, procesan y analizan continuamente, evento a evento, a medida que se generan.
+    -   **Casos de uso**: Aplicaciones que necesitan una respuesta inmediata, como la detección de fraude con tarjetas de crédito, la monitorización de sensores IoT, las recomendaciones en tiempo real en un e-commerce o el análisis de tendencias en redes sociales.
+    -   **Herramientas**: **Apache Kafka**, Apache Flink, Amazon Kinesis, Spark Streaming.
+
+<Card title="Apache Kafka: La Autopista de los Datos" icon="git-branch">
+  **Apache Kafka** se ha convertido en el estándar de facto para la ingesta de datos en tiempo real. Funciona como un sistema de mensajería de "publicar-suscribir".
+  <br/>
+  - **Productores**: Las aplicaciones de origen (un servidor web, un sensor) "publican" eventos (un clic, una lectura de temperatura) en un "topic" (un canal temático, como `clicks-pagina-principal`).
+  - **Consumidores**: Las aplicaciones de destino (un sistema de análisis, una base de datos) se "suscriben" a esos topics para recibir los eventos en tiempo real y procesarlos.
+  <br/>
+  Kafka es tolerante a fallos, escalable y permite que múltiples sistemas consuman los mismos datos para diferentes propósitos sin interferir entre sí.
+  <img src="/images/shared/logos/kafka.webp" alt="Logo de Kafka" class="max-w-xs h-auto mx-auto mt-4" loading="lazy" decoding="async" />
+</Card>
+
+---
+
+## Herramientas de Ingesta de Datos
+
+El ecosistema de Big Data ofrece una gran variedad de herramientas para la ingesta. Algunas de las más populares son:
+
+-   **Apache Sqoop**: Diseñado para transferir datos en bloque entre bases de datos relacionales (MySQL, Oracle) y Hadoop (HDFS). Es el puente entre el mundo SQL y el mundo Hadoop.
+-   **Apache Flume**: Una herramienta para recolectar, agregar y mover grandes volúmenes de datos de log. Puedes configurar "agentes" en tus servidores web para que envíen los logs de acceso directamente a HDFS.
+-   **Logstash**: Parte del popular ELK Stack (Elasticsearch, Logstash, Kibana), es una potente herramienta para la ingesta y procesamiento de logs y otros eventos.
+-   **Scripts a medida**: A menudo, la forma más flexible de extraer datos es escribir tu propio script en **Python** usando librerías como `requests` (para APIs), `pandas` (para leer ficheros) o `psycopg2` (para conectar con PostgreSQL).
+
+## El Proceso de Ingesta en la Cafetería del IES Ágora
+
+¿Cómo aplicaríamos esto a nuestro caso práctico?
+
+1.  **Fuente de datos**: El TPV de la cafetería, que corre sobre una base de datos **MySQL**.
+2.  **Objetivo**: Cargar los datos de ventas en nuestro **Data Lake** para análisis.
+3.  **Arquitectura**: Usaremos un enfoque **ELT**.
+4.  **Proceso de Ingesta (Batch)**:
+    -   **Herramienta**: Usaríamos **Apache Sqoop**.
+    -   **Planificación**: Cada noche, a las 22:00, un trabajo de Sqoop se conectará a la base de datos MySQL.
+    -   **Extracción**: Extraerá todas las ventas del día (`SELECT * FROM ventas WHERE fecha = HOY()`).
+    -   **Carga**: Cargará estos datos en bruto como un fichero CSV o Avro en una carpeta específica de nuestro Data Lake en HDFS, particionada por fecha (ej: `/datalake/cafeteria/ventas/año=2024/mes=10/dia=28/`).
+5.  **Proceso de Ingesta (Streaming)**:
+    -   **Fuente de datos**: Imaginemos que instalamos **sensores de presencia** en la puerta para medir las colas en tiempo real.
+    -   **Herramienta**: Los sensores (productores) publicarían cada detección en un topic de **Kafka** llamado `colas-cafeteria`.
+    -   **Consumidor**: Una aplicación de **Spark Streaming** leería de ese topic, calcularía la longitud media de la cola cada 30 segundos y mostraría el resultado en un panel de control para el personal de la cafetería.
+
+Ahora que los datos están de camino a nuestro sistema, necesitamos un lugar donde puedan aterrizar y almacenarse de forma segura y escalable. ¡Es hora de hablar del **almacenamiento distribuido**!

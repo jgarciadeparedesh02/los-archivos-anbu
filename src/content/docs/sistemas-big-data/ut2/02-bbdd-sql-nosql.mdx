@@ -1,0 +1,114 @@
+---
+title: "02. Bases de Datos: El Gran Debate entre SQL y NoSQL"
+description: "Comparamos las bases de datos relacionales (SQL) con las NoSQL, entendiendo sus diferencias, ventajas y casos de uso en el mundo del Big Data."
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Seguro que en tus clases de bases de datos has modelado la realidad con tablas, filas y columnas. Has usado `SELECT`, `JOIN` y has sufrido con las claves ajenas. Ese es el mundo de **SQL (Structured Query Language)**, el pilar de la gestión de datos durante décadas. Pero, ¿qué pasa cuando los datos no encajan en ese molde tan rígido? ¿O cuando la cantidad de información es tan masiva que un solo servidor no puede manejarla?
+
+Aquí es donde entra en escena **NoSQL**, que no significa "No a SQL", sino más bien **"Not Only SQL"** (No solo SQL). NoSQL es una familia de bases de datos diseñada para la velocidad, la escalabilidad y la flexibilidad que exige el Big Data. No son un reemplazo de SQL, sino una alternativa poderosa para problemas diferentes.
+
+:::tip
+Imagina que SQL es como construir con ladrillos LEGO: todo encaja perfectamente, es predecible y robusto. NoSQL, en cambio, es como modelar con arcilla: te da la libertad de crear formas complejas y adaptarte sobre la marcha, pero requiere más habilidad para mantener la estructura.
+:::
+
+--- 
+
+## SQL (Relacionales): El Mundo Estructurado
+
+Las bases de datos SQL, como MySQL, PostgreSQL o SQL Server, organizan los datos en tablas con un esquema fijo y predefinido. Son como una hoja de cálculo glorificada: cada fila es un registro y cada columna un atributo.
+
+- **Fortalezas**:
+    - **Consistencia (ACID)**: Garantizan que las transacciones sean Atómicas, Consistentes, Aisladas y Duraderas. Si haces una transferencia bancaria, o se completan todos los pasos (restar de una cuenta, sumar en la otra) o no se hace ninguno. ¡No hay término medio!
+    - **Integridad de los datos**: Gracias a las claves primarias, claves ajenas y restricciones, aseguran que los datos sean coherentes y fiables.
+    - **Lenguaje estandarizado**: SQL es un lenguaje maduro, potente y conocido por todos los desarrolladores.
+
+- **Debilidades**:
+    - **Escalabilidad vertical**: Para manejar más carga, tradicionalmente se necesita un servidor más grande y caro (más CPU, más RAM). Esto tiene un límite.
+    - **Rigidez del esquema**: Si necesitas añadir un nuevo campo (por ejemplo, el perfil de TikTok de un usuario), tienes que modificar la estructura de la tabla (`ALTER TABLE`), lo que puede ser lento y complejo en sistemas grandes.
+    - **Dificultad con datos no estructurados**: Guardar datos como un JSON complejo, un vídeo o un historial de logs es poco natural y eficiente en una tabla relacional.
+
+--- 
+
+## NoSQL (No Relacionales): Flexibilidad y Escala
+
+Las bases de datos NoSQL nacieron de la necesidad de gigantes como Google, Amazon y Facebook de manejar volúmenes de datos y tráfico que las bases de datos tradicionales no podían soportar. Priorizan la velocidad y la escalabilidad horizontal sobre la consistencia estricta.
+
+- **Fortalezas**:
+    - **Escalabilidad horizontal**: En lugar de un servidor más grande, simplemente añaden más servidores (nodos) a un clúster. Es más barato y, en teoría, infinitamente escalable.
+    - **Flexibilidad del esquema**: No requieren un esquema fijo. Cada "documento" o "fila" puede tener su propia estructura. Ideal para startups y proyectos que evolucionan rápidamente.
+    - **Optimización para tipos de datos específicos**: Hay diferentes tipos de bases de datos NoSQL, cada una optimizada para un problema concreto.
+
+- **Debilidades**:
+    - **Consistencia eventual (BASE)**: En un clúster, los datos pueden tardar un tiempo en replicarse a todos los nodos. Esto significa que una lectura podría no devolver el dato más reciente. Se dice que son **Básicamente Disponibles**, con un **Estado Blando** y **Eventualmente Consistentes**.
+    - **Consultas más complejas**: No siempre tienes un lenguaje tan rico como SQL. Las operaciones complejas como los `JOIN` a menudo no existen o son ineficientes.
+    - **Fragmentación**: Hay muchos tipos de bases de datos NoSQL, y cada una tiene su propia API y forma de trabajar.
+
+--- 
+
+## Los 4 Tipos Principales de Bases de Datos NoSQL
+
+NoSQL no es una única tecnología, sino una categoría que agrupa varios modelos de datos. Estos son los más importantes:
+
+  <Card title="Documentales" icon="file-text">
+    **Cómo funcionan**: Almacenan datos en documentos, generalmente en formato JSON o BSON (JSON binario). Cada documento es autoconclusivo y puede tener una estructura diferente.
+    <br/>
+    **Caso de uso**: Ideal para catálogos de productos, perfiles de usuario, gestores de contenido. Piensa en la ficha de un producto en Amazon: tiene nombre, precio, pero también una lista variable de comentarios y especificaciones.
+    <br/>
+    **Ejemplos**: **MongoDB**, Couchbase.
+    <img src="/images/shared/logos/mongo.jpg" alt="Logo de MongoDB" class="max-w-xs h-auto mx-auto mt-4" loading="lazy" decoding="async" />
+  </Card>
+  <Card title="Clave-Valor" icon="key">
+    **Cómo funcionan**: Es el modelo más simple. Cada dato se guarda con una clave única, como un diccionario gigante. Son extremadamente rápidas para escrituras y lecturas simples.
+    <br/>
+    **Caso de uso**: Perfectas para cachés de sesión, carritos de la compra, rankings en tiempo real. Cuando haces login en una web, el servidor guarda tu ID de sesión (la clave) y tus datos de usuario (el valor).
+    <br/>
+    **Ejemplos**: **Redis**, Amazon DynamoDB.
+    <img src="/images/shared/logos/redis.png" alt="Logo de Redis" class="max-w-xs h-auto mx-auto mt-4" loading="lazy" decoding="async" />
+
+  </Card>
+  <Card title="Columnares" icon="bar-chart">
+    **Cómo funcionan**: Organizan los datos por columnas en lugar de por filas. Esto permite leer solo las columnas que necesitas para una consulta, lo que las hace increíblemente eficientes para análisis de grandes volúmenes de datos.
+    <br/>
+    **Caso de uso**: Análisis de series temporales, telemetría de sensores, business intelligence. Ideal para consultas analíticas que agregan datos sobre un subconjunto de columnas.
+    <br/>
+    **Ejemplos**: **Apache Cassandra**, HBase.
+    <img src="/images/shared/logos/cassandra.png" alt="Logo de Cassandra" class="max-w-xs h-auto mx-auto mt-4" loading="lazy" decoding="async" />
+  </Card>
+  <Card title="Grafos" icon="share-2">
+    **Cómo funcionan**: Están diseñadas para almacenar relaciones complejas entre entidades. Los datos se representan como nodos (entidades) y aristas (relaciones).
+    <br/>
+    **Caso de uso**: Redes sociales (amigos de amigos), sistemas de recomendación, detección de fraude (relaciones sospechosas). LinkedIn te recomienda contactos basándose en las conexiones de tu red.
+    <br/>
+    **Ejemplos**: **Neo4j**, Amazon Neptune.
+    <img src="/images/shared/logos/neo4j.png" alt="Logo de Neo4j" class="max-w-xs h-auto mx-auto mt-4" loading="lazy" decoding="async" />
+  </Card>
+
+---
+
+## ¿Cuándo usar SQL vs. NoSQL? El Caso de la Cafetería
+
+Volvamos a nuestro ejemplo de la cafetería del IES Ágora para ver dónde encajaría cada tipo de base de datos.
+
+-   **SQL (MySQL)** sería perfecta para el **sistema de ventas (TPV)**:
+    -   Necesitamos **consistencia ACID**: si un alumno compra un bocadillo, el stock debe actualizarse de forma fiable y la venta registrarse sin errores.
+    -   La estructura es predecible: Venta (ID, fecha, total), LíneaDeVenta (ID_venta, ID_producto, cantidad), Producto (ID, nombre, precio, stock).
+    -   Las relaciones son clave: queremos saber qué productos se han vendido en cada ticket.
+
+-   **NoSQL Documental (MongoDB)** podría usarse para el **sistema de menús y alérgenos**:
+    -   Cada producto puede tener una estructura diferente: un bocadillo tiene ingredientes, pero un refresco tiene información nutricional y de azúcares. Un esquema flexible es ideal.
+    -   Podríamos guardar en el mismo documento del producto los comentarios y valoraciones de los alumnos.
+
+-   **NoSQL Clave-Valor (Redis)** sería genial para gestionar las **colas en tiempo real**:
+    -   Podríamos tener una clave `cola:bocadillos` con el valor `5` (alumnos esperando) y actualizarla en tiempo real.
+    -   También para el carrito de la compra en una app de pedidos: `carrito:ID_alumno` contendría la lista de productos que ha seleccionado.
+
+-   **NoSQL de Grafos (Neo4j)** podría analizar las **relaciones sociales** en el instituto:
+    -   Si tuviéramos datos de redes sociales, podríamos responder a preguntas como: "¿Qué productos son populares entre los amigos de los alumnos que compran bocadillos de tortilla?".
+
+## Conclusión: No es una Guerra, es una Caja de Herramientas
+
+La elección entre SQL y NoSQL no es una batalla a muerte. Los sistemas modernos a menudo utilizan una **aproximación políglota**, combinando diferentes bases de datos para diferentes tareas. Pueden usar una base de datos SQL para la facturación, una NoSQL documental para el catálogo de productos y una clave-valor para la caché.
+
+Como desarrollador, tu trabajo es entender las fortalezas y debilidades de cada herramienta para elegir la más adecuada para el problema que intentas resolver. Ahora que sabes dónde almacenar los datos, el siguiente paso es... ¿cómo los llevamos hasta allí? ¡Hablemos de la **extracción e ingesta**!

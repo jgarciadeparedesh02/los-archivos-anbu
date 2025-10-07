@@ -1,0 +1,95 @@
+---
+title: "04. Almacenamiento Distribuido: Guardando Océanos de Datos"
+description: "Explora los fundamentos del almacenamiento distribuido con HDFS, el corazón de Hadoop, y comprende conceptos modernos como los Data Lakes y Data Warehouses."
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Ya hemos hablado de cómo extraer e ingerir datos, pero una vez que llegan, **¿dónde los guardamos?** No podemos usar el disco duro de un único ordenador; se llenaría en cuestión de horas y, si fallara, perderíamos toda la información. Necesitamos un sistema de almacenamiento que sea **escalable, tolerante a fallos y económico**.
+
+La solución es el **almacenamiento distribuido**. La idea es simple pero poderosa: en lugar de un único y gigantesco disco duro, usamos los discos duros de muchos ordenadores estándar (llamados *nodos*) y los gestionamos como si fueran un único sistema de ficheros. 
+
+:::tip
+Imagina que tienes que guardar una biblioteca con millones de libros. En lugar de construir un edificio gigantesco (caro y difícil de ampliar), alquilas miles de trasteros baratos por toda la ciudad. Luego, creas un índice maestro que te dice exactamente en qué trastero y en qué estantería está cada libro. Eso es, en esencia, el almacenamiento distribuido.
+:::
+
+---
+
+## HDFS: El Elefante que Sostiene el Big Data
+
+El sistema de almacenamiento distribuido más famoso y fundamental en el ecosistema Big Data es **HDFS (Hadoop Distributed File System)**. Es el componente de almacenamiento de **Apache Hadoop** y fue diseñado desde cero para manejar ficheros enormes (de gigabytes a terabytes) sobre clústeres de hardware común.
+
+<Card title="Apache Hadoop: El Origen de Todo" icon="database">
+  **Apache Hadoop** es un framework de software de código abierto que permite el procesamiento distribuido de grandes conjuntos de datos a través de clústeres de ordenadores. Se compone principalmente de dos piezas clave:
+  - **HDFS (Hadoop Distributed File System)**: El sistema de almacenamiento que guarda los datos.
+  - **MapReduce**: El modelo de programación para procesar esos datos en paralelo (del que hablaremos en el próximo capítulo).
+  <br/>
+Hadoop fue inspirado por papers técnicos de Google y su mascota, un elefante de peluche amarillo, se convirtió en el símbolo del Big Data.
+  <img src="/images/shared/logos/hadoop.png" alt="Logo de Hadoop" class="max-w-xs h-auto mx-auto mt-4" loading="lazy" decoding="async" />
+</Card>
+
+### ¿Cómo funciona HDFS?
+
+HDFS tiene una arquitectura maestro-esclavo:
+
+-   **NameNode (El Cerebro)**: Es el servidor maestro. No almacena los datos de los ficheros, sino los **metadatos**. Sabe qué ficheros existen, en qué bloques se dividen y en qué DataNodes se guarda cada bloque. Es el "índice maestro" de nuestra analogía de la biblioteca. Es un punto crítico: si el NameNode falla, pierdes el acceso a todo el sistema.
+
+-   **DataNode (Los Músculos)**: Son los servidores esclavos. Hay muchos de ellos en un clúster. Su única misión es almacenar los bloques de datos que el NameNode les asigna. Periódicamente, envían un "latido" (*heartbeat*) al NameNode para informarle de que siguen vivos y qué bloques tienen.
+
+El proceso de escritura de un fichero en HDFS es el siguiente:
+
+1.  **División en bloques**: Cuando un cliente quiere escribir un fichero grande, HDFS lo divide en bloques de un tamaño fijo (típicamente 128 MB o 256 MB).
+2.  **Consulta al NameNode**: El cliente pregunta al NameNode en qué DataNodes puede escribir esos bloques.
+3.  **Replicación y tolerancia a fallos**: Para evitar la pérdida de datos si un disco o un servidor falla, HDFS replica cada bloque en varios DataNodes (normalmente 3 por defecto). El NameNode se encarga de que las réplicas estén en diferentes racks del centro de datos para minimizar el riesgo de un fallo correlacionado (por ejemplo, si falla la fuente de alimentación de un rack).
+4.  **Escritura en pipeline**: El cliente escribe el primer bloque en un DataNode, este lo reenvía al segundo, y el segundo al tercero. Una vez que todos confirman la escritura, el cliente pasa al siguiente bloque.
+
+
+### Principios de Diseño de HDFS
+
+-   **Write-Once-Read-Many (WORM)**: HDFS está optimizado para ficheros que se escriben una vez y se leen muchas veces. No es bueno para ficheros que necesitan modificaciones constantes.
+-   **Streaming Data Access**: Está diseñado para leer ficheros grandes de forma secuencial, no para accesos aleatorios a pequeñas porciones del fichero.
+-   **Mover el cómputo, no los datos**: En lugar de mover terabytes de datos a través de la red hasta donde está la lógica de procesamiento, HDFS permite ejecutar el código (el trabajo de MapReduce o Spark) directamente en los DataNodes donde residen los datos. Esto minimiza el tráfico de red y es uno de los principios más importantes del Big Data.
+
+--- 
+
+## Data Lake vs. Data Warehouse: Dos Estrategias de Almacenamiento
+
+Ahora que sabemos *cómo* se guardan los datos a nivel físico, hablemos de dos conceptos de alto nivel que definen la *estrategia* de almacenamiento: el Data Lake y el Data Warehouse.
+
+  <Card title="Data Warehouse (Almacén de Datos)" icon="archive">
+    **Qué es**: Un repositorio central de datos **estructurados y procesados**. Antes de que los datos entren en un Data Warehouse, pasan por un proceso **ETL (Extract, Transform, Load)** que los limpia, los valida y les da un formato consistente. 
+    <br/>
+    **Esquema**: **Schema-on-write**. El esquema de los datos se define *antes* de escribirlos. Si los datos no cumplen el esquema, se rechazan.
+    <br/>
+    **Uso**: Principalmente para **Business Intelligence (BI)** y reporting. Los analistas de negocio usan herramientas como Tableau o Power BI para conectar al Data Warehouse y crear informes y dashboards sobre datos fiables y predecibles.
+    <br/>
+    **Analogía**: Una biblioteca perfectamente organizada, donde cada libro está catalogado, etiquetado y colocado en su estantería correcta. Fácil de encontrar lo que buscas, pero con un catálogo limitado.
+  </Card>
+  <Card title="Data Lake (Lago de Datos)" icon="droplet">
+    **Qué es**: Un repositorio masivo que almacena datos en su **formato nativo y en bruto**. Acepta todo tipo de datos: estructurados, semiestructurados y no estructurados. Es la base del paradigma **ELT (Extract, Load, Transform)**.
+    <br/>
+    **Esquema**: **Schema-on-read**. Los datos se cargan tal cual, sin un esquema predefinido. El esquema se aplica en el momento de la lectura o el análisis.
+    <br/>
+    **Uso**: Principalmente para **Data Science** y Machine Learning. Los científicos de datos prefieren tener acceso a los datos en bruto para explorarlos, experimentar y descubrir patrones que no serían visibles en datos pre-procesados.
+    <br/>
+    **Analogía**: Un lago natural. El agua (los datos) fluye desde muchos ríos (fuentes) y se almacena en su estado natural. Para usarla, tienes que filtrarla y procesarla, pero tienes acceso a todo el ecosistema.
+  </Card>
+
+### El Peligro del Data Swamp (Pantano de Datos)
+
+Un Data Lake mal gestionado puede convertirse rápidamente en un **Data Swamp**. Esto ocurre cuando se acumulan datos sin metadatos, sin control de calidad y sin una gobernanza clara. El resultado es un repositorio caótico donde nadie sabe qué datos hay, si son fiables o cómo usarlos. ¡El lago se convierte en un pantano inútil!
+
+Para evitarlo, se usan técnicas como el **catálogo de datos**, el **linaje de datos** (trazar el origen y las transformaciones de los datos) y la creación de zonas en el Data Lake (zona de aterrizaje para datos brutos, zona procesada, zona de experimentación, etc.).
+
+---
+
+## El Almacenamiento en la Cafetería del IES Ágora
+
+En nuestro proyecto de la cafetería, implementaríamos un **Data Lake sobre HDFS**.
+
+-   **Ingesta**: Como vimos en el capítulo anterior, cada noche un proceso de Sqoop volcaría las ventas del día desde la base de datos MySQL a una carpeta en HDFS: `/datalake/cafeteria/ventas/raw/año=2024/mes=10/dia=29/ventas.csv`.
+-   **Datos en bruto**: Estos ficheros CSV son nuestros datos en bruto, almacenados de forma barata y escalable. Si en el futuro queremos analizar algo que no habíamos previsto, los datos originales están ahí.
+-   **Tolerancia a fallos**: HDFS se encargaría de replicar los bloques de estos ficheros en varios nodos del clúster. Si un servidor de la cafetería se estropea, los datos de ventas no se pierden.
+-   **Flexibilidad**: Además de los CSV de ventas, podríamos volcar en otras carpetas del Data Lake los logs del servidor web de la app de pedidos, las encuestas de satisfacción en formato JSON o incluso las fotos de los bocadillos más populares.
+
+Ya tenemos los datos guardados de forma segura y escalable. El siguiente paso es el más emocionante: **procesarlos para extraer valor**. Es hora de hablar del **procesamiento en clúster** con MapReduce y Spark.

@@ -1,10 +1,15 @@
 {
     "mcpServers": {
-        "imagen": {
-            "command": "npx",
+        "gemini-image-generator": {
+            "command": "python",
             "args": [
-                "@google/mcp-imagen"
-            ]
+                "-m",
+                "mcp_server_gemini_image_generator"
+            ],
+            "env": {
+                "GEMINI_API_KEY": "AIzaSyDSBx0Zyes-QupfnBtwrpB12I2ejYwimyg",
+                "OUTPUT_IMAGE_PATH": "/Users/justogarciadeparedeshaba/Desktop/images-generated"
+            }
         }
     }
 }
