@@ -1,0 +1,105 @@
+---
+title: "Práctica 2: Caché y Leaderboard con Redis"
+description: "Utiliza diferentes estructuras de datos de Redis para implementar una caché de perfiles de usuario y un ranking en tiempo real."
+draft: true
+---
+
+## Escenario
+
+Estás desarrollando un juego online multijugador llamado "Ágora Conquest". Para asegurar un alto rendimiento, decides usar Redis para dos funcionalidades críticas: una caché para los perfiles de los jugadores y un leaderboard (tabla de clasificación) global que se actualice en tiempo real.
+
+--- 
+
+## Parte 1: Caché de Perfiles de Jugador
+
+Cada vez que un jugador se conecta, su perfil se carga desde la base de datos principal (lenta) y se guarda en la caché de Redis para accesos rápidos. Usaremos la estructura de datos **Hash** de Redis, que es ideal para almacenar objetos.
+
+Un perfil de jugador tiene los siguientes campos: `id`, `username`, `nivel`, `clase` (Guerrero, Mago, Arquero) y `clan`.
+
+**1. Almacenar el perfil de un jugador en la caché.**
+
+*Instrucción*: Escribe el comando `HSET` para guardar el perfil del jugador con `id: 101`, `username: "Aragorn"`, `nivel: 50`, `clase: "Guerrero"` y `clan: "Dúnedain"`. La clave del hash debe seguir el patrón `jugador:{id}`.
+
+```bash
+# Comando para guardar el perfil del jugador 101
+HSET jugador:101 id 101 username "Aragorn" nivel 50 clase "Guerrero" clan "Dúnedain"
+```
+
+**2. Recuperar el nombre y el nivel de un jugador.**
+
+*Instrucción*: Escribe el comando `HMGET` para obtener únicamente el `username` y el `nivel` del jugador con `id: 101`.
+
+```bash
+# Comando para obtener campos específicos del jugador 101
+
+```
+
+**3. Incrementar el nivel de un jugador.**
+
+*Instrucción*: Aragorn ha subido de nivel. Escribe el comando `HINCRBY` para incrementar el campo `nivel` del `jugador:101` en 1.
+
+```bash
+# Comando para incrementar el nivel del jugador
+
+```
+
+**4. Establecer una expiración para la caché.**
+
+*Instrucción*: Para asegurar que los datos de la caché no se queden obsoletos, queremos que el perfil del jugador expire después de 24 horas. Escribe el comando `EXPIRE` para establecer un tiempo de vida de 86400 segundos a la clave `jugador:101`.
+
+```bash
+# Comando para establecer la expiración
+
+```
+
+--- 
+
+## Parte 2: Leaderboard de Puntuaciones
+
+Necesitas un leaderboard que muestre los jugadores con las puntuaciones más altas. La estructura de datos **Sorted Set** de Redis es perfecta para esto, ya que mantiene una colección de miembros ordenados por una puntuación.
+
+**1. Añadir jugadores al leaderboard.**
+
+*Instrucción*: Varios jugadores han completado una mazmorra y han obtenido puntos. Escribe los comandos `ZADD` para añadir los siguientes jugadores al sorted set `leaderboard:global` con sus respectivas puntuaciones:
+-   `Aragorn`: 1500 puntos
+-   `Legolas`: 1800 puntos
+-   `Gimli`: 1350 puntos
+-   `Gandalf`: 2500 puntos
+
+```bash
+# Comandos para añadir jugadores y puntuaciones
+
+```
+
+**2. Obtener el Top 3 de jugadores.**
+
+*Instrucción*: Escribe el comando `ZREVRANGE` para obtener los 3 jugadores con las puntuaciones más altas, mostrando también sus puntuaciones.
+
+```bash
+# Comando para obtener el Top 3
+
+```
+
+**3. Obtener la posición (ranking) de un jugador.**
+
+*Instrucción*: Gimli quiere saber en qué posición del ranking se encuentra. Escribe el comando `ZREVRANK` para obtener la posición de `Gimli` en el `leaderboard:global` (recuerda que el ranking empieza en 0).
+
+```bash
+# Comando para obtener el ranking de Gimli
+
+```
+
+**4. Incrementar la puntuación de un jugador.**
+
+*Instrucción*: Legolas ha ganado 200 puntos más. Escribe el comando `ZINCRBY` para añadir 200 a la puntuación de `Legolas` en el `leaderboard:global`.
+
+```bash
+# Comando para incrementar la puntuación de Legolas
+
+```
+
+## Instrucciones de Entrega
+
+1.  Copia el contenido de esta página en un nuevo fichero Markdown en tu repositorio personal.
+2.  Completa todos los bloques de código con los comandos de Redis solicitados.
+3.  Sube el fichero a tu repositorio y comparte el enlace con el profesor.

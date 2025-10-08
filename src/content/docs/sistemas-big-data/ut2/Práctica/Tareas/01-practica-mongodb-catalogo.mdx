@@ -1,0 +1,222 @@
+---
+title: "Práctica 1: Gestión de un Catálogo de Productos con MongoDB"
+description: "Diseña y manipula una colección de productos para un e-commerce, utilizando las capacidades de modelado flexible de MongoDB."
+---
+
+## Descripción general
+
+En esta práctica aprenderás a diseñar y manipular un conjunto de datos utilizando **MongoDB**, una base de datos documental que almacena información en formato **JSON**. El objetivo es que te familiarices con los conceptos básicos de los sistemas NoSQL, practiques la creación y modificación de documentos y aprendas a realizar consultas y agregaciones sobre los datos.
+
+El escenario propuesto consiste en la creación y gestión del catálogo de productos de una tienda de comercio electrónico llamada **TecnoÁgora**, dedicada a la venta de dispositivos electrónicos. Deberás definir el modelo de datos para representar los productos de la tienda, insertar ejemplos, realizar consultas y obtener información analítica utilizando el sistema de agregaciones de MongoDB.
+
+---
+
+## Objetivos de aprendizaje
+
+Al finalizar la práctica, el estudiante será capaz de:
+
+1. Comprender los fundamentos del almacenamiento de datos en MongoDB: colecciones, documentos y campos.
+2. Diseñar documentos JSON estructurados con objetos embebidos y arreglos (arrays).
+3. Realizar consultas básicas utilizando el método `find()` con distintos criterios de filtrado.
+4. Modificar documentos existentes utilizando operadores de actualización.
+5. Construir un pipeline de agregación para calcular estadísticas sobre los datos.
+6. Comprender las ventajas de la flexibilidad del modelo de datos NoSQL frente al modelo relacional tradicional.
+
+---
+
+## Requisitos previos
+
+* Tener instalado MongoDB en el equipo o disponer de una cuenta en **MongoDB Atlas** (servicio gratuito en la nube).
+* Contar con **Mongo Shell** o **MongoDB Compass** (interfaz gráfica).
+* Tener nociones básicas sobre JSON o estructuras de datos similares.
+* Se recomienda haber revisado brevemente los comandos básicos de MongoDB.
+
+---
+
+## Operaciones Básicas en MongoDB (CRUD)
+
+Antes de sumergirnos en la práctica, es fundamental que conozcas las operaciones básicas que realizarás constantemente en cualquier base de datos NoSQL como MongoDB. Estas operaciones se agrupan bajo el acrónimo **CRUD**:
+
+*   **C**reate (Crear): Insertar nuevos documentos en una colección.
+    *   Ejemplo: `db.collection.insertOne()` o `db.collection.insertMany()`
+*   **R**ead (Leer): Consultar y recuperar documentos de una colección.
+    *   Ejemplo: `db.collection.find()`
+*   **U**pdate (Actualizar): Modificar documentos existentes en una colección.
+    *   Ejemplo: `db.collection.updateOne()` o `db.collection.updateMany()`
+*   **D**elete (Eliminar): Borrar documentos de una colección.
+    *   Ejemplo: `db.collection.deleteOne()` o `db.collection.deleteMany()`
+
+Estas operaciones son los pilares de la interacción con tu base de datos y las utilizarás a lo largo de esta práctica.
+
+---
+
+## Parte 1: Diseño del modelo de datos
+
+### Contexto
+
+A diferencia de las bases de datos relacionales, MongoDB no utiliza tablas, sino **colecciones** que contienen **documentos JSON**. Cada documento puede tener una estructura diferente, lo que permite gran flexibilidad para modelar información variada, como productos de distintas categorías con especificaciones técnicas diversas.
+
+### Requisitos del documento
+
+Cada producto de la tienda debe contener al menos la siguiente información:
+
+* `_id`: Identificador único del producto (MongoDB lo genera automáticamente, pero puede definirse manualmente como un SKU).
+* `nombre`: Nombre del producto.
+* `marca`: Marca o fabricante del producto.
+* `categoria`: Categoría principal (por ejemplo: "Portátiles", "Smartphones", "Accesorios").
+* `precio`: Precio de venta.
+* `stock`: Número de unidades disponibles.
+* `especificaciones`: Objeto embebido que describe las características técnicas del producto (por ejemplo: `cpu`, `ram`, `pantalla`).
+* `tags`: Arreglo de etiquetas o palabras clave que facilitan las búsquedas.
+* `reviews`: Arreglo de reseñas, donde cada reseña contiene el nombre del usuario, una puntuación (de 1 a 5) y un comentario.
+
+### Ejemplo de documento JSON
+
+A continuación se muestra un ejemplo completo de documento que cumple con la estructura anterior:
+
+```json
+{
+  "_id": "SKU-001",
+  "nombre": "Portátil Pro-Book X1",
+  "marca": "TecnoÁgora Devices",
+  "categoria": "Portátiles",
+  "precio": 1199.99,
+  "stock": 25,
+  "especificaciones": {
+    "cpu": "Intel Core i7-12700H",
+    "ram": 16,
+    "pantalla": "15.6 pulgadas Full HD"
+  },
+  "tags": ["gaming", "16GB RAM", "oferta"],
+  "reviews": [
+    {
+      "usuario": "LauraG",
+      "puntuacion": 5,
+      "comentario": "Excelente rendimiento, muy rápido."
+    },
+    {
+      "usuario": "CarlosM",
+      "puntuacion": 4,
+      "comentario": "Buen portátil, aunque algo pesado."
+    }
+  ]
+}
+```
+
+Este documento puede insertarse en la colección `productos` utilizando el método `insertOne()` en Mongo Shell. Deberás reemplazar `/* contenido del documento */` con la estructura JSON completa que se muestra arriba.
+
+```javascript
+db.productos.insertOne({
+  // Aquí deberás pegar el contenido del documento JSON de ejemplo
+});
+```
+
+El alumno deberá crear al menos **dos documentos adicionales**, cada uno representando un producto distinto, con categorías o especificaciones diferentes (por ejemplo, un smartphone o un accesorio).
+
+---
+
+## Parte 2: Consultas sobre el catálogo
+
+En esta sección se trabajará con consultas y actualizaciones básicas sobre los documentos de la colección `productos`.
+
+### Conceptos básicos
+
+MongoDB permite realizar búsquedas mediante el método `find()`, que recibe un objeto JSON con los criterios de búsqueda. Por ejemplo, si quisieras encontrar todos los productos de una marca específica, usarías una estructura similar a `db.productos.find({ campo: "valor" });`. El resultado será una lista de documentos que cumplen la condición indicada. Tu tarea será construir estas consultas basándote en los requisitos de cada ejercicio.
+
+---
+
+### Ejercicio 1: Encontrar portátiles de una marca con más de 8GB de RAM
+
+Se desea obtener todos los productos cuya categoría sea "Portátiles", que pertenezcan a la marca **TecnoÁgora Devices** y cuya memoria RAM sea superior a 8GB.
+
+**Pista:** Para acceder a un campo dentro de un objeto embebido, se utiliza la notación de punto (`especificaciones.ram`). Para indicar "mayor que", puedes usar el operador `$gt`.
+
+**Tu tarea:** Escribe la consulta `find()` que cumpla con estos tres criterios.
+
+---
+
+### Ejercicio 2: Buscar productos con la etiqueta “oferta”
+
+Los arreglos en MongoDB permiten búsquedas directas sobre sus valores. Se desea encontrar todos los documentos que contengan la palabra “oferta” dentro del campo `tags`.
+
+**Tu tarea:** Escribe la consulta `find()` para obtener estos productos.
+
+---
+
+### Ejercicio 3: Incrementar el stock de un producto en 10 unidades
+
+En ocasiones es necesario actualizar el valor de un campo numérico. Se desea incrementar el `stock` de un producto específico (por ejemplo, "Portátil Pro-Book X1") en 10 unidades.
+
+**Pista:** MongoDB ofrece el operador `$inc` para incrementar el valor actual de un campo en una cantidad específica. Utiliza `updateOne()` para aplicar el cambio a un solo documento.
+
+**Tu tarea:** Escribe la consulta `updateOne()` para realizar esta operación.
+
+---
+
+### Ejercicio 4: Añadir una nueva reseña (review) a un producto
+
+Se desea agregar una nueva reseña a un producto existente (por ejemplo, "Portátil Pro-Book X1"). La reseña debe contener el nombre del usuario, una puntuación y un comentario.
+
+**Pista:** Para agregar un nuevo elemento a un arreglo existente, se utiliza el operador `$push`. Deberás usar `updateOne()`.
+
+**Tu tarea:** Escribe la consulta `updateOne()` para añadir una nueva reseña al producto.
+
+---
+
+## Parte 3: Agregaciones
+
+Las **agregaciones** permiten realizar análisis más complejos sobre los datos, como calcular promedios o agrupar información. MongoDB utiliza para ello un sistema de **pipelines** o tuberías, donde cada etapa transforma los datos de una manera determinada.
+
+En este caso, se desea calcular la **puntuación media de las reseñas** para cada producto de la colección.
+
+### Etapas del pipeline
+
+1. **$unwind**: descompone el arreglo `reviews` de cada producto, generando un documento independiente por cada reseña.
+2. **$group**: agrupa los documentos por `_id` de producto y calcula la media (`$avg`) de la puntuación.
+3. **$sort**: ordena los resultados de mayor a menor puntuación promedio.
+
+### Pipeline completo
+
+Este pipeline mostrará cada producto junto con su puntuación media, ordenados de forma descendente.
+
+**Tu tarea:** Construye el pipeline de agregación utilizando las etapas `$unwind`, `$group` y `$sort` para calcular la puntuación media de las reseñas para cada producto y ordenarlos de mayor a menor puntuación promedio. Recuerda que `$unwind` se usa para descomponer arreglos, `$group` para agrupar y calcular agregaciones como `$avg`, y `$sort` para ordenar los resultados.
+
+---
+
+## Parte 4: Ejercicios adicionales (opcional)
+
+Si el alumno completa las secciones anteriores, puede realizar los siguientes ejercicios para reforzar su aprendizaje:
+
+1. **Mostrar productos con bajo stock**
+   Se desea mostrar todos los productos con menos de 5 unidades disponibles.
+
+   **Tu tarea:** Escribe la consulta `find()` utilizando el operador `$lt` (less than) para obtener estos productos.
+
+2. **Proyección de campos específicos**
+   Se desea mostrar únicamente el nombre y el precio de todos los productos.
+
+   **Tu tarea:** Escribe la consulta `find()` para proyectar solo los campos `nombre` y `precio`, excluyendo el `_id`.
+
+3. **Eliminar un producto por su identificador**
+   Se desea borrar un documento concreto de la colección, por ejemplo, el producto con `_id`: "SKU-001".
+
+   **Tu tarea:** Escribe el comando `deleteOne()` para eliminar este producto.
+
+---
+
+## Instrucciones de entrega
+
+1. Crea un nuevo archivo en tu repositorio personal con el nombre
+   `Practica1_MongoDB.md`.
+2. Copia el contenido de esta guía y completa los apartados indicados (por ejemplo, el documento JSON de tu producto).
+3. Añade tus propias consultas y resultados, asegurándote de que funcionan correctamente en tu entorno.
+4. Sube el archivo a tu repositorio y comparte el enlace con el profesor.
+
+---
+
+## Recomendaciones finales
+
+* Si no te sientes cómodo utilizando la consola, puedes emplear **MongoDB Compass**, que proporciona una interfaz visual para crear, consultar y actualizar documentos.
+* No es necesario definir esquemas estrictos; MongoDB permite que cada documento tenga distintos campos. Sin embargo, intenta mantener una estructura coherente entre productos para facilitar las consultas.
+* Lee detenidamente los mensajes de error del shell o de Compass: suelen indicar claramente si la consulta está mal formada o si el campo no existe.
+* Guarda tus ejemplos y resultados. Servirán como base para las siguientes prácticas sobre consultas más avanzadas y modelado de relaciones entre documentos.
