@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle Digimon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-sky-100 via-blue-200 to-blue-400 flex flex-col items-center p-6 font-sans">
+
+  <!-- Botón volver -->
+  <button onclick="window.history.back()" 
+    class="self-start mb-6 bg-gradient-to-r from-blue-600 to-blue-800 text-white px-4 py-2 rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2">
+    ⬅ Volver
+  </button>
+
+  <!-- Contenedor principal -->
+  <div id="detailContainer" 
+       class="max-w-3xl w-full bg-white/80 rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center backdrop-blur-sm border border-blue-100 animate-fade-in">
+  </div>
+
+  <footer class="mt-10 text-blue-900/80 text-sm italic">
+    Desarrollado con ❤️ — API: DigiAPI.com
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const apiUrl = `https://digi-api.com/api/v1/digimon/${id}`;
+    const container = document.getElementById("detailContainer");
+
+    async function fetchDetail() {
+      container.innerHTML = `<p class="text-blue-800 animate-pulse font-semibold text-lg">Cargando detalles del Digimon...</p>`;
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        // ----- SECCIÓN PRINCIPAL -----
+        container.innerHTML = `
+          <div class="flex flex-col items-center">
+            <div class="relative mb-6">
+              <img src="${data.images?.[0]?.href || 'https://upload.wikimedia.org/wikipedia/en/4/46/Digimon_logo.png'}" 
+                   alt="${data.name}" 
+                   class="w-64 h-64 object-contain rounded-xl shadow-lg border border-blue-200 bg-white/50">
+              <div class="absolute top-2 right-2 bg-blue-500/80 text-white text-xs px-2 py-1 rounded-lg shadow">
+                #${data.id}
+              </div>
+            </div>
+
+            <h1 class="text-4xl font-extrabold text-blue-800 drop-shadow-sm mb-3">${data.name}</h1>
+            <p class="text-blue-900/80 text-base italic mb-6 max-w-xl">
+              ${data.description || "Sin descripción disponible. Este Digimon aún es un misterio..."}
+            </p>
+
+            <div class="grid grid-cols-2 gap-4 w-full bg-white/60 backdrop-blur-sm rounded-2xl shadow p-4 text-left text-blue-800 font-medium border border-blue-100 mb-8">
+              <p><strong>Nivel:</strong> ${data.levels?.map(l => l.level).join(', ') || 'Desconocido'}</p>
+              <p><strong>Atributo:</strong> ${data.attributes?.map(a => a.attribute).join(', ') || 'Desconocido'}</p>
+              <p><strong>Tipo:</strong> ${data.types?.map(t => t.type).join(', ') || 'Desconocido'}</p>
+              <p><strong>Campo:</strong> ${data.fields?.map(f => f.field).join(', ') || 'Desconocido'}</p>
+            </div>
+
+            <div id="evolutionContainer" class="w-full"></div>
+          </div>
+        `;
+
+        // ----- EVOLUCIONES -----
+        const evoContainer = document.getElementById("evolutionContainer");
+
+        const hasEvolutions = data.priorEvolutions?.length || data.nextEvolutions?.length;
+
+        if (hasEvolutions) {
+          let evoHTML = `<h2 class="text-2xl font-bold text-blue-800 mb-4">🧬 Línea Evolutiva</h2>`;
+          evoHTML += `<div class="flex flex-wrap justify-center items-center gap-4">`;
+
+          // Evoluciones anteriores
+          if (data.priorEvolutions?.length) {
+            data.priorEvolutions.forEach(prev => {
+              evoHTML += `
+                <div onclick="goToDetail(${prev.id})" 
+                     class="cursor-pointer text-center transition-transform hover:scale-105">
+                  <img src="${prev.image || 'https://upload.wikimedia.org/wikipedia/en/4/46/Digimon_logo.png'}" 
+                       alt="${prev.digimon}" 
+                       class="w-24 h-24 object-contain mx-auto mb-2 rounded-lg bg-white/70 shadow border border-blue-100">
+                  <p class="text-sm font-semibold text-blue-700">${prev.digimon}</p>
+                </div>
+                <span class="text-2xl font-bold text-blue-600">➡️</span>
+              `;
+            });
+          }
+
+          // Digimon actual
+          evoHTML += `
+            <div class="text-center">
+              <img src="${data.images?.[0]?.href || ''}" 
+                   alt="${data.name}" 
+                   class="w-28 h-28 object-contain mx-auto mb-2 rounded-lg bg-white/70 shadow border border-blue-100">
+              <p class="text-sm font-bold text-blue-900">${data.name}</p>
+            </div>
+          `;
+
+          // Evoluciones posteriores
+          if (data.nextEvolutions?.length) {
+            evoHTML += `<span class="text-2xl font-bold text-blue-600">➡️</span>`;
+            data.nextEvolutions.forEach(next => {
+              evoHTML += `
+                <div onclick="goToDetail(${next.id})" 
+                     class="cursor-pointer text-center transition-transform hover:scale-105">
+                  <img src="${next.image || 'https://upload.wikimedia.org/wikipedia/en/4/46/Digimon_logo.png'}" 
+                       alt="${next.digimon}" 
+                       class="w-24 h-24 object-contain mx-auto mb-2 rounded-lg bg-white/70 shadow border border-blue-100">
+                  <p class="text-sm font-semibold text-blue-700">${next.digimon}</p>
+                </div>
+              `;
+            });
+          }
+
+          evoHTML += `</div>`;
+          evoContainer.innerHTML = evoHTML;
+        } else {
+          evoContainer.innerHTML = `<p class="text-blue-800 italic">Este Digimon no tiene evoluciones registradas.</p>`;
+        }
+
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = `<p class="text-red-600 font-semibold">Error al cargar el detalle del Digimon.</p>`;
+      }
+    }
+
+    function goToDetail(id) {
+      window.location.href = "detail.html?id=" + id;
+    }
+
+    fetchDetail();
+  </script>
+
+  <style>
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fade-in 0.6s ease-in-out forwards;
+    }
+  </style>
+</body>
+</html>

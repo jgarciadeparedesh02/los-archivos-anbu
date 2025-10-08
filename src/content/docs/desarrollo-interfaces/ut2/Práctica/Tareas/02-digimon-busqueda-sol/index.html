@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explora el Mundo Digimon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-sky-100 via-blue-200 to-blue-400 flex flex-col items-center p-6 font-sans">
+
+  <header class="text-center mb-10">
+    <h1 class="text-4xl font-extrabold text-blue-800 drop-shadow-md mb-2">
+      🌐 Explora el Mundo Digimon
+    </h1>
+    <p class="text-blue-700 text-lg italic">Descubre criaturas digitales increíbles</p>
+  </header>
+
+  <!-- Formulario de búsqueda -->
+  <div class="flex flex-col sm:flex-row gap-4 items-center mb-10 bg-white/40 backdrop-blur-md p-4 rounded-2xl shadow-lg">
+    <input id="limitInput" type="number" min="1" max="100" placeholder="Número de Digimon a mostrar" 
+      class="border border-blue-400 rounded-lg p-2 w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white/70 placeholder-blue-600 text-blue-800 font-medium">
+    <input id="searchInput" type="text" placeholder="Buscar Digimon por nombre..." 
+      class="border border-blue-400 rounded-lg p-2 w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white/70 placeholder-blue-600 text-blue-800 font-medium">
+    <button id="fetchBtn" 
+      class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white px-5 py-2 rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-all duration-300">
+      🔍 <span>Buscar</span>
+    </button>
+  </div>
+
+  <!-- Contenedor de Digimon -->
+  <div id="digimonContainer" 
+       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full max-w-6xl"></div>
+
+  <script>
+    const apiUrl = "https://digi-api.com/api/v1/digimon";
+    const container = document.getElementById("digimonContainer");
+    const fetchBtn = document.getElementById("fetchBtn");
+    const limitInput = document.getElementById("limitInput");
+    const searchInput = document.getElementById("searchInput");
+
+    async function fetchDigimon(random = false) {
+      const limit = limitInput.value || 12;
+      const search = searchInput.value.trim();
+
+      let url = `${apiUrl}?pageSize=${limit}`;
+      if (search) url = `${apiUrl}?name=${encodeURIComponent(search)}`;
+      else if (random) {
+        // Página aleatoria entre 1 y 10 (aprox 1500 digimon totales)
+        const randomPage = Math.floor(Math.random() * 10) + 1;
+        url = `${apiUrl}?page=${randomPage}&pageSize=${limit}`;
+      }
+
+      container.innerHTML = `<p class="text-blue-800 text-lg animate-pulse font-semibold">Cargando Digimon...</p>`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.content || data.content.length === 0) {
+          container.innerHTML = `<p class="text-red-600 font-semibold">No se encontraron resultados.</p>`;
+          return;
+        }
+
+        container.innerHTML = data.content.map(digi => `
+          <div onclick="goToDetail(${digi.id})"
+               class="group bg-white/80 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer transition-all transform hover:-translate-y-1 hover:scale-105 p-4 backdrop-blur-sm border border-blue-100">
+            <div class="relative">
+              <img src="${digi.image || 'https://upload.wikimedia.org/wikipedia/en/4/46/Digimon_logo.png'}" 
+                   alt="${digi.name}" 
+                   class="w-full h-48 object-contain rounded-lg mb-3 group-hover:scale-105 transition-transform duration-300">
+              <div class="absolute top-2 right-2 bg-blue-500/80 text-white text-xs px-2 py-1 rounded-lg shadow">
+                #${digi.id}
+              </div>
+            </div>
+            <h2 class="text-xl font-bold text-blue-800 text-center">${digi.name}</h2>
+            <p class="text-sm text-gray-600 text-center">${digi.levels?.[0]?.level || 'Nivel desconocido'}</p>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = `<p class="text-red-600 font-semibold">Error al cargar los Digimon.</p>`;
+      }
+    }
+
+    function goToDetail(id) {
+      window.location.href = `detail.html?id=${id}`;
+    }
+
+    // Mostrar lista aleatoria al inicio
+    window.addEventListener("DOMContentLoaded", () => fetchDigimon(true));
+    fetchBtn.addEventListener("click", () => fetchDigimon(false));
+  </script>
+</body>
+</html>
