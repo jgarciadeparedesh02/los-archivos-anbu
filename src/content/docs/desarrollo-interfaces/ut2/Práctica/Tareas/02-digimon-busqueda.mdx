@@ -1,110 +1,118 @@
 ---
-title: "01: Listado de Pokémon con PokeAPI"
-description: "Crea una aplicación web para listar Pokémon, mostrando su número, imagen y tipos utilizando la PokeAPI, con mejoras visuales e interactivas."
+title: "Práctica 02: Explorando el Digimundo con la DigiAPI"
+description: "Desarrolla una aplicación web interactiva para consultar y visualizar Digimon, aplicando peticiones asíncronas, manipulación del DOM y diseño moderno con Tailwind CSS."
 draft: true
 ---
 
-## 🎯 **Objetivo de la actividad**
+¡Hola, futuros Domadores Digitales! 👾
 
-Desarrollar una aplicación web que permita **consultar y visualizar información de Digimon en tiempo real** utilizando la API pública [DigiAPI](https://digi-api.com/api/v1/digimon), aplicando técnicas de **peticiones asíncronas con `fetch`**, **gestión del DOM** y **estilización moderna con Tailwind CSS**.
+En esta emocionante práctica, nos adentraremos en el vasto y fascinante **Digimundo** para construir nuestra propia enciclopedia interactiva. ¿Alguna vez has querido tener toda la información de tus Digimon favoritos al alcance de tu mano? ¡Pues ahora es tu oportunidad de crearlo!
 
----
-
-## 🧠 **Competencias y aprendizajes trabajados**
-
-* Comprender el funcionamiento de una **API REST** y el uso de métodos HTTP (GET).
-* Implementar **peticiones dinámicas** mediante `fetch` y manejo de respuestas JSON.
-* Estructurar un proyecto web con **múltiples páginas interconectadas**.
-* Aplicar **Tailwind CSS** para crear interfaces visualmente atractivas y responsive.
-* Manejar **parámetros en URLs** para mostrar contenido dinámico.
-* Explorar **relaciones entre datos** (líneas evolutivas de Digimon).
+Utilizaremos la poderosa **DigiAPI** para traer a la vida a estas criaturas digitales, aplicando todo lo que hemos aprendido sobre la comunicación con APIs, la magia del `fetch` y, por supuesto, el arte de diseñar interfaces espectaculares con **Tailwind CSS**.
 
 ---
 
-## 🧩 **Descripción de la tarea**
+## 🎯 **Tu Misión: Construir la Digi-Enciclopedia**
 
-Vas a crear una pequeña **aplicación web interactiva** con dos páginas principales:
+Tu objetivo principal es desarrollar una **aplicación web de dos páginas** que permita a cualquier usuario:
 
-### 1️⃣ **Página principal (`index.html`)**
-
-* Muestra un listado de Digimon obtenido desde la API.
-* Al cargar la página, se muestran **Digimon aleatorios**.
-* Incluye un formulario con:
-
-  * Un **campo numérico** para indicar cuántos Digimon mostrar (`limit`).
-  * Un **campo de texto** para buscar por nombre.
-  * Un **botón** que realiza la búsqueda.
-* Cada Digimon se muestra en una **tarjeta con su imagen, nombre y nivel**.
-* Al hacer clic sobre una tarjeta, el usuario accede a la **página de detalle** del Digimon.
-
-### 2️⃣ **Página de detalle (`detail.html`)**
-
-* Muestra la **información completa** del Digimon seleccionado:
-
-  * Nombre, imagen, nivel, tipo, campo y atributo.
-  * Descripción si está disponible.
-* Presenta una **línea evolutiva completa**, con:
-
-  * **Evoluciones anteriores (si las hay)**.
-  * El **Digimon actual**.
-  * **Evoluciones posteriores (si existen)**.
-* Cada Digimon de la línea evolutiva es **clicable**, permitiendo navegar por las distintas etapas.
+1.  **Explorar un listado de Digimon.**
+2.  **Buscar Digimon específicos por nombre o cantidad.**
+3.  **Visualizar el detalle completo de cada Digimon**, incluyendo sus líneas evolutivas.
 
 ---
 
-## 🎨 **Requisitos de diseño**
+## 🧠 **Habilidades que Desbloquearás**
 
-* Utiliza **Tailwind CSS** (vía CDN).
-* Aplica un **diseño moderno, limpio y responsive**, con efectos suaves de transición.
-* Usa un **fondo degradado**, tarjetas con sombras, bordes redondeados y coherencia de color entre ambas páginas.
-* Muestra un mensaje animado o indicativo mientras se cargan los datos.
-* Añade un botón **“Volver”** en la página de detalle.
+Al completar esta práctica, habrás fortalecido tus conocimientos en:
 
----
-
-## 🧩 **API de referencia**
-
-**URL base:**
-
-```
-https://digi-api.com/api/v1/digimon
-```
-
-**Ejemplos útiles:**
-
-* Obtener lista de Digimon:
-  `https://digi-api.com/api/v1/digimon?pageSize=10`
-* Buscar por nombre:
-  `https://digi-api.com/api/v1/digimon?name=Agumon`
-* Consultar detalle por ID:
-  `https://digi-api.com/api/v1/digimon/1`
-
-**Campos principales a utilizar:**
-
-* `name`
-* `images[0].href`
-* `levels[].level`
-* `attributes[].attribute`
-* `types[].type`
-* `fields[].field`
-* `priorEvolutions[]`
-* `nextEvolutions[]`
+*   **Comunicación con APIs REST:** Entender cómo interactuar con servicios externos usando peticiones HTTP (GET).
+*   **Asincronía en JavaScript:** Dominar `fetch` y `async/await` para manejar datos de forma eficiente.
+*   **Manipulación del DOM:** Crear y actualizar elementos HTML dinámicamente con JavaScript.
+*   **Diseño Web Moderno:** Aplicar **Tailwind CSS** para interfaces responsive, atractivas y con una estética profesional.
+*   **Navegación Inteligente:** Gestionar parámetros en URLs para pasar información entre páginas.
+*   **Modelado de Datos:** Comprender y representar relaciones complejas, como las cadenas evolutivas.
 
 ---
 
-## 💡 **Recomendaciones técnicas**
+## 🧩 **El Desafío: Dos Páginas, Un Gran Mundo**
 
-* Usa **`async/await`** para manejar las peticiones `fetch`.
-* Comprueba la existencia de cada propiedad antes de mostrarla (algunos Digimon pueden no tener ciertos datos).
-* Aplica **clases dinámicas de Tailwind** para efectos de hover, sombras y transiciones (`hover:scale-105`, `shadow-lg`, etc.).
-* Divide correctamente el código JS y HTML para mejorar la claridad.
-* Utiliza **parámetros en la URL** (`?id=...`) para enlazar la página principal con la de detalle.
+Tu aplicación constará de dos archivos HTML principales, cada uno con su propósito:
+
+### 1️⃣ **Página Principal: `index.html` (El Centro de Mando)**
+
+Aquí es donde los usuarios comenzarán su aventura. Deberá mostrar:
+
+*   Un **listado inicial de Digimon aleatorios** al cargar la página. ¡Sorpresa!
+*   Un **formulario de búsqueda** intuitivo que incluya:
+    *   Un campo numérico (`limit`) para controlar cuántos Digimon se muestran.
+    *   Un campo de texto para buscar por el nombre de un Digimon.
+    *   Un botón para ejecutar la búsqueda.
+*   Cada Digimon se presentará en una **tarjeta interactiva** con su imagen, nombre y nivel.
+*   Al hacer clic en cualquier tarjeta, el usuario será transportado a la página de detalle de ese Digimon.
+
+### 2️⃣ **Página de Detalle: `detail.html` (El Expediente Completo)**
+
+Esta página revelará todos los secretos del Digimon seleccionado. Deberá mostrar:
+
+*   **Información esencial:** Nombre, imagen, nivel, tipo, campo y atributo.
+*   **Descripción:** Si la DigiAPI la proporciona, claro.
+*   **Línea Evolutiva:** Una representación clara de sus evoluciones directas (anteriores y posteriores).
+*   **Navegación Evolutiva:** Cada Digimon en la línea evolutiva debe ser clicable, permitiendo explorar sus propias fichas de detalle.
+*   Un **botón "Volver"** para regresar al listado principal.
 
 ---
 
-## ✅ **Entrega**
+## 🎨 **Tu Toque Artístico: Requisitos de Diseño**
 
-Deberás entregar un proyecto con los siguientes archivos:
+Queremos que tu Digi-Enciclopedia no solo sea funcional, sino también visualmente impresionante. Aplica estos principios:
+
+*   **Tailwind CSS (vía CDN):** ¡Tu herramienta secreta para un diseño rápido y elegante!
+*   **Estilo Moderno y Responsive:** Un diseño limpio, adaptable a cualquier dispositivo y con transiciones suaves que mejoren la experiencia.
+*   **Estética Coherente:** Utiliza un fondo degradado, tarjetas con sombras y bordes redondeados. Mantén una paleta de colores armoniosa entre ambas páginas.
+*   **Feedback Visual:** Muestra un mensaje animado o un "esqueleto de carga" (shimmer effect) mientras los datos se están obteniendo.
+
+---
+
+## 🧩 **La DigiAPI: Tu Fuente de Poder**
+
+Aquí tienes los puntos clave para interactuar con la DigiAPI:
+
+**URL Base:**
+`https://digi-api.com/api/v1/digimon`
+
+**Ejemplos de Uso:**
+
+*   **Listar Digimon:** `https://digi-api.com/api/v1/digimon?pageSize=10`
+*   **Buscar por Nombre:** `https://digi-api.com/api/v1/digimon?name=Agumon`
+*   **Detalle por ID:** `https://digi-api.com/api/v1/digimon/1`
+
+**Campos Esenciales a Utilizar:**
+
+*   `name`
+*   `images[0].href` (la URL de la imagen)
+*   `levels[].level`
+*   `attributes[].attribute`
+*   `types[].type`
+*   `fields[].field`
+*   `priorEvolutions[]` (para evoluciones anteriores)
+*   `nextEvolutions[]` (para evoluciones posteriores)
+
+---
+
+## 💡 **Consejos del Profesor (¡No te los saltes!)**
+
+*   **`async/await` es tu amigo:** Úsalo para que tus peticiones `fetch` sean claras y fáciles de manejar.
+*   **¡Protege tu código!** Comprueba siempre si las propiedades existen (`data.levels?.[0]?.level`) antes de intentar acceder a ellas. No todos los Digimon tienen todos los datos.
+*   **Clases Dinámicas de Tailwind:** Experimenta con `hover:scale-105`, `shadow-lg`, `transition-all` para dar vida a tus elementos.
+*   **Organización:** Mantén tu código JavaScript y HTML bien estructurado y legible.
+*   **URLs con Parámetros:** Recuerda cómo usar `?id=...` para pasar el ID del Digimon entre `index.html` y `detail.html`.
+
+---
+
+## ✅ **Tu Entrega Final**
+
+Deberás entregar un proyecto con la siguiente estructura:
 
 ```
 📁 proyecto-digimon/
@@ -115,13 +123,13 @@ Deberás entregar un proyecto con los siguientes archivos:
 
 ---
 
-## 🧾 **Criterios de evaluación**
+## 🧾 **Criterios de Evaluación (¡Así sabrás si eres un Maestro Domador!)**
 
-| Criterio           | Descripción                                                            | Puntuación |
-| ------------------ | ---------------------------------------------------------------------- | ---------- |
-| 🌐 Integración API | Uso correcto de la API DigiAPI, con peticiones y manejo de datos JSON. | 3 pts      |
-| 💻 Interactividad  | Navegación funcional entre la lista y el detalle.                      | 2 pts      |
-| 🎨 Diseño          | Uso de Tailwind, coherencia estética y adaptación responsive.          | 2 pts      |
-| 🔄 Evoluciones     | Correcta visualización de evoluciones anteriores y posteriores.        | 2 pts      |
-| 📋 Código limpio   | Uso adecuado de funciones, comentarios y buenas prácticas JS.          | 1 pt       |
-| **Total**          |                                                                        | **10 pts** |
+| Criterio                  | Descripción                                                                    | Puntuación |
+| :------------------------ | :----------------------------------------------------------------------------- | :--------- |
+| 🌐 **Integración API**    | Uso correcto de la DigiAPI, peticiones y manejo de datos JSON.                 | 3 pts      |
+| 💻 **Interactividad**     | Navegación fluida entre el listado y el detalle, y entre evoluciones.          | 2 pts      |
+| 🎨 **Diseño y Estética**  | Aplicación de Tailwind, coherencia visual, responsive y efectos atractivos.    | 2 pts      |
+| 🔄 **Líneas Evolutivas**  | Correcta visualización de evoluciones directas (anteriores y posteriores).     | 2 pts      |
+| 📋 **Calidad del Código** | Uso adecuado de funciones, comentarios, legibilidad y buenas prácticas JS/HTML. | 1 pt       |
+| **Total**                 |                                                                                | **10 pts** |

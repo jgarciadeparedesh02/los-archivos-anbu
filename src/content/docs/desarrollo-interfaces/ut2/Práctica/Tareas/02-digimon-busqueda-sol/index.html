@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Explora el Mundo Digimon</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-gradient-to-b from-sky-100 via-blue-200 to-blue-400 flex flex-col items-center p-6 font-sans">
 
-  <header class="text-center mb-10">
-    <h1 class="text-4xl font-extrabold text-blue-800 drop-shadow-md mb-2">
-      🌐 Explora el Mundo Digimon
-    </h1>
-    <p class="text-blue-700 text-lg italic">Descubre criaturas digitales increíbles</p>
-  </header>
+<body class="min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 flex flex-col items-center p-6 font-sans">
 
-  <!-- Formulario de búsqueda -->
-  <div class="flex flex-col sm:flex-row gap-4 items-center mb-10 bg-white/40 backdrop-blur-md p-4 rounded-2xl shadow-lg">
-    <input id="limitInput" type="number" min="1" max="100" placeholder="Número de Digimon a mostrar" 
-      class="border border-blue-400 rounded-lg p-2 w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white/70 placeholder-blue-600 text-blue-800 font-medium">
-    <input id="searchInput" type="text" placeholder="Buscar Digimon por nombre..." 
-      class="border border-blue-400 rounded-lg p-2 w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white/70 placeholder-blue-600 text-blue-800 font-medium">
-    <button id="fetchBtn" 
-      class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white px-5 py-2 rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-all duration-300">
-      🔍 <span>Buscar</span>
-    </button>
+  <div class="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center p-6">
+    <header class="text-center py-8 mb-12">
+      <h1 class="text-6xl font-extrabold text-white drop-shadow-lg mb-3 leading-tight">
+        🌐 Explora el Mundo Digimon
+      </h1>
+      <p class="text-blue-200 text-2xl italic drop-shadow-md">Descubre criaturas digitales increíbles</p>
+    </header>
+
+    <!-- Formulario de búsqueda -->
+    <div
+      class="flex flex-col sm:flex-row gap-4 items-center mb-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-blue-200/50">
+      <input id="limitInput" type="number" min="1" max="100" placeholder="Cantidad"
+        class="bg-white/20 border border-blue-300/50 rounded-lg p-3 w-32 text-white placeholder-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all duration-300">
+      <input id="searchInput" type="text" placeholder="Buscar Digimon..."
+        class="bg-white/20 border border-blue-300/50 rounded-lg p-3 w-64 text-white placeholder-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all duration-300">
+      <button id="fetchBtn"
+        class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-lg shadow-xl hover:scale-105 active:scale-95 hover:from-blue-600 hover:to-blue-800 transition-all duration-300 font-semibold">
+        🔍 <span>Buscar</span>
+      </button>
+    </div>
+
+    <!-- Contenedor de Digimon -->
+    <div id="digimonContainer"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full max-w-6xl"></div>
   </div>
-
-  <!-- Contenedor de Digimon -->
-  <div id="digimonContainer" 
-       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full max-w-6xl"></div>
 
   <script>
     const apiUrl = "https://digi-api.com/api/v1/digimon";
@@ -37,6 +42,15 @@
     const fetchBtn = document.getElementById("fetchBtn");
     const limitInput = document.getElementById("limitInput");
     const searchInput = document.getElementById("searchInput");
+
+    // Shimmer effect for loading
+    const shimmerCard = `
+      <div class="bg-white/10 rounded-2xl shadow-lg p-4 backdrop-blur-md border border-blue-200/50 animate-pulse">
+        <div class="w-full h-48 bg-gray-700 rounded-lg mb-3"></div>
+        <div class="h-6 bg-gray-700 rounded w-3/4 mb-2 mx-auto"></div>
+        <div class="h-4 bg-gray-700 rounded w-1/2 mx-auto"></div>
+      </div>
+    `;
 
     async function fetchDigimon(random = false) {
       const limit = limitInput.value || 12;
@@ -50,35 +64,36 @@
         url = `${apiUrl}?page=${randomPage}&pageSize=${limit}`;
       }
 
-      container.innerHTML = `<p class="text-blue-800 text-lg animate-pulse font-semibold">Cargando Digimon...</p>`;
+      container.innerHTML = Array(limit).fill(shimmerCard).join(''); // Show shimmer cards
 
       try {
         const res = await fetch(url);
         const data = await res.json();
 
         if (!data.content || data.content.length === 0) {
-          container.innerHTML = `<p class="text-red-600 font-semibold">No se encontraron resultados.</p>`;
+          container.innerHTML = `<p class="text-white font-semibold text-center col-span-full relative z-10">No se encontraron resultados.</p>`;
           return;
         }
 
         container.innerHTML = data.content.map(digi => `
           <div onclick="goToDetail(${digi.id})"
-               class="group bg-white/80 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer transition-all transform hover:-translate-y-1 hover:scale-105 p-4 backdrop-blur-sm border border-blue-100">
-            <div class="relative">
+               class="group bg-white/10 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer transition-all transform hover:-translate-y-2 hover:scale-105 p-4 backdrop-blur-md border border-blue-200/50 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="relative z-10">
               <img src="${digi.image || 'https://upload.wikimedia.org/wikipedia/en/4/46/Digimon_logo.png'}" 
                    alt="${digi.name}" 
-                   class="w-full h-48 object-contain rounded-lg mb-3 group-hover:scale-105 transition-transform duration-300">
-              <div class="absolute top-2 right-2 bg-blue-500/80 text-white text-xs px-2 py-1 rounded-lg shadow">
+                   class="w-full h-48 object-contain rounded-lg mb-3 group-hover:scale-105 transition-transform duration-300 filter group-hover:brightness-110">
+              <div class="absolute top-2 right-2 bg-blue-600/80 text-white text-xs px-3 py-1 rounded-full shadow-md font-bold">
                 #${digi.id}
               </div>
             </div>
-            <h2 class="text-xl font-bold text-blue-800 text-center">${digi.name}</h2>
-            <p class="text-sm text-gray-600 text-center">${digi.levels?.[0]?.level || 'Nivel desconocido'}</p>
+            <h2 class="text-2xl font-bold text-white text-center mt-3 drop-shadow-md">${digi.name}</h2>
+            <p class="text-base text-blue-200 text-center">${digi.levels?.[0]?.level || 'Nivel desconocido'}</p>
           </div>
         `).join('');
       } catch (error) {
         console.error(error);
-        container.innerHTML = `<p class="text-red-600 font-semibold">Error al cargar los Digimon.</p>`;
+        container.innerHTML = `<p class="text-white font-semibold text-center col-span-full relative z-10">Error al cargar los Digimon.</p>`;
       }
     }
 
@@ -91,4 +106,5 @@
     fetchBtn.addEventListener("click", () => fetchDigimon(false));
   </script>
 </body>
+
 </html>
