@@ -1,0 +1,142 @@
+---
+title: '03: Consumiendo TheCatAPI y gestionando favoritos'
+description: 'Desarrolla una aplicación para interactuar con TheCatAPI y gestionar favoritos usando localStorage.'
+draft: true
+---
+
+# Práctica: Consumiendo TheCatAPI y gestionando favoritos (Desarrollo Guiado)
+
+En esta práctica, tu objetivo es desarrollar una aplicación web que interactúe con TheCatAPI para mostrar imágenes aleatorias de gatos. Además, deberás implementar una funcionalidad para que los usuarios puedan marcar sus imágenes favoritas y guardarlas localmente en su navegador utilizando `localStorage`.
+
+## 1. Introducción a TheCatAPI
+
+TheCatAPI es una API RESTful que proporciona acceso a una vasta colección de imágenes de gatos. Es una excelente API para practicar el consumo de servicios web debido a su simplicidad y la naturaleza divertida de su contenido.
+
+Puedes encontrar la documentación completa en [TheCatAPI Developers](https://developers.thecatapi.com/view-account/ylX4blBYT9FaoVd6OhvR?report=bOoHBz-8t).
+
+### Puntos clave de la API:
+
+*   **Endpoint para imágenes aleatorias:** `https://api.thecatapi.com/v1/images/search`
+*   **Endpoint para imágenes por ID:** `https://api.thecatapi.com/v1/images/{image_id}`
+*   **API Key:** Aunque no es estrictamente necesaria para las consultas básicas de búsqueda, es recomendable obtener una si planeas hacer un uso más intensivo o para funcionalidades como votar o subir imágenes. Para esta práctica, no la necesitarás para la búsqueda de imágenes.
+
+## 2. Configuración inicial del proyecto
+
+Crea un archivo HTML (`index.html`) y un archivo JavaScript (`script.js`) en tu proyecto. Enlaza el archivo JavaScript al HTML. Utiliza la siguiente estructura HTML y estilos CSS como base:
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheCatAPI Favoritos</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        #cat-image-container { margin-top: 20px; }
+        #cat-image { max-width: 500px; height: auto; display: block; margin-bottom: 10px; }
+        .favorite-button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; margin-right: 5px; }
+        .remove-favorite-button { background-color: #f44336; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        .favorite-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .favorite-item img { width: 100px; height: auto; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Imágenes de Gatos</h1>
+    <button id="load-cat-button">Cargar nuevo gato</button>
+    <div id="cat-image-container">
+        <img id="cat-image" src="" alt="Imagen de gato">
+        <button id="add-favorite-button" class="favorite-button">Añadir a favoritos</button>
+    </div>
+
+    <h2>Mis Favoritos</h2>
+    <div id="favorites-container">
+        <!-- Aquí se cargarán los favoritos -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+```
+
+## 3. Consultando la API y mostrando imágenes
+
+En tu archivo `script.js`, deberás implementar la lógica para:
+
+1.  **Obtener referencias** a los elementos HTML necesarios: el botón `load-cat-button`, la imagen `cat-image`, el botón `add-favorite-button` y el contenedor `favorites-container`.
+2.  Crear una **función asíncrona** (por ejemplo, `loadNewCat`) que realice una petición `fetch` al endpoint de imágenes aleatorias de TheCatAPI (`https://api.thecatapi.com/v1/images/search`).
+3.  Una vez obtenida la respuesta, **extraer la URL de la imagen** y el `id` del gato. Actualiza el atributo `src` de la etiqueta `<img>` con la URL obtenida.
+4.  **Almacenar el `id` del gato actual** en una variable global (por ejemplo, `currentCatId`) para poder referenciarlo al añadir a favoritos.
+5.  Añadir un **`event listener` al botón "Cargar nuevo gato"** para que, al hacer clic, se ejecute la función `loadNewCat`.
+6.  Asegúrate de manejar posibles **errores** durante la petición a la API (por ejemplo, usando un bloque `try...catch`).
+7.  Llama a `loadNewCat()` al inicio para que se muestre una imagen de gato al cargar la página.
+
+## 4. Trabajando con `localStorage`
+
+`localStorage` es una API web que permite a las aplicaciones web almacenar datos de forma persistente en el navegador del usuario. Los datos almacenados en `localStorage` no tienen fecha de caducidad y permanecen disponibles incluso después de cerrar el navegador o apagar el ordenador, a diferencia de `sessionStorage` que se borra al cerrar la pestaña o el navegador.
+
+Es importante recordar que `localStorage` solo puede almacenar **cadenas de texto**. Si necesitas guardar objetos o arrays, deberás convertirlos a cadenas JSON antes de guardarlos y parsearlos de nuevo a su formato original al recuperarlos.
+
+### Métodos principales de `localStorage`:
+
+*   `localStorage.setItem(key, value)`:
+    *   Guarda un par clave-valor en `localStorage`. Tanto `key` como `value` deben ser cadenas de texto.
+    *   Ejemplo: `localStorage.setItem('nombreUsuario', 'Alice');`
+    *   Ejemplo con objeto/array: `localStorage.setItem('misFavoritos', JSON.stringify(['id1', 'id2']));`
+
+*   `localStorage.getItem(key)`:
+    *   Recupera el valor asociado a una `key` específica de `localStorage`. Devuelve `null` si la clave no existe.
+    *   Ejemplo: `const usuario = localStorage.getItem('nombreUsuario');`
+    *   Ejemplo con objeto/array: `const favoritos = JSON.parse(localStorage.getItem('misFavoritos')) || [];` (El `|| []` es útil para inicializar un array vacío si no hay nada guardado).
+
+*   `localStorage.removeItem(key)`:
+    *   Elimina el par clave-valor asociado a una `key` específica de `localStorage`.
+    *   Ejemplo: `localStorage.removeItem('nombreUsuario');`
+
+*   `localStorage.clear()`:
+    *   Elimina **todos** los pares clave-valor almacenados en `localStorage` para el dominio actual. ¡Úsalo con precaución!
+    *   Ejemplo: `localStorage.clear();`
+
+## 5. Gestionando Favoritos con `localStorage`
+
+Ahora, deberás implementar la lógica para guardar y borrar favoritos utilizando los conceptos de `localStorage` explicados anteriormente.
+
+### 5.1. Guardar favoritos
+
+1.  Crea una función (por ejemplo, `saveFavorite`) que reciba el `id` de un gato como argumento.
+2.  Dentro de esta función, recupera la lista actual de favoritos de `localStorage`. Si no existe, inicialízala como un array vacío.
+3.  Añade el `id` del gato a la lista de favoritos, asegurándote de no añadir duplicados.
+4.  Guarda la lista actualizada de favoritos en `localStorage`.
+5.  Añade un **`event listener` al botón "Añadir a favoritos"** para que, al hacer clic, se llame a `saveFavorite` con el `currentCatId`.
+6.  Después de guardar un favorito, deberás **actualizar la visualización de la lista de favoritos**.
+
+### 5.2. Cargar y mostrar favoritos
+
+1.  Crea una función asíncrona (por ejemplo, `renderFavorites`) que se encargue de mostrar todos los gatos favoritos.
+2.  Recupera la lista de `id`s de gatos favoritos de `localStorage`.
+3.  Para cada `id` de la lista, realiza una petición `fetch` a TheCatAPI (`https://api.thecatapi.com/v1/images/{image_id}`) para obtener la URL de la imagen de ese gato específico.
+4.  Crea dinámicamente elementos HTML (`<img>`, `<button>`) para mostrar cada gato favorito en el `favorites-container`.
+5.  Asegúrate de que cada elemento de favorito incluya un botón para "Eliminar" y que este botón tenga un atributo `data-cat-id` con el `id` del gato correspondiente.
+6.  Llama a `renderFavorites()` al inicio de tu `script.js` para que los favoritos se carguen al abrir la página.
+
+### 5.3. Borrar favoritos
+
+1.  Crea una función (por ejemplo, `removeFavorite`) que reciba el `id` de un gato a eliminar.
+2.  Recupera la lista actual de favoritos de `localStorage`.
+3.  Filtra la lista para eliminar el `id` del gato especificado.
+4.  Guarda la lista actualizada en `localStorage`.
+5.  Añade un **`event listener` a cada botón "Eliminar"** (creado dinámicamente en `renderFavorites`) para que, al hacer clic, se llame a `removeFavorite` con el `id` del gato correspondiente.
+6.  Después de eliminar un favorito, deberás **actualizar la visualización de la lista de favoritos**.
+
+## 6. Tareas a realizar (Resumen)
+
+Tu `script.js` debe implementar la siguiente funcionalidad:
+
+*   Cargar y mostrar una imagen aleatoria de gato al inicio y al hacer clic en un botón.
+*   Guardar el ID del gato actual.
+*   Añadir el gato actual a una lista de favoritos almacenada en `localStorage`.
+*   Mostrar la lista de gatos favoritos, cargando sus imágenes desde la API.
+*   Eliminar gatos de la lista de favoritos y actualizar `localStorage` y la interfaz.
+*   Manejar errores en las peticiones a la API.
+
+¡Mucha suerte con la práctica!

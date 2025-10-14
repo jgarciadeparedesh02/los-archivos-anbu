@@ -1,0 +1,370 @@
+---
+title: "07. TypeScript: El Superhéroe que tu JavaScript Necesita"
+description: "Descubre cómo TypeScript eleva tu código JavaScript a un nuevo nivel de robustez y mantenibilidad."
+draft: true
+---
+
+¡Hola, futuro desarrollador de interfaces!
+
+Ya hemos visto cómo JavaScript nos permite dar vida a nuestras páginas web, manipulando el DOM y creando interacciones dinámicas. Pero, ¿alguna vez te has encontrado con errores extraños en tiempo de ejecución que te hacen perder horas depurando? ¿O has trabajado en un proyecto grande donde entender el código de otro (o el tuyo propio de hace unos meses) era una auténtica odisea?
+
+Si la respuesta es sí, prepárate para conocer a tu nuevo mejor amigo: **TypeScript**.
+
+---
+
+## ¿Qué es TypeScript y por qué es un superhéroe?
+
+Imagina que JavaScript es un coche deportivo potente y rápido, pero sin cinturones de seguridad ni airbags. Te lleva donde quieres ir, pero un pequeño error puede tener consecuencias inesperadas.
+
+**TypeScript (TS)** es ese mismo coche, pero con todos los sistemas de seguridad activados. Es un "superconjunto" de JavaScript, lo que significa que **todo el código JavaScript válido es también código TypeScript válido**. Pero TS añade una capa extra de seguridad y claridad: **los tipos estáticos**.
+
+En pocas palabras, TypeScript te permite decirle a tu código qué tipo de datos esperas en cada momento (un número, un texto, un objeto con ciertas propiedades, etc.). Y lo mejor de todo: **el propio editor de código (o el compilador) te avisará si algo no encaja, ¡antes de que ejecutes el programa!**
+
+:::tip
+
+Ejemplo del día a día
+
+Piensa que estás construyendo una aplicación de gestión de tareas. Si en JavaScript intentas guardar un número donde esperas un texto para el título de una tarea, el programa podría fallar en tiempo de ejecución. Con TypeScript, el editor te diría: "¡Ojo! Aquí esperas un `string`, no un `number`", y te señalaría el error al instante. Es como tener un asistente personal que revisa tu código constantemente.
+:::
+
+---
+
+## Las Superpoderes de TypeScript: ¿Por qué usarlo?
+
+Adoptar TypeScript es una decisión estratégica que te ahorrará muchos dolores de cabeza y te hará un desarrollador más eficiente. Aquí sus principales ventajas:
+
+### Claridad y Mantenibilidad
+Los tipos actúan como documentación viva. Cuando ves una función que espera un `Usuario` y devuelve una `Promesa<Pedido[]>`, sabes exactamente qué hace sin tener que bucear en su implementación. Esto es oro puro en proyectos grandes o cuando trabajas en equipo.
+
+### Detección Temprana de Errores
+La ventaja más obvia. El compilador de TypeScript es como un "linter" supervitaminado que encuentra errores de tipo antes de que tu código llegue al navegador. Esto reduce drásticamente los bugs en producción y el tiempo de depuración.
+
+### Escalabilidad para Proyectos Grandes
+Cuando tu aplicación crece, la complejidad se dispara. TypeScript te ayuda a mantener el orden y la coherencia, haciendo que sea mucho más fácil añadir nuevas funcionalidades o refactorizar código existente sin miedo a romper algo.
+
+### Experiencia de Desarrollo Mejorada (DX)
+Editores como VS Code están diseñados para sacar el máximo partido a TypeScript. Obtendrás:
+- **Autocompletado inteligente**: Te sugiere propiedades y métodos disponibles.
+- **Refactorización segura**: Cambia nombres de variables o funciones con confianza.
+- **Navegación de código**: Salta rápidamente a la definición de cualquier tipo o función.
+
+---
+
+## Primeros Pasos con TypeScript: ¡Manos a la Obra!
+
+Configurar TypeScript es sorprendentemente sencillo. Para ello, necesitaremos **Node.js** y **npm** (Node Package Manager).
+
+**Node.js** es un entorno de ejecución de JavaScript de código abierto y multiplataforma que permite a los desarrolladores ejecutar código JavaScript fuera del navegador web. Es fundamental para herramientas de desarrollo modernas.
+
+**npm** (Node Package Manager) es el gestor de paquetes por defecto para Node.js. Permite a los desarrolladores compartir y reutilizar código, así como gestionar las dependencias de sus proyectos.
+
+Si ya tienes Node.js instalado (que incluye npm), estás a un par de comandos de distancia.
+
+1.  **Crea tu proyecto**:
+    ```bash
+    mkdir mi-proyecto-ts
+    cd mi-proyecto-ts
+    npm init -y
+    ```
+
+2.  **Instala TypeScript**:
+    ```bash
+    npm install typescript --save-dev
+    ```
+    Esto instala TypeScript como una dependencia de desarrollo.
+
+3.  **Inicializa la configuración de TypeScript**:
+    ```bash
+    npx tsc --init
+    ```
+    Este comando crea el archivo `tsconfig.json` en la raíz de tu proyecto. Este archivo es el cerebro de TypeScript, donde le dices cómo quieres que compile tu código (qué versión de JavaScript de salida, dónde buscar los archivos, etc.).
+
+4.  **Estructura básica de carpetas**:
+    Crea una carpeta `src/` para tu código TypeScript (`.ts`) y una carpeta `dist/` donde se guardará el código JavaScript compilado (`.js`). La carpeta `dist` (de *distribution*) contendrá la versión de tu código lista para ser ejecutada en el navegador o en Node.js, después de que TypeScript lo haya transformado a JavaScript estándar.
+
+    ```
+    mi-proyecto-ts/
+    ├── tsconfig.json
+    ├── package.json
+    ├── src/
+    │   └── main.ts
+    └── dist/ (vacía por ahora)
+    ```
+
+5.  **Compila tu código**:
+    Para transformar tu TypeScript en JavaScript, ejecuta:
+    ```bash
+    npx tsc
+    ```
+    Aquí, `tsc` es el compilador de TypeScript. Su función principal es tomar tus archivos `.ts` (código TypeScript) y convertirlos en archivos `.js` (código JavaScript) que los navegadores y entornos de ejecución como Node.js pueden entender. Esto leerá tu `src/main.ts` y generará `dist/main.js`.
+
+    :::note 
+    
+    Modo de vigilancia
+    
+    Para un desarrollo más fluido, puedes usar el modo de vigilancia:
+    ```bash
+    npx tsc --watch
+    ```
+    Así, cada vez que guardes un archivo `.ts`, TypeScript lo recompilará automáticamente. ¡Comodísimo!
+    :::
+
+---
+
+## Fundamentos de TypeScript: Construyendo con Tipos
+
+Ahora que tenemos el entorno listo, veamos los pilares que hacen de TypeScript una herramienta tan potente.
+
+### 1. Tipos Básicos: La Base de Todo
+
+Los tipos más comunes son tus viejos conocidos, pero ahora con una etiqueta explícita:
+
+```typescript
+let nombre: string = "Alicia"; // Solo acepta texto
+let edad: number = 30;       // Solo acepta números
+let estaActivo: boolean = true; // Solo acepta true o false
+let cualquierCosa: any = "Puedo ser lo que sea"; // ¡Evita 'any' si puedes!
+```
+
+:::tip 
+
+Inferencia de tipos
+
+TypeScript es inteligente. Si inicializas una variable, a menudo puede inferir su tipo sin que se lo digas explícitamente:
+```typescript
+let ciudad = "Cáceres"; // TypeScript sabe que es un 'string'
+// ciudad = 123; // ❌ Error: Type 'number' is not assignable to type 'string'.
+```
+Esto te permite escribir menos, pero seguir teniendo la seguridad de los tipos.
+:::
+
+### 2. Arrays y Objetos: Estructuras Tipadas
+
+#### Arrays
+Para los arrays, indicamos el tipo de los elementos que contendrá:
+
+```typescript
+let nombresDeAlumnos: string[] = ["Juan", "María", "Pedro"];
+let notas: number[] = [8.5, 7, 9.2];
+```
+
+#### Objetos e Interfaces
+Aquí es donde TypeScript brilla de verdad. Las **interfaces** te permiten definir la "forma" que deben tener tus objetos.
+
+```typescript
+interface Tarea {
+  id: string;
+  titulo: string;
+  completada: boolean;
+  fechaLimite?: Date; // El '?' indica que es opcional
+}
+
+const miPrimeraTarea: Tarea = {
+  id: "abc-123",
+  titulo: "Aprender TypeScript",
+  completada: false,
+};
+
+// const tareaInvalida: Tarea = { id: "def-456", titulo: "Sin completar" };
+// ❌ Error: Property 'completada' is missing in type '{ id: string; titulo: string; }'
+```
+Las interfaces son como contratos: si un objeto dice ser una `Tarea`, debe cumplir con todas las propiedades definidas en la interfaz (a menos que sean opcionales).
+
+### 3. Funciones con Tipos: Entradas y Salidas Claras
+
+Las funciones son el corazón de cualquier aplicación. Con TypeScript, puedes definir claramente qué esperan como argumentos y qué tipo de valor devolverán.
+
+```typescript
+function saludar(nombre: string): string {
+  return `¡Hola, ${nombre}! Bienvenido a la UT2.`;
+}
+
+const mensaje = saludar("Estudiante"); // mensaje será de tipo 'string'
+
+function mostrarMensaje(mensaje: string): void { // 'void' significa que no devuelve nada
+  console.log(mensaje);
+}
+```
+
+### 4. Funciones Asincrónicas y Promesas Tipadas
+
+Trabajar con operaciones asíncronas (como llamadas a APIs) es muy común. TypeScript te ayuda a tipar las promesas para saber qué esperar cuando se resuelvan.
+
+```typescript
+interface Usuario {
+  id: number;
+  nombre: string;
+  email: string;
+}
+
+async function obtenerUsuarios(): Promise<Usuario[]> {
+  const respuesta = await fetch("https://jsonplaceholder.typicode.com/users");
+  if (!respuesta.ok) {
+    throw new Error(`HTTP error! status: ${respuesta.status}`);
+  }
+  const datos: Usuario[] = await respuesta.json(); // Aseguramos que los datos son un array de Usuario
+  return datos;
+}
+
+// Uso:
+obtenerUsuarios()
+  .then(usuarios => console.log("Usuarios cargados:", usuarios))
+  .catch(error => console.error("Error al obtener usuarios:", error));
+```
+Aquí, `Promise<Usuario[]>` nos dice que la función eventualmente nos dará un array de objetos `Usuario`.
+
+### 5. Modularización: Organizando tu Código con `import` y `export`
+
+Al igual que en JavaScript moderno, puedes dividir tu código en módulos para mantenerlo organizado y reutilizable. TypeScript lo integra perfectamente.
+
+**`src/utils.ts`**
+```typescript
+export interface Producto {
+  id: string;
+  nombre: string;
+  precio: number;
+}
+
+export function calcularIVA(precio: number, iva: number = 0.21): number {
+  return precio * iva;
+}
+```
+
+**`src/main.ts`**
+```typescript
+import { Producto, calcularIVA } from "./utils";
+
+const miProducto: Producto = {
+  id: "prod-001",
+  nombre: "Teclado Mecánico",
+  precio: 85.50,
+};
+
+const ivaProducto = calcularIVA(miProducto.precio);
+console.log(`El IVA del ${miProducto.nombre} es: ${ivaProducto.toFixed(2)}€`);
+```
+
+:::note
+
+Importante para el navegador
+
+Recuerda que, si vas a usar estos módulos en el navegador, tu HTML debe cargar el archivo JavaScript compilado (`dist/main.js`) como un módulo:
+```html
+<script type="module" src="dist/main.js"></script>
+```
+:::
+
+### 6. Tipos Avanzados y Utilidades
+
+TypeScript ofrece un universo de tipos para modelar cualquier escenario:
+
+-   **`type` alias**: Crea un nuevo nombre para un tipo existente o una combinación de tipos.
+    ```typescript
+    type ID = string | number; // Un ID puede ser string o number
+    type EstadoTarea = "pendiente" | "en progreso" | "completada";
+
+    let miId: ID = "user-123";
+    let estadoActual: EstadoTarea = "en progreso";
+    ```
+-   **`enum`**: Define un conjunto de constantes con nombre.
+    ```typescript
+    enum Prioridad {
+      Baja,
+      Media,
+      Alta
+    }
+
+    let prioridadTarea: Prioridad = Prioridad.Media;
+    console.log(prioridadTarea); // 1 (por defecto, son numéricos)
+    ```
+-   **Uniones (`|`) e Intersecciones (`&`)**: Combina tipos de formas potentes.
+    ```typescript
+    type ResultadoOperacion = { exito: true; data: any } | { exito: false; error: string };
+
+    function procesar(): ResultadoOperacion {
+      // ... lógica
+      return { exito: true, data: { mensaje: "Operación exitosa" } };
+    }
+    ```
+
+---
+
+## Ejemplo Práctico: Un Mini Gestor de Contactos
+
+Para consolidar lo aprendido, vamos a crear un pequeño gestor de contactos.
+
+**`src/contactos.ts`**
+```typescript
+interface Contacto {
+  id: string;
+  nombre: string;
+  email: string;
+  telefono?: string; // Opcional
+}
+
+const contactos: Contacto[] = [];
+
+function agregarContacto(nombre: string, email: string, telefono?: string): void {
+  const nuevoContacto: Contacto = {
+    id: crypto.randomUUID(),
+    nombre,
+    email,
+    telefono,
+  };
+  contactos.push(nuevoContacto);
+  console.log(`Contacto '${nombre}' añadido.`);
+}
+
+function buscarContactoPorNombre(nombre: string): Contacto | undefined {
+  return contactos.find(c => c.nombre.toLowerCase() === nombre.toLowerCase());
+}
+
+function listarContactos(): Contacto[] {
+  return [...contactos]; // Devolvemos una copia para no modificar el original
+}
+
+// Añadimos algunos contactos
+agregarContacto("Ana García", "ana.garcia@example.com", "666111222");
+agregarContacto("Luis Pérez", "luis.perez@example.com");
+
+// Buscamos y listamos
+const ana = buscarContactoPorNombre("Ana García");
+if (ana) {
+  console.log("Encontrado:", ana);
+}
+
+console.log("Todos los contactos:", listarContactos());
+```
+
+Compila este archivo (`npx tsc src/contactos.ts`) y luego ejecuta el `.js` resultante con Node.js (`node dist/contactos.js`) para ver la magia de TypeScript en acción.
+
+---
+
+## Resumen: Tu Kit de Herramientas TypeScript
+
+Para dominar TypeScript y sacarle el máximo partido en tus proyectos de interfaces, concéntrate en estos puntos clave:
+
+| Tema                          | Qué debes saber hacer                                   |
+| :---------------------------- | :------------------------------------------------------ |
+| **Configuración**             | `npm install typescript`, `npx tsc --init`, `tsconfig.json` |
+| **Tipos Básicos**             | `string`, `number`, `boolean`, `any`, inferencia de tipos |
+| **Arrays y Objetos**          | `string[]`, `number[]`, `interface` para definir formas de objetos |
+| **Funciones Tipadas**         | Definir tipos para parámetros y valores de retorno (`void`, `string`, `Promise<T>`) |
+| **Módulos**                   | `import` y `export` para organizar tu código |
+| **Tipos Avanzados**           | `type` alias, `enum`, uniones (`|`), opcionales (`?`) |
+| **Compilación**               | `npx tsc` y `npx tsc --watch` para generar JavaScript |
+
+---
+
+## Consejo Final: ¡No Tengas Miedo a los Tipos!
+
+Al principio, TypeScript puede parecer un poco más "estricto" o que te obliga a escribir más código. Pero te aseguro que esa inversión inicial se traduce en:
+
+-   **Menos bugs** en producción.
+-   **Código más fácil de leer** y entender.
+-   **Mayor confianza** al refactorizar o añadir nuevas funcionalidades.
+-   **Una experiencia de desarrollo mucho más placentera**.
+
+Es como aprender a conducir con un buen instructor: te enseña las reglas y te corrige al principio, pero luego te convierte en un conductor seguro y eficiente. ¡TypeScript es ese instructor para tu código!
+
+¡A por ello! En la siguiente unidad, veremos cómo estos conceptos se aplican en frameworks modernos para construir interfaces aún más complejas.
