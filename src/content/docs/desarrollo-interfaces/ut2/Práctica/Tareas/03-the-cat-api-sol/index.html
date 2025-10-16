@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TheCatAPI Favoritos 🐱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center py-10">
+    <header class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-pink-600 mb-2">TheCatAPI Favoritos 🐱</h1>
+        <p class="text-gray-600">Explora gatos aleatorios y guarda tus favoritos</p>
+    </header>
+
+    <main class="w-full max-w-3xl bg-white rounded-2xl shadow-md p-6">
+        <section class="flex flex-col items-center mb-8">
+            <div class="relative w-80 h-80 mb-4 overflow-hidden rounded-xl shadow-md">
+                <img id="cat-image" alt="Imagen de gato"
+                    class="w-full h-full object-cover transition-opacity duration-300" />
+            </div>
+
+            <div class="flex gap-3">
+                <button id="load-cat-button"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow transition-all">
+                    Cargar nuevo gato
+                </button>
+                <button id="add-favorite-button"
+                    class="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2 rounded-lg shadow transition-all">
+                    Añadir a favoritos
+                </button>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-semibold text-gray-700 border-b pb-1">Mis Favoritos</h2>
+                <button id="clear-favorites-button"
+                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow transition-all text-sm">
+                    Eliminar todos
+                </button>
+            </div>
+            <div id="favorites-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+        </section>
+    </main>
+
+    <div id="toast"
+        class="fixed bottom-5 right-5 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-500">
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

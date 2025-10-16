@@ -1,7 +1,6 @@
 ---
 title: "07. TypeScript: El Superhéroe que tu JavaScript Necesita"
 description: "Descubre cómo TypeScript eleva tu código JavaScript a un nuevo nivel de robustez y mantenibilidad."
-draft: true
 ---
 
 ¡Hola, futuro desarrollador de interfaces!
@@ -98,16 +97,14 @@ Si ya tienes Node.js instalado (que incluye npm), estás a un par de comandos de
     ```
     Aquí, `tsc` es el compilador de TypeScript. Su función principal es tomar tus archivos `.ts` (código TypeScript) y convertirlos en archivos `.js` (código JavaScript) que los navegadores y entornos de ejecución como Node.js pueden entender. Esto leerá tu `src/main.ts` y generará `dist/main.js`.
 
-    :::note 
-    
-    Modo de vigilancia
-    
-    Para un desarrollo más fluido, puedes usar el modo de vigilancia:
-    ```bash
-    npx tsc --watch
-    ```
-    Así, cada vez que guardes un archivo `.ts`, TypeScript lo recompilará automáticamente. ¡Comodísimo!
-    :::
+:::note[Modo de vigilancia]
+
+Para un desarrollo más fluido, puedes usar el modo de vigilancia:
+```bash
+npx tsc --watch
+```
+Así, cada vez que guardes un archivo `.ts`, TypeScript lo recompilará automáticamente. ¡Comodísimo!
+:::
 
 ---
 
@@ -244,15 +241,12 @@ const ivaProducto = calcularIVA(miProducto.precio);
 console.log(`El IVA del ${miProducto.nombre} es: ${ivaProducto.toFixed(2)}€`);
 ```
 
-:::note
-
-Importante para el navegador
-
-Recuerda que, si vas a usar estos módulos en el navegador, tu HTML debe cargar el archivo JavaScript compilado (`dist/main.js`) como un módulo:
-```html
-<script type="module" src="dist/main.js"></script>
-```
-:::
+  :::note[Importante para el navegador]
+  Recuerda que, si vas a usar estos módulos en el navegador, tu HTML debe cargar el archivo JavaScript compilado (`dist/main.js`) como un módulo:
+  ```html
+  <script type="module" src="dist/main.js"></script>
+  ```
+  :::
 
 ### 6. Tipos Avanzados y Utilidades
 
