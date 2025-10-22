@@ -1,0 +1,187 @@
+---
+title: "Práctica 2: Introducción a Neo4j y Modelado de Redes Sociales"
+description: "Aprende a instalar Neo4j, familiarízate con Cypher y modela una red social para explorar conexiones y patrones."
+---
+
+## Descripción general
+
+En esta práctica, te introducirás en el mundo de las **bases de datos de grafos** utilizando **Neo4j**, una herramienta potente para modelar y consultar datos interconectados. Comenzaremos con la instalación y configuración de tu entorno Neo4j, seguido de una introducción al lenguaje de consulta **Cypher**. Finalmente, aplicarás estos conocimientos para diseñar y manipular una **red social básica**, lo que te permitirá comprender cómo las bases de datos de grafos son ideales para representar relaciones complejas y descubrir patrones en datos conectados.
+
+## Objetivos de aprendizaje
+
+Al finalizar la práctica, el estudiante será capaz de:
+
+1.  Instalar y configurar Neo4j Desktop o utilizar Neo4j AuraDB.
+2.  Comprender los conceptos fundamentales de las bases de datos de grafos (nodos, relaciones, propiedades).
+3.  Familiarizarse con la sintaxis básica del lenguaje de consulta Cypher.
+4.  Diseñar un modelo de datos de grafo para una red social.
+5.  Utilizar Cypher para crear, leer, actualizar y eliminar datos (CRUD) en un grafo de red social.
+6.  Realizar consultas para encontrar conexiones y patrones dentro de una red social.
+
+## Requisitos previos
+
+*   Tener nociones básicas sobre bases de datos.
+*   Conocimientos básicos de JSON (útil para entender las propiedades de los nodos y relaciones).
+*   Conexión a internet para descargar Neo4j Desktop o acceder a Neo4j AuraDB.
+
+---
+
+## Parte 1: Configuración del Entorno Neo4j
+
+En esta sección, configurarás tu entorno para trabajar con Neo4j.
+
+### 1.1. Descarga e Instalación de Neo4j Desktop
+
+1.  Descarga e instala [Neo4j Desktop](https://neo4j.com/download/).
+2.  Al abrir Neo4j Desktop por primera vez, verás una pantalla similar a esta, indicando que no hay instancias creadas:
+    ![Neo4j Desktop - Sin Instancias](/images/sistemas-big-data/ut2/04-practica-neo4j/1.png "Neo4j Desktop - Sin Instancias")
+
+### 1.2. Creación de una Nueva Instancia de Base de Datos
+
+1.  Haz clic en "Create Instance".
+2.  Aparecerá un diálogo para configurar la nueva instancia. Aquí puedes definir el nombre de la base de datos (ej. `social_network_graph`), la contraseña y la versión de Neo4j:
+    ![Neo4j Desktop - Crear Instancia](/images/sistemas-big-data/ut2/04-practica-neo4j/2.png "Neo4j Desktop - Crear Instancia")
+3.  Una vez configurada y creada, la instancia aparecerá en tu lista de proyectos:
+    ![Neo4j Desktop - Instancia Creada](/images/sistemas-big-data/ut2/04-practica-neo4j/3.png "Neo4j Desktop - Instancia Creada")
+
+### 1.3. Acceso al Neo4j Browser
+
+1.  Haz clic en "Connect" y luego en "Query".
+2.  Esto abrirá el navegador de Neo4j, donde podrás ejecutar tus consultas Cypher. La pantalla inicial se verá así:
+    ![Neo4j Desktop - Neo4j Browser](/images/sistemas-big-data/ut2/04-practica-neo4j/4.png "Neo4j Desktop - Neo4j Browser")
+
+---
+
+## Parte 2: Introducción a Cypher
+
+**Cypher** es el lenguaje de consulta declarativo de Neo4j, diseñado para ser intuitivo y expresivo para trabajar con grafos. Permite describir patrones en el grafo que deseas buscar, y Neo4j se encarga de encontrar esos patrones.
+
+### 2.1. Conceptos Básicos de Cypher
+
+*   **Nodos:** Se representan con paréntesis `()`. Dentro, puedes especificar una etiqueta (tipo de nodo) y propiedades.
+    *   Ejemplo: Crear un nodo `Book` con propiedades `title` y `year`.
+        ```cypher
+        CREATE (:Book {title: 'El Señor de los Anillos', year: 1954})
+        ```
+*   **Relaciones:** Se representan con guiones y corchetes `-[ ]->` o `<-[ ]-`. Dentro de los corchetes, puedes especificar el tipo de relación y propiedades. La flecha indica la dirección.
+    *   Ejemplo: Crear una relación `WROTE` entre un nodo `Author` y un nodo `Book`.
+        ```cypher
+        CREATE (:Author {name: 'J.R.R. Tolkien'})-[:WROTE]->(:Book {title: 'El Hobbit', year: 1937})
+        ```
+*   **Patrones:** La combinación de nodos y relaciones forma patrones.
+    *   Ejemplo: Encontrar un autor que escribió un libro.
+        ```cypher
+        MATCH (a:Author)-[:WROTE]->(b:Book)
+        RETURN a.name, b.title
+        ```
+*   **Cláusulas Comunes:**
+    *   `CREATE`: Para crear nodos y relaciones.
+    *   `MATCH`: Para buscar patrones en el grafo.
+    *   `WHERE`: Para filtrar resultados.
+    *   `RETURN`: Para especificar qué datos quieres obtener.
+    *   `SET`: Para actualizar propiedades.
+    *   `DELETE` / `DETACH DELETE`: Para eliminar nodos y relaciones.
+
+### 2.2. Tu Primera Consulta Cypher
+
+Para asegurarte de que tu entorno funciona correctamente, ejecuta la siguiente consulta en el Neo4j Browser. Esta consulta elimina todos los datos existentes en tu base de datos (¡úsa con precaución en bases de datos con datos importantes!) y luego crea un nodo simple.
+
+```cypher
+MATCH (n) DETACH DELETE n; // Limpia la base de datos (¡solo para desarrollo!)
+CREATE (greeting:Greeting {message: 'Hello, Neo4j!'})
+RETURN greeting.message;
+```
+Deberías ver el mensaje "Hello, Neo4j!" como resultado.
+
+---
+
+## Parte 3: Modelado y Creación de una Red Social
+
+Ahora, vamos a aplicar los conceptos de grafos para construir una red social básica.
+
+### Ejercicio 1: Diseño del Modelo de Datos de la Red Social
+
+Diseña un modelo de datos de grafo para representar usuarios y sus interacciones en una red social. Considera los siguientes tipos de nodos y relaciones:
+
+*   **Nodos:**
+    *   `User`: Con propiedades como `username`, `name`, `registration_date`.
+    *   `Post`: Con propiedades como `content`, `timestamp`.
+*   **Relaciones:**
+    *   `FOLLOWS`: Entre `User` y `User`.
+    *   `POSTED`: Entre `User` y `Post`.
+    *   `LIKES`: Entre `User` y `Post`.
+
+**Tu tarea:** Dibuja o describe el esquema de tu grafo, mostrando los tipos de nodos, sus propiedades, los tipos de relaciones y sus propiedades.
+
+### Ejercicio 2: Creación de Nodos y Relaciones Iniciales
+
+Utiliza Cypher para crear los siguientes nodos y relaciones en tu base de datos.
+
+1.  **Crear algunos nodos `User`:**
+    **Tu tarea:** Crea al menos tres nodos de tipo `User` con las propiedades `username`, `name` y `registration_date`. Asegúrate de que los `username` sean únicos.
+
+2.  **Crear relaciones `FOLLOWS`:**
+    **Tu tarea:** Crea algunas relaciones de tipo `FOLLOWS` entre tus usuarios (por ejemplo, Alice sigue a Bob, Bob sigue a Charlie).
+
+3.  **Crear algunos `Post` y relaciones `POSTED`:**
+    **Tu tarea:** Haz que al menos dos de tus usuarios publiquen un `Post`. Cada `Post` debe tener `content` y `timestamp`.
+
+4.  **Crear relaciones `LIKES`:**
+    **Tu tarea:** Haz que un usuario dé "Like" a un post de otro usuario.
+
+---
+
+## Parte 4: Consultas en la Red Social con Cypher
+
+Ahora que tienes una red social modelada, vamos a realizar algunas consultas para extraer información y descubrir patrones.
+
+### Ejercicio 3: Encontrar Amigos y Seguidores
+
+1.  **Encontrar todos los usuarios que un usuario específico sigue:**
+    **Tu tarea:** Escribe una consulta Cypher para encontrar todos los usuarios que 'Alice' (o cualquier usuario que hayas creado) sigue.
+
+2.  **Encontrar todos los usuarios que siguen a un usuario específico:**
+    **Tu tarea:** Escribe una consulta Cypher para encontrar todos los usuarios que siguen a 'Bob' (o cualquier usuario que hayas creado).
+
+### Ejercicio 4: Analizando Posts e Interacciones
+
+1.  **Encontrar todos los posts de un usuario específico:**
+    **Tu tarea:** Escribe una consulta Cypher para encontrar todos los posts de 'Alice' (o cualquier usuario que hayas creado), mostrando el contenido y la fecha/hora.
+
+2.  **Encontrar los posts que un usuario ha dado "Like":**
+    **Tu tarea:** Escribe una consulta Cypher para encontrar los posts a los que 'Alice' (o cualquier usuario que hayas creado) ha dado "Like", mostrando el contenido del post.
+
+---
+
+## Parte 5: Visualización y Exploración
+
+El Neo4j Browser ofrece una potente interfaz de visualización para explorar tu grafo.
+
+### Ejercicio 5: Explorando el Grafo Visualmente
+
+1.  Ejecuta algunas de tus consultas anteriores en el Neo4j Browser.
+2.  Experimenta con las opciones de visualización:
+    *   Arrastra nodos para reorganizar el grafo.
+    *   Haz doble clic en un nodo para expandir sus relaciones.
+    *   Usa el panel de estilos para cambiar colores y tamaños de nodos/relaciones.
+
+**Tu tarea:** Realiza una captura de pantalla de una visualización interesante de tu red social (por ejemplo, un grupo de amigos, o un post y sus interacciones).
+
+---
+
+## Instrucciones de entrega
+
+1.  Crea un un archivo en tu repositorio personal con el nombre `Practica4_Neo4j_RedSocial.md`.
+2.  Copia el contenido de esta guía y completa todos los apartados, respondiendo a las preguntas y escribiendo las consultas Cypher solicitadas.
+3.  Incluye las consultas Cypher que has utilizado para cada ejercicio.
+4.  Añade la captura de pantalla de la visualización de tu grafo en el Ejercicio 5.
+5.  Sube el archivo a tu repositorio y comparte el enlace con el profesor.
+
+---
+
+## Recomendaciones finales
+
+*   **Experimenta:** La mejor forma de aprender Cypher y Neo4j es experimentando con diferentes consultas y modelos.
+*   **Documentación:** Consulta la [documentación oficial de Neo4j Cypher](https://neo4j.com/docs/cypher-manual/current/) para aprender más sobre funciones y cláusulas avanzadas.
+*   **Comunidad:** Explora los ejemplos y tutoriales de la comunidad Neo4j para inspirarte en proyectos más complejos.
+*   **Limpieza:** Si estás usando Neo4j Desktop, puedes reiniciar tu base de datos o eliminar todos los datos con `MATCH (n) DETACH DELETE n;` para empezar de nuevo (¡úsa con precaución!).
