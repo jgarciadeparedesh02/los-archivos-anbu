@@ -1,0 +1,280 @@
+---
+title: "Práctica 1 (Solución): Gestión de un Catálogo de Productos con MongoDB"
+description: "Diseña y manipula una colección de productos para un e-commerce, utilizando las capacidades de modelado flexible de MongoDB."
+---
+
+## Parte 1: Diseño del modelo de datos
+
+### Contexto
+
+A diferencia de las bases de datos relacionales, MongoDB no utiliza tablas, sino **colecciones** que contienen **documentos JSON**. Cada documento puede tener una estructura diferente, lo que permite gran flexibilidad para modelar información variada, como productos de distintas categorías con especificaciones técnicas diversas.
+
+### Requisitos del documento
+
+Cada producto de la tienda debe contener al menos la siguiente información:
+
+* `_id`: Identificador único del producto (MongoDB lo genera automáticamente, pero puede definirse manualmente como un SKU).
+* `nombre`: Nombre del producto.
+* `marca`: Marca o fabricante del producto.
+* `categoria`: Categoría principal (por ejemplo: "Portátiles", "Smartphones", "Accesorios").
+* `precio`: Precio de venta.
+* `stock`: Número de unidades disponibles.
+* `especificaciones`: Objeto embebido que describe las características técnicas del producto (por ejemplo: `cpu`, `ram`, `pantalla`).
+* `tags`: Arreglo de etiquetas o palabras clave que facilitan las búsquedas.
+* `reviews`: Arreglo de reseñas, donde cada reseña contiene el nombre del usuario, una puntuación (de 1 a 5) y un comentario.
+
+### Ejemplo de documento JSON
+
+A continuación se muestra un ejemplo completo de documento que cumple con la estructura anterior:
+
+```json
+{
+  "_id": "SKU-001",
+  "nombre": "Portátil Pro-Book X1",
+  "marca": "TecnoÁgora Devices",
+  "categoria": "Portátiles",
+  "precio": 1199.99,
+  "stock": 25,
+  "especificaciones": {
+    "cpu": "Intel Core i7-12700H",
+    "ram": 16,
+    "pantalla": "15.6 pulgadas Full HD"
+  },
+  "tags": ["gaming", "16GB RAM", "oferta"],
+  "reviews": [
+    {
+      "usuario": "LauraG",
+      "puntuacion": 5,
+      "comentario": "Excelente rendimiento, muy rápido."
+    },
+    {
+      "usuario": "CarlosM",
+      "puntuacion": 4,
+      "comentario": "Buen portátil, aunque algo pesado."
+    }
+  ]
+}
+```
+
+Este documento puede insertarse en la colección `productos` utilizando el método `insertOne()` en Mongo Shell. Deberás reemplazar `/* contenido del documento */` con la estructura JSON completa que se muestra arriba.
+
+```javascript
+db.productos.insertOne({
+  // Aquí deberás pegar el contenido del documento JSON de ejemplo
+});
+```
+
+El alumno deberá crear al menos **dos documentos adicionales**, cada uno representando un producto distinto, con categorías o especificaciones diferentes (por ejemplo, un smartphone o un accesorio).
+
+### Solución
+
+```javascript
+db.productos.insertMany([
+  {
+    "_id": "SKU-002",
+    "nombre": "Smartphone Galaxy Z",
+    "marca": "Samsung",
+    "categoria": "Smartphones",
+    "precio": 899.99,
+    "stock": 50,
+    "especificaciones": {
+      "cpu": "Snapdragon 8 Gen 2",
+      "ram": 8,
+      "pantalla": "6.7 pulgadas AMOLED"
+    },
+    "tags": ["smartphone", "8GB RAM", "nuevo"],
+    "reviews": [
+      {
+        "usuario": "AnaP",
+        "puntuacion": 5,
+        "comentario": "La pantalla es increíble."
+      }
+    ]
+  },
+  {
+    "_id": "SKU-003",
+    "nombre": "Teclado Mecánico K8",
+    "marca": "Keychron",
+    "categoria": "Accesorios",
+    "precio": 120.50,
+    "stock": 15,
+    "especificaciones": {
+      "tipo": "Mecánico",
+      "switches": "Gateron Red",
+      "conectividad": "Bluetooth y USB-C"
+    },
+    "tags": ["teclado", "mecánico", "bluetooth"],
+    "reviews": []
+  }
+]);
+```
+
+---
+
+## Parte 2: Consultas sobre el catálogo
+
+En esta sección se trabajará con consultas y actualizaciones básicas sobre los documentos de la colección `productos`.
+
+### Conceptos básicos
+
+MongoDB permite realizar búsquedas mediante el método `find()`, que recibe un objeto JSON con los criterios de búsqueda. Por ejemplo, si quisieras encontrar todos los productos de una marca específica, usarías una estructura similar a `db.productos.find({ campo: "valor" });`. El resultado será una lista de documentos que cumplen la condición indicada. Tu tarea será construir estas consultas basándote en los requisitos de cada ejercicio.
+
+---
+
+### Ejercicio 1: Encontrar portátiles de una marca con más de 8GB de RAM
+
+Se desea obtener todos los productos cuya categoría sea "Portátiles", que pertenezcan a la marca **TecnoÁgora Devices** y cuya memoria RAM sea superior a 8GB.
+
+**Pista:** Para acceder a un campo dentro de un objeto embebido, se utiliza la notación de punto (`especificaciones.ram`). Para indicar "mayor que", puedes usar el operador `$gt`.
+
+**Tu tarea:** Escribe la consulta `find()` que cumpla con estos tres criterios.
+
+### Solución
+
+```javascript
+db.productos.find({
+  "categoria": "Portátiles",
+  "marca": "TecnoÁgora Devices",
+  "especificaciones.ram": { $gt: 8 }
+});
+```
+
+---
+
+### Ejercicio 2: Buscar productos con la etiqueta “oferta”
+
+Los arreglos en MongoDB permiten búsquedas directas sobre sus valores. Se desea encontrar todos los documentos que contengan la palabra “oferta” dentro del campo `tags`.
+
+**Tu tarea:** Escribe la consulta `find()` para obtener estos productos.
+
+### Solución
+
+```javascript
+db.productos.find({ "tags": "oferta" });
+```
+
+---
+
+### Ejercicio 3: Incrementar el stock de un producto en 10 unidades
+
+En ocasiones es necesario actualizar el valor de un campo numérico. Se desea incrementar el `stock` de un producto específico (por ejemplo, "Portátil Pro-Book X1") en 10 unidades.
+
+**Pista:** MongoDB ofrece el operador `$inc` para incrementar el valor actual de un campo en una cantidad específica. Utiliza `updateOne()` para aplicar el cambio a un solo documento.
+
+**Tu tarea:** Escribe la consulta `updateOne()` para realizar esta operación.
+
+### Solución
+
+```javascript
+db.productos.updateOne(
+  { "nombre": "Portátil Pro-Book X1" },
+  { $inc: { "stock": 10 } }
+);
+```
+
+---
+
+### Ejercicio 4: Añadir una nueva reseña (review) a un producto
+
+Se desea agregar una nueva reseña a un producto existente (por ejemplo, "Portátil Pro-Book X1"). La reseña debe contener el nombre del usuario, una puntuación y un comentario.
+
+**Pista:** Para agregar un nuevo elemento a un arreglo existente, se utiliza el operador `$push`. Deberás usar `updateOne()`.
+
+**Tu tarea:** Escribe la consulta `updateOne()` para añadir una nueva reseña al producto.
+
+### Solución
+
+```javascript
+db.productos.updateOne(
+  { "nombre": "Portátil Pro-Book X1" },
+  { 
+    $push: { 
+      "reviews": {
+        "usuario": "JuanR",
+        "puntuacion": 5,
+        "comentario": "Muy satisfecho con la compra."
+      } 
+    } 
+  }
+);
+```
+
+---
+
+## Parte 3: Agregaciones
+
+Las **agregaciones** permiten realizar análisis más complejos sobre los datos, como calcular promedios o agrupar información. MongoDB utiliza para ello un sistema de **pipelines** o tuberías, donde cada etapa transforma los datos de una manera determinada.
+
+En este caso, se desea calcular la **puntuación media de las reseñas** para cada producto de la colección.
+
+### Etapas del pipeline
+
+1. **$unwind**: descompone el arreglo `reviews` de cada producto, generando un documento independiente por cada reseña.
+2. **$group**: agrupa los documentos por `_id` de producto y calcula la media (`$avg`) de la puntuación.
+3. **$sort**: ordena los resultados de mayor a menor puntuación promedio.
+
+### Pipeline completo
+
+Este pipeline mostrará cada producto junto con su puntuación media, ordenados de forma descendente.
+
+**Tu tarea:** Construye el pipeline de agregación utilizando las etapas `$unwind`, `$group` y `$sort` para calcular la puntuación media de las reseñas para cada producto y ordenarlos de mayor a menor puntuación promedio. Recuerda que `$unwind` se usa para descomponer arreglos, `$group` para agrupar y calcular agregaciones como `$avg`, y `$sort` para ordenar los resultados.
+
+### Solución
+
+```javascript
+db.productos.aggregate([
+  {
+    $unwind: "$reviews"
+  },
+  {
+    $group: {
+      _id: "$nombre",
+      puntuacionMedia: { $avg: "$reviews.puntuacion" }
+    }
+  },
+  {
+    $sort: {
+      puntuacionMedia: -1
+    }
+  }
+]);
+```
+
+---
+
+## Parte 4: Ejercicios adicionales (opcional)
+
+Si el alumno completa las secciones anteriores, puede realizar los siguientes ejercicios para reforzar su aprendizaje:
+
+1. **Mostrar productos con bajo stock**
+   Se desea mostrar todos los productos con menos de 5 unidades disponibles.
+
+   **Tu tarea:** Escribe la consulta `find()` utilizando el operador `$lt` (less than) para obtener estos productos.
+
+### Solución
+
+```javascript
+db.productos.find({ "stock": { $lt: 5 } });
+```
+
+2. **Proyección de campos específicos**
+   Se desea mostrar únicamente el nombre y el precio de todos los productos.
+
+   **Tu tarea:** Escribe la consulta `find()` para proyectar solo los campos `nombre` y `precio`, excluyendo el `_id`.
+
+### Solución
+
+```javascript
+db.productos.find({}, { "nombre": 1, "precio": 1, "_id": 0 });
+```
+
+3. **Eliminar un producto por su identificador**
+   Se desea borrar un documento concreto de la colección, por ejemplo, el producto con `_id`: "SKU-001".
+
+   **Tu tarea:** Escribe el comando `deleteOne()` para eliminar este producto.
+
+### Solución
+
+```javascript
+db.productos.deleteOne({ "_id": "SKU-001" });
+```
