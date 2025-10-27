@@ -1,0 +1,279 @@
+---
+title: '03. Tu Primer Proyecto Angular: Creación y Estructura'
+description: 'Guía paso a paso para iniciar un proyecto Angular, entender su estructura y ejecutar tu primera aplicación.'
+---
+
+Una vez que tienes Angular CLI instalado, estás listo para dar el primer paso en el desarrollo con Angular: crear tu primer proyecto. Angular CLI se encarga de configurar toda la estructura inicial, las dependencias y las configuraciones necesarias para que puedas empezar a codificar de inmediato.
+
+---
+
+## Creando un Nuevo Proyecto Angular
+
+Para crear un nuevo proyecto, abre tu terminal o línea de comandos y ejecuta el siguiente comando:
+
+```bash
+ng new nombre-de-tu-proyecto
+```
+
+Reemplaza `nombre-de-tu-proyecto` con el nombre que desees para tu aplicación. Por ejemplo:
+
+```bash
+ng new mi-primera-app-angular
+```
+
+Durante la creación del proyecto, Angular CLI te hará algunas preguntas de configuración:
+
+1.  **Which stylesheet format would you like to use?**
+    -   Aquí puedes elegir el preprocesador CSS que prefieras (CSS, SCSS, Sass, Less, Stylus). Para este curso, seleccionaremos **CSS** para simplificar.
+
+2.  **Do you want to enable Server-Side Rendering (SSR) and Static Site Generation (SSG/Prerendering)? (y/N)**
+    -   Por ahora, para nuestro primer proyecto, selecciona **N** (No). Estas son características avanzadas que exploraremos más adelante si es necesario.
+
+3.  **Do you want to create a 'zoneless' application without zone.js? (y/N)**
+    -   Selecciona **N** (No). `zone.js` es una dependencia que Angular utiliza para la detección de cambios. Deshabilitarla es una opción avanzada.
+
+4.  **Which AI tools do you want to configure with Angular best practices? https://angular.dev/ai/develop-with-ai**
+    -   Selecciona **None** (Ninguno). No configuraremos herramientas de IA en este momento.
+
+Una vez que respondas a estas preguntas, Angular CLI creará una nueva carpeta con el nombre de tu proyecto y descargará todas las dependencias necesarias. Este proceso puede tardar unos minutos.
+
+---
+
+## Estructura del Proyecto Angular
+
+Después de la instalación, tu proyecto tendrá una estructura de carpetas y archivos bien definida. Entender esta estructura es fundamental para navegar y desarrollar tu aplicación. Tomando como ejemplo un proyecto llamado `proyecto-test`, la estructura principal será similar a esta:
+
+```
+proyecto-test/
+├── .editorconfig
+├── .gitignore
+├── .vscode/
+├── angular.json
+├── node_modules/
+├── package-lock.json
+├── package.json
+├── public/
+├── README.md
+├── src/
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.spec.json
+```
+
+Vamos a explicar los archivos y carpetas más importantes:
+
+-   **`.editorconfig`**: Configuración para editores de código que ayuda a mantener estilos de codificación consistentes entre diferentes desarrolladores.
+-   **`.gitignore`**: Especifica archivos y carpetas que Git debe ignorar (por ejemplo, `node_modules/`).
+-   **`.vscode/`**: Contiene configuraciones específicas para Visual Studio Code, como extensiones recomendadas (`extensions.json`), configuraciones de lanzamiento (`launch.json`) y tareas (`tasks.json`).
+-   **`angular.json`**: El archivo de configuración principal de Angular CLI. Define la estructura del proyecto, las configuraciones de construcción, pruebas y desarrollo.
+-   **`node_modules/`**: Contiene todas las dependencias de Node.js instaladas para tu proyecto.
+-   **`package-lock.json`**: Registra las versiones exactas de las dependencias para asegurar instalaciones consistentes.
+-   **`package.json`**: Define los metadatos del proyecto y lista las dependencias y scripts de npm.
+-   **`public/`**: Contiene activos estáticos como `favicon.ico`.
+-   **`README.md`**: Un archivo Markdown con información básica sobre tu proyecto.
+-   **`src/`**: La carpeta más importante, donde reside el código fuente de tu aplicación.
+-   **`tsconfig.*.json`**: Archivos de configuración de TypeScript para diferentes entornos (aplicación, pruebas, etc.).
+
+### Dentro de la carpeta `src/`
+
+La carpeta `src/` es el corazón de tu aplicación Angular:
+
+```
+src/
+├── app/
+├── index.html
+├── main.ts
+├── styles.css
+```
+
+-   **`index.html`**: El archivo HTML principal de tu aplicación. Es el punto de entrada que carga tu aplicación Angular.
+-   **`main.ts`**: El punto de entrada de TypeScript de tu aplicación. Aquí se inicializa el módulo raíz de Angular.
+-   **`styles.css`**: Archivo CSS global para estilos de toda la aplicación.
+-   **`app/`**: Contiene los componentes principales de tu aplicación.
+
+### Dentro de la carpeta `src/app/`
+
+```
+src/app/
+├── app.config.ts
+├── app.component.css
+├── app.component.html
+├── app.component.ts
+├── app.routes.ts
+├── app.component.spec.ts
+```
+
+-   **`app.config.ts`**: Configuración de la aplicación, incluyendo proveedores y rutas.
+-   **`app.component.css`**: Estilos específicos para el componente raíz de la aplicación.
+-   **`app.component.html`**: La plantilla HTML del componente raíz.
+-   **`app.component.ts`**: El archivo TypeScript del componente raíz, que define la lógica y los metadatos.
+-   **`app.routes.ts`**: Define las rutas de navegación de tu aplicación.
+-   **`app.component.spec.ts`**: Archivo de pruebas unitarias para el componente raíz.
+
+---
+
+## Scripts de `package.json`
+
+El archivo `package.json` incluye una sección `scripts` con comandos útiles para tu proyecto:
+
+```json
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+```
+
+-   **`ng`**: Ejecuta comandos de Angular CLI.
+-   **`start`**: Inicia el servidor de desarrollo de Angular. Compila la aplicación y la sirve en un navegador, recargando automáticamente con los cambios.
+-   **`build`**: Compila la aplicación para producción, generando los archivos optimizados en la carpeta `dist/`.
+-   **`watch`**: Compila la aplicación en modo de observación, reconstruyendo automáticamente los archivos modificados.
+-   **`test`**: Ejecuta las pruebas unitarias de la aplicación.
+
+---
+
+## Ejecutando tu Proyecto Angular
+
+Hay dos formas principales de ejecutar tu aplicación Angular en modo de desarrollo:
+
+1.  **Usando `npm run start`**:
+```bash
+npm run start
+```
+    Este comando ejecuta el script `start` definido en `package.json`, que a su vez llama a `ng serve`.
+
+2.  **Usando `ng serve` directamente**:
+```bash
+ng serve
+```
+    Ambos comandos hacen lo mismo: compilan tu aplicación y la inician en un servidor de desarrollo local, generalmente en `http://localhost:4200/`.
+
+---
+
+## Componentes: Los Bloques de Construcción de Angular
+
+En Angular, los **componentes** son los bloques fundamentales de construcción de la interfaz de usuario. Cada componente controla una parte específica de la pantalla y su lógica asociada. Un componente consta de tres partes principales:
+
+-   **Plantilla (HTML)**: Define la vista del componente.
+-   **Clase (TypeScript)**: Contiene la lógica de negocio, propiedades y métodos del componente.
+-   **Estilos (CSS/SCSS)**: Define la apariencia del componente.
+
+### Creando un Nuevo Componente
+
+Puedes generar nuevos componentes fácilmente usando Angular CLI:
+
+```bash
+ng generate component nombre-del-componente
+# O su forma abreviada
+ng g c nombre-del-componente
+```
+
+Por ejemplo, para crear un componente `saludo`:
+
+```bash
+ng g c saludo
+```
+
+Esto creará una nueva carpeta `src/app/saludo` con los siguientes archivos:
+
+-   `saludo.component.ts`
+-   `saludo.component.html`
+-   `saludo.component.css`
+-   `saludo.component.spec.ts`
+
+### Ejemplo de Componente (`saludo.component.ts`)
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-saludo',
+  templateUrl: './saludo.component.html',
+  styleUrls: ['./saludo.component.css']
+})
+export class SaludoComponent {
+  nombre: string = 'Mundo';
+
+  cambiarNombre(nuevoNombre: string) {
+    this.nombre = nuevoNombre;
+  }
+}
+```
+
+### Ejemplo de Plantilla (`saludo.component.html`)
+
+```html
+<div>
+  <h1>Hola, {{ nombre }}!</h1>
+  <button (click)="cambiarNombre('Angular')">Saludar a Angular</button>
+</div>
+```
+
+### Ejemplo de Estilos (`saludo.component.css`)
+
+```css
+div {
+  border: 1px solid blue;
+  padding: 10px;
+  border-radius: 5px;
+}
+h1 {
+  color: navy;
+}
+```
+
+---
+
+## Rutas en Angular
+
+Las **rutas** (o *routing*) en Angular permiten navegar entre diferentes vistas de tu aplicación sin recargar la página completa. Esto es fundamental para las Single Page Applications (SPAs).
+
+El archivo **`app.routes.ts`** es donde se define la configuración de las rutas de tu aplicación. Aquí se mapean las URLs a los componentes que deben mostrarse.
+
+### Creando una Ruta
+
+Para crear una ruta, defines un objeto de ruta que especifica la `path` (la URL) y el `component` que se debe cargar cuando esa URL es activada.
+
+```typescript
+import { Routes } from '@angular/router';
+import { SaludoComponent } from './saludo/saludo.component';
+import { AppComponent } from './app.component';
+
+export const routes: Routes = [
+  { path: '', component: AppComponent }, // Ruta por defecto
+  { path: 'saludo', component: SaludoComponent },
+  // Agrega más rutas aquí
+];
+```
+
+Para que las rutas funcionen, debes configurar el `RouterModule` en tu `app.config.ts` y usar el `<router-outlet>` en tu `app.component.html`.
+
+---
+
+## Punto de Entrada de la Aplicación
+
+La aplicación Angular comienza a renderizarse desde el archivo **`index.html`**. Dentro de este archivo, encontrarás una etiqueta como `<app-root></app-root>`.
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MiPrimeraAppAngular</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
+```
+
+La etiqueta `<app-root>` es el **selector** del componente raíz de tu aplicación (`AppComponent`). Angular toma el contenido que se debe renderizar a partir de las rutas definidas en `app.routes.ts` y lo inyecta dentro de esta etiqueta. Es decir, todo lo que ves en tu aplicación Angular se carga dinámicamente dentro de `<app-root>`.
+
+---
+
+¡Felicidades! Has creado tu primer proyecto Angular, comprendes su estructura básica y sabes cómo ejecutarlo. Ahora estás listo para explorar más a fondo el desarrollo de componentes y la interactividad que Angular ofrece.

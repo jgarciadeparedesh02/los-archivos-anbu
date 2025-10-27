@@ -1,0 +1,125 @@
+---
+title: "01. Componente de Frase del Día"
+description: "Crea tu primer componente Angular para mostrar una frase motivacional, practicando la creación de proyectos y componentes básicos."
+---
+
+En esta primera tarea práctica de Angular, pondrás en práctica los conocimientos adquiridos sobre la creación de proyectos y componentes. El objetivo es desarrollar una pequeña aplicación que muestre una frase motivacional del día.
+
+---
+
+## Tarea: Frase del Día con Angular
+
+### 1. Crear un Nuevo Proyecto Angular
+
+Utiliza Angular CLI para crear un nuevo proyecto llamado `frase-app`. Asegúrate de seguir las configuraciones básicas que hemos visto en la unidad:
+
+```bash
+ng new frase-app
+```
+
+Cuando se te pregunte por el formato de hoja de estilos, selecciona `CSS`. Para las demás preguntas (SSR, zoneless, AI tools), selecciona `N` o `None`.
+
+### 2. Crear un Componente `Frase`
+
+Una vez creado el proyecto, navega a la carpeta `frase-app` y genera un nuevo componente llamado `frase`:
+
+```bash
+cd frase-app
+ng generate component frase
+# O de forma abreviada
+ng g c frase
+```
+
+Esto creará una nueva carpeta `src/app/frase` con los archivos necesarios para tu componente.
+
+### 3. Implementar la Lógica del Componente `Frase`
+
+Edita el archivo `src/app/frase/frase.ts` para añadir una propiedad que contenga una frase motivacional. Puedes elegir la frase que más te guste.
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-frase',
+  templateUrl: './frase.html',
+  styleUrls: ['./frase.css']
+})
+export class FraseComponent {
+  fraseMotivacional: string = '"El único modo de hacer un gran trabajo es amar lo que haces." - Steve Jobs';
+}
+```
+
+### 4. Mostrar la Frase en la Plantilla del Componente
+
+Modifica el archivo `src/app/frase/frase.html` para mostrar la propiedad `fraseMotivacional` utilizando la interpolación de Angular (`{{ }}`):
+
+```html
+<div class="frase-container">
+  <p>{{ fraseMotivacional }}</p>
+</div>
+```
+
+### 5. Estilizar el Componente (Opcional)
+
+Si lo deseas, puedes añadir algunos estilos básicos en `src/app/frase/frase.css` para que la frase se vea mejor:
+
+```css
+.frase-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.frase-container p {
+  font-size: 1.2em;
+  font-style: italic;
+  color: #333;
+}
+```
+
+### 6. Importar el Componente en el Módulo Principal
+
+En el archivo `src/app/app.ts`, importa el componente `FraseComponent`:
+
+```typescript
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { FraseComponent } from "./frase/frase";
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, FraseComponent],
+  templateUrl: './app.html',
+  styleUrl: './app.css'
+})
+export class App {
+  protected readonly title = signal('proyecto-test');
+}
+```
+
+### 7. Integrar el Componente `Frase` en la Aplicación Principal
+
+Finalmente, para que la frase se muestre en tu aplicación, debes añadir el selector de tu componente `FraseComponent` (`<app-frase></app-frase>`) en la plantilla del componente principal de la aplicación, `src/app/app.html`.
+
+```html
+<main>
+  <h1>Mi Aplicación de Frases Motivacionales</h1>
+  <app-frase></app-frase>
+</main>
+```
+
+### 8. Ejecutar la Aplicación
+
+Guarda todos los cambios y ejecuta tu aplicación para ver el resultado:
+
+```bash
+ng serve
+```
+Abre tu navegador y visita `http://localhost:4200/` para ver tu primera aplicación Angular con un componente personalizado mostrando una frase motivacional.
+
+### ¡Ahora tú! 
+¿Cómo harías para que la frase que se muestra en el navegador sea aleatoria cada vez que recargas la app?
