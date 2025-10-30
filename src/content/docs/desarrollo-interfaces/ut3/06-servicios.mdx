@@ -1,0 +1,124 @@
+
+---
+title: "06. Servicios e Inyección de Dependencias en Angular"
+description: "Descubriendo cómo usar servicios para la lógica de negocio y la inyección de dependencias para una arquitectura modular y eficiente."
+---
+
+En Angular, los componentes son los encargados de la interacción con el usuario y la presentación de datos en la vista. Pero, ¿dónde debería residir la lógica de negocio, el acceso a datos o la comunicación con un backend? La respuesta de Angular es clara: en los **servicios**.
+
+Un servicio en Angular es, en esencia, una clase TypeScript con un propósito bien definido. Su objetivo es encapsular lógica que no está directamente ligada a una vista específica y que puede ser reutilizada por múltiples componentes.
+
+---
+
+## ¿Por qué usar Servicios?
+
+1.  **Reutilización de Código**: La misma lógica (ej. obtener una lista de usuarios) puede ser necesitada por diferentes componentes. Un servicio permite escribirla una vez y usarla en todas partes.
+2.  **Separación de Responsabilidades (SoC)**: Los componentes se centran en la vista, mientras que los servicios se ocupan de la lógica de negocio. Esto hace que el código sea más limpio, fácil de leer y de mantener.
+3.  **Estado Compartido**: Los servicios son el lugar ideal para gestionar un estado que debe ser compartido entre componentes que no tienen una relación directa de padre-hijo.
+4.  **Abstracción**: Los componentes no necesitan saber *cómo* se obtienen los datos (si vienen de una API, de `localStorage` o de un mock). Simplemente le piden los datos al servicio.
+
+---
+
+## Creación de un Servicio
+
+Podemos crear un servicio fácilmente usando Angular CLI:
+
+```bash
+ng generate service nombre-del-servicio
+# o su abreviatura
+ng g s nombre-del-servicio
+```
+
+Este comando genera un fichero `nombre-del-servicio.service.ts` con una estructura básica:
+
+```typescript
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class NombreDelServicioService {
+
+  constructor() { }
+
+  // Aquí iría la lógica de nuestro servicio
+  getDatos() {
+    return 'Estos son los datos del servicio';
+  }
+}
+```
+
+El decorador `@Injectable()` marca la clase como un servicio que puede ser gestionado por el sistema de **Inyección de Dependencias** de Angular.
+
+La propiedad `providedIn: 'root'` significa que Angular creará una única instancia de este servicio (un *singleton*) y estará disponible para ser inyectada en cualquier parte de la aplicación.
+
+---
+
+## Inyección de Dependencias (DI)
+
+La Inyección de Dependencias es un patrón de diseño fundamental en Angular. En lugar de que un componente cree sus propias dependencias (como un servicio), se las "pide" a Angular, que se encarga de crearlas y proporcionarlas.
+
+**¿Cómo funciona?**
+
+Para usar un servicio dentro de un componente, simplemente lo declaramos como una dependencia en su `constructor`.
+
+**Componente (`ListaUsuariosComponent`):**
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { UsuariosService } from './usuarios.service'; // Importamos el servicio
+
+@Component({
+  selector: 'app-lista-usuarios',
+  template: `
+    <ul>
+      <li *ngFor="let usuario of usuarios">{{ usuario.nombre }}</li>
+    </ul>
+  `
+})
+export class ListaUsuariosComponent implements OnInit {
+
+  usuarios: any[];
+
+  // 1. Inyectamos el servicio en el constructor
+  constructor(private usuariosService: UsuariosService) { }
+
+  ngOnInit() {
+    // 2. Usamos la instancia del servicio para obtener los datos
+    this.usuarios = this.usuariosService.getUsuarios();
+  }
+}
+```
+
+**Servicio (`UsuariosService`):**
+
+```typescript
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UsuariosService {
+
+  constructor() { }
+
+  getUsuarios() {
+    // En una aplicación real, aquí haríamos una petición HTTP
+    return [
+      { id: 1, nombre: 'Alice' },
+      { id: 2, nombre: 'Bob' },
+      { id: 3, nombre: 'Charlie' }
+    ];
+  }
+}
+```
+
+### El Flujo de la Inyección de Dependencias
+
+1.  Cuando Angular va a crear una instancia de `ListaUsuariosComponent`, su inyector mira el `constructor`.
+2.  Ve que necesita una instancia de `UsuariosService`.
+3.  El inyector busca si ya tiene una instancia de `UsuariosService` en su contenedor. Como está configurado con `providedIn: 'root'`, existirá una única instancia para toda la aplicación.
+4.  Si no existe, la crea. Si ya existe, la reutiliza.
+5.  Finalmente, le pasa esa instancia al `constructor` del componente.
+
+> Los servicios y la inyección de dependencias son el pegamento que une una aplicación Angular. Permiten construir sistemas modulares, desacoplados y fáciles de testear, donde cada pieza tiene una responsabilidad clara y definida.

@@ -1,0 +1,114 @@
+
+---
+title: "07. Ciclo de Vida de un Componente en Angular"
+description: "Entendiendo el ciclo de vida de los componentes en Angular y cómo aprovechar sus fases para ejecutar lógica en momentos clave."
+---
+
+Todo componente en Angular tiene un **ciclo de vida**, una secuencia de fases por las que pasa desde su creación hasta su destrucción. Angular nos ofrece "ganchos" (hooks) en estas fases, que son métodos que podemos implementar en nuestros componentes para ejecutar código en momentos específicos.
+
+Comprender el ciclo de vida es fundamental para realizar tareas como la i2nicialización de datos, la suscripción a observables, la optimización del rendimiento y la limpieza de recursos.
+
+---
+
+## Fases Principales del Ciclo de Vida
+
+Angular gestiona el ciclo de vida de los componentes y directivas. A continuación, se describen los "ganchos" más importantes en el orden en que se ejecutan:
+
+1.  **`constructor()`**:
+    *   **¿Cuándo se ejecuta?**: Antes que cualquier otro hook. Se llama cuando Angular crea la instancia de la clase del componente.
+    *   **Uso principal**: Para la **inyección de dependencias**. Es el lugar ideal para inyectar servicios, pero no se debe colocar lógica compleja aquí.
+
+2.  **`ngOnChanges()`**:
+    *   **¿Cuándo se ejecuta?**: Se llama antes de `ngOnInit()` y cada vez que Angular detecta un cambio en las propiedades de entrada (`@Input`).
+    *   **Uso principal**: Para reaccionar a cambios en los datos que vienen de un componente padre. Recibe un objeto `SimpleChanges` que contiene los valores actuales y anteriores de las propiedades que han cambiado.
+
+3.  **`ngOnInit()`**:
+    *   **¿Cuándo se ejecuta?**: Una sola vez, después del primer `ngOnChanges()`.
+    *   **Uso principal**: Para inicializar el componente. Es el lugar perfecto para realizar peticiones HTTP, suscribirse a observables o realizar cualquier otra inicialización compleja que no deba estar en el constructor.
+
+4.  **`ngDoCheck()`**:
+    *   **¿Cuándo se ejecuta?**: Se llama en cada ciclo de detección de cambios de Angular, inmediatamente después de `ngOnChanges()` y `ngOnInit()`.
+    *   **Uso principal**: Para implementar una lógica de detección de cambios personalizada cuando Angular no puede o no quiere detectar un cambio por sí mismo. Es un hook costoso en términos de rendimiento, por lo que debe usarse con precaución.
+
+5.  **`ngAfterContentInit()`**:
+    *   **¿Cuándo se ejecuta?**: Una sola vez, después de que Angular proyecta contenido externo en la vista del componente (usando `<ng-content>`).
+    *   **Uso principal**: Para interactuar con el contenido proyectado, por ejemplo, para acceder a elementos hijos que provienen de otro componente.
+
+6.  **`ngAfterContentChecked()`**:
+    *   **¿Cuándo se ejecuta?**: Después de `ngAfterContentInit()` y cada vez que el contenido proyectado ha sido verificado en un ciclo de detección de cambios.
+    *   **Uso principal**: Para ejecutar lógica después de que se haya verificado el contenido proyectado.
+
+7.  **`ngAfterViewInit()`**:
+    *   **¿Cuándo se ejecuta?**: Una sola vez, después de que la vista del componente (y las de sus hijos) ha sido completamente inicializada.
+    *   **Uso principal**: Para interactuar con la vista del componente, como acceder a elementos del DOM a través de `@ViewChild` o inicializar librerías de terceros que manipulan el DOM.
+
+8.  **`ngAfterViewChecked()`**:
+    *   **¿Cuándo se ejecuta?**: Después de `ngAfterViewInit()` y cada vez que la vista del componente (y las de sus hijos) ha sido verificada.
+    *   **Uso principal**: Para ejecutar lógica después de que se haya verificado la vista. Al igual que `ngDoCheck()`, debe usarse con cuidado para no impactar el rendimiento.
+
+9.  **`ngOnDestroy()`**:
+    *   **¿Cuándo se ejecuta?**: Justo antes de que Angular destruya el componente.
+    *   **Uso principal**: Para **limpiar recursos** y evitar fugas de memoria. Es el lugar ideal para desuscribirse de observables, cancelar temporizadores o eliminar manejadores de eventos.
+
+---
+
+## Ejemplo Práctico
+
+Veamos un ejemplo de cómo se implementan estos hooks en un componente:
+
+```typescript
+import { Component, OnInit, OnDestroy, OnChanges, Input, SimpleChanges } from '@angular/core';
+
+@Component({
+  selector: 'app-lifecycle-example',
+  template: `
+    <p>Contador: {{ counter }}</p>
+    <p>Propiedad de entrada: {{ myInput }}</p>
+  `
+})
+export class LifecycleExampleComponent implements OnInit, OnDestroy, OnChanges {
+
+  @Input() myInput: string;
+  counter = 0;
+  private intervalId: any;
+
+  constructor() {
+    console.log('Constructor llamado');
+    // NO hacer inicializaciones complejas aquí
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('ngOnChanges llamado', changes);
+    // Reaccionar a cambios en 'myInput'
+    if (changes.myInput) {
+      console.log(`El valor de myInput cambió de '${changes.myInput.previousValue}' a '${changes.myInput.currentValue}'`);
+    }
+  }
+
+  ngOnInit() {
+    console.log('ngOnInit llamado');
+    // Ideal para inicializar datos
+    this.intervalId = setInterval(() => {
+      this.counter++;
+      console.log('Contador incrementado:', this.counter);
+    }, 1000);
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy llamado');
+    // Limpiar recursos para evitar fugas de memoria
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+}
+```
+
+### ¿Qué podemos observar en este ejemplo?
+
+-   El `constructor` se limita a registrar un mensaje.
+-   `ngOnChanges` se activará cada vez que el componente padre modifique el valor de `myInput`.
+-   `ngOnInit` inicia un intervalo que incrementa un contador cada segundo.
+-   `ngOnDestroy` se encarga de detener el intervalo cuando el componente es eliminado, evitando que siga ejecutándose en segundo plano y consumiendo recursos.
+
+> Dominar el ciclo de vida de los componentes es esencial para construir aplicaciones Angular robustas, eficientes y libres de errores. Te permite controlar con precisión qué, cuándo y cómo se ejecuta tu código.

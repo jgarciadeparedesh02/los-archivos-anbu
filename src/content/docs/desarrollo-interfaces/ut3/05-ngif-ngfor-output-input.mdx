@@ -1,0 +1,147 @@
+---
+title: "05. Control de Flujo y Comunicación entre Componentes"
+description: "Aprendiendo a usar el nuevo sistema de control de flujo declarativo con @if y @for en Angular 20, y cómo comunicar componentes con @Input y @Output."
+---
+
+En Angular 20, la **comunicación entre componentes** y la **manipulación del DOM de forma declarativa** son pilares esenciales para construir aplicaciones modulares y dinámicas.  
+Las versiones recientes de Angular introducen un nuevo sistema de **control de flujo declarativo**, que reemplaza las directivas estructurales tradicionales como `*ngIf` y `*ngFor`, ofreciendo una sintaxis más clara, eficiente y legible.
+
+---
+
+## Control de Flujo Declarativo: `@if` y `@for`
+
+El nuevo control de flujo utiliza bloques delimitados directamente en la plantilla, eliminando la necesidad de asteriscos (`*`) y mejorando la integración con TypeScript y el autocompletado del IDE.
+
+### `@if`: Renderizado Condicional
+
+`@if` permite mostrar o eliminar elementos del DOM en función de una condición booleana, con una sintaxis más limpia y estructurada.
+
+**Ejemplo básico:**
+
+```html
+@if (usuarioLogueado) {
+  <p>Bienvenido, {{ nombreUsuario }}.</p>
+}
+````
+
+**Con `@else`:**
+
+Puedes encadenar bloques `@else` o `@else if`, sin necesidad de usar `ng-template`.
+
+```html
+@if (usuarioLogueado) {
+  <p>Bienvenido de nuevo, {{ nombreUsuario }}.</p>
+} @else {
+  <p>Por favor, inicia sesión para continuar.</p>
+}
+```
+
+---
+
+### `@for`: Iteración sobre Listas
+
+`@for` reemplaza a `*ngFor`, con una sintaxis más explícita y soporte nativo para seguimiento de identidad (`track`).
+
+**Ejemplo básico:**
+
+```html
+<ul>
+  @for (tarea of listaDeTareas; track tarea.id) {
+    <li>{{ tarea.descripcion }}</li>
+  }
+</ul>
+```
+
+**Variables locales:**
+
+`@for` también permite declarar variables contextuales dentro del bucle:
+
+```html
+@for (user of users; let i = $index; let isFirst = $first) {
+  <p [class.highlight]="isFirst">{{ i + 1 }} - {{ user.name }}</p>
+}
+```
+
+Variables disponibles:
+
+* `$index`: índice del elemento.
+* `$first`, `$last`: indican si el elemento es el primero o último.
+* `$even`, `$odd`: indican si el índice es par o impar.
+
+---
+
+## Comunicación entre Componentes: `@Input()` y `@Output()`
+
+Angular 20 mantiene el mismo sistema de comunicación entre componentes, basado en propiedades y eventos, ideal para relaciones **padre → hijo → padre**.
+
+---
+
+### `@Input()`: Datos del Padre al Hijo
+
+El decorador `@Input()` permite pasar información desde un componente padre a un hijo.
+
+**Componente hijo (`TarjetaUsuarioComponent`):**
+
+```typescript
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-tarjeta-usuario',
+  standalone: true,
+  template: `
+    <div class="tarjeta">
+      <h2>{{ usuario.nombre }}</h2>
+      <p>Email: {{ usuario.email }}</p>
+    </div>
+  `
+})
+export class TarjetaUsuarioComponent {
+  @Input() usuario!: { nombre: string; email: string };
+}
+```
+
+**Componente padre (`ListaUsuariosComponent`):**
+
+```html
+@for (user of listaDeUsuarios; track user.email) {
+  <app-tarjeta-usuario [usuario]="user" />
+}
+```
+
+Usamos property binding (`[usuario]="user"`) para enviar datos del padre al hijo.
+
+---
+
+### `@Output()`: Eventos del Hijo al Padre
+
+El decorador `@Output()` permite que un componente hijo emita eventos hacia su padre mediante un `EventEmitter`.
+
+**Componente hijo (`BotonEliminarComponent`):**
+
+```typescript
+import { Component, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-boton-eliminar',
+  standalone: true,
+  template: `<button (click)="onEliminarClick()">Eliminar</button>`
+})
+export class BotonEliminarComponent {
+  @Output() eliminar = new EventEmitter<void>();
+
+  onEliminarClick() {
+    this.eliminar.emit();
+  }
+}
+```
+
+**Componente padre (`ElementoListaComponent`):**
+
+```html
+<div>
+  <span>{{ elemento.nombre }}</span>
+  <app-boton-eliminar (eliminar)="onElementoEliminado(elemento)" />
+</div>
+```
+
+Usamos event binding (`(eliminar)="..."`) para escuchar los eventos emitidos por el hijo.
