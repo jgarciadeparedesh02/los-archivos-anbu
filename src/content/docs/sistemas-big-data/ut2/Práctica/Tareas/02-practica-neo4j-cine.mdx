@@ -185,3 +185,154 @@ El Neo4j Browser ofrece una potente interfaz de visualización para explorar tu 
 *   **Documentación:** Consulta la [documentación oficial de Neo4j Cypher](https://neo4j.com/docs/cypher-manual/current/) para aprender más sobre funciones y cláusulas avanzadas.
 *   **Comunidad:** Explora los ejemplos y tutoriales de la comunidad Neo4j para inspirarte en proyectos más complejos.
 *   **Limpieza:** Si estás usando Neo4j Desktop, puedes reiniciar tu base de datos o eliminar todos los datos con `MATCH (n) DETACH DELETE n;` para empezar de nuevo (¡úsa con precaución!).
+
+Perfecto ✅
+Aquí tienes el texto **actualizado en formato Markdown**, ya integrado y con el mismo estilo y numeración que tu práctica original.
+He añadido la nueva sección como **“Parte 6 (Opcional): Extensión — Creación de una API o Aplicación Web con Neo4j”**, justo antes de las *Recomendaciones finales*.
+
+Puedes copiarlo y pegarlo directamente en tu archivo `.md`.
+
+---
+
+## Parte 6 (Opcional): Extensión — Creación de una API o Aplicación Web con Neo4j
+
+Para los estudiantes que deseen ir un paso más allá, se propone esta **actividad opcional** orientada a la integración de **Neo4j** con una aplicación web o una API RESTful básica.
+
+### Objetivo
+
+Desarrollar una **pequeña aplicación o API** que se comunique con Neo4j para consultar o modificar la red social creada en los ejercicios anteriores.
+
+Podrás implementarla utilizando **Flask (Python)** o **Node.js (JavaScript)**, según tus preferencias o conocimientos previos.
+
+---
+
+### Opción 1: API con Flask (Python)
+
+1. Instala los paquetes necesarios:
+
+   ```bash
+   pip install flask neo4j
+   ```
+
+2. Crea un archivo `app.py` con el siguiente código base:
+
+   ```python
+   from flask import Flask, jsonify, request
+   from neo4j import GraphDatabase
+
+   app = Flask(__name__)
+
+   uri = "bolt://localhost:7687"
+   driver = GraphDatabase.driver(uri, auth=("neo4j", "tu_contraseña"))
+
+   @app.route("/users", methods=["GET"])
+   def get_users():
+       with driver.session() as session:
+           result = session.run("MATCH (u:User) RETURN u.username AS username, u.name AS name")
+           users = [record.data() for record in result]
+       return jsonify(users)
+
+   @app.route("/follow", methods=["POST"])
+   def follow_user():
+       data = request.get_json()
+       with driver.session() as session:
+           session.run("""
+               MATCH (a:User {username: $from}), (b:User {username: $to})
+               MERGE (a)-[:FOLLOWS]->(b)
+           """, from=data["from"], to=data["to"])
+       return jsonify({"status": "ok", "message": f"{data['from']} ahora sigue a {data['to']}."})
+
+   if __name__ == "__main__":
+       app.run(debug=True)
+   ```
+
+3. Ejecuta la aplicación con:
+
+   ```bash
+   python app.py
+   ```
+
+4. Prueba tu API desde el navegador o con [Postman](https://www.postman.com/) o `curl`, por ejemplo:
+
+   ```bash
+   curl http://localhost:5000/users
+   ```
+
+---
+
+### Opción 2: API con Node.js y Express
+
+1. Crea un nuevo proyecto y agrega las dependencias:
+
+   ```bash
+   npm init -y
+   npm install express neo4j-driver
+   ```
+
+2. Crea un archivo `index.js` con el siguiente código base:
+
+   ```javascript
+   const express = require('express');
+   const neo4j = require('neo4j-driver');
+   const app = express();
+   app.use(express.json());
+
+   const driver = neo4j.driver(
+     'bolt://localhost:7687',
+     neo4j.auth.basic('neo4j', 'tu_contraseña')
+   );
+
+   app.get('/users', async (req, res) => {
+     const session = driver.session();
+     const result = await session.run('MATCH (u:User) RETURN u.username AS username, u.name AS name');
+     const users = result.records.map(r => r.toObject());
+     res.json(users);
+     await session.close();
+   });
+
+   app.post('/follow', async (req, res) => {
+     const { from, to } = req.body;
+     const session = driver.session();
+     await session.run(`
+       MATCH (a:User {username: $from}), (b:User {username: $to})
+       MERGE (a)-[:FOLLOWS]->(b)
+     `, { from, to });
+     res.json({ status: 'ok', message: `${from} ahora sigue a ${to}.` });
+     await session.close();
+   });
+
+   app.listen(3000, () => console.log('Servidor escuchando en http://localhost:3000'));
+   ```
+
+3. Ejecuta la aplicación:
+
+   ```bash
+   node index.js
+   ```
+
+4. Prueba la API:
+
+   ```bash
+   curl http://localhost:3000/users
+   ```
+
+---
+
+### Posibles Extensiones
+
+Si te interesa explorar más, puedes implementar funcionalidades adicionales como:
+
+* Endpoint para crear nuevos usuarios o posts (`POST /users`, `POST /posts`).
+* Endpoint para listar los posts de un usuario.
+* Endpoint para ver qué usuarios se siguen mutuamente.
+* Interfaz web simple (HTML/JS) que consuma la API y muestre el grafo o los usuarios.
+
+---
+
+### Entrega (opcional)
+
+Si realizas esta parte, incluye en tu repositorio:
+
+1. El código fuente de la aplicación (`app.py` o `index.js`).
+2. Un breve documento (`API.md`) describiendo los endpoints disponibles.
+3. Capturas de pantalla o ejemplos de uso (peticiones y respuestas JSON).
