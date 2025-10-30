@@ -1,0 +1,63 @@
+---
+title: "01: Lista de tareas (To-Do List) en Angular"
+---
+
+Desarrolla una aplicación sencilla de lista de tareas utilizando Angular, trabajando exclusivamente con **componentes**, **propiedades de entrada y salida** (`@Input()` y `@Output()`), y **comunicación entre componentes**.  
+El proyecto **no debe utilizar routing, servicios ni almacenamiento externo**.
+
+---
+
+## Componentes requeridos
+
+1. **`task-input`**
+
+   - Contendrá un campo de texto y un botón para agregar una nueva tarea.
+   - Emitirá al componente principal el texto de la nueva tarea mediante un evento (`@Output()`).
+
+2. **`task-list`**
+
+   - Recibirá, mediante `@Input()`, la lista completa de tareas desde el componente principal.
+   - Mostrará todas las tareas utilizando el componente `task-item`.
+
+3. **`task-item`**
+
+   - Representará una tarea individual.
+   - Mostrará el texto de la tarea y un botón para eliminarla.
+   - Emitirá al componente padre (`task-list`) un evento cuando el usuario desee eliminarla.
+
+---
+
+## Lógica general del proyecto
+
+- El **`AppComponent`** será el encargado de mantener el **array principal de tareas**.  
+- Cuando el usuario agrega una tarea desde `task-input`, el `AppComponent` la añade al array.  
+- Cuando se elimina una tarea desde `task-item`, el `AppComponent` actualiza el array eliminándola.  
+- Toda la comunicación entre componentes debe realizarse mediante **propiedades y eventos**, sin utilizar servicios ni almacenamiento local.
+
+---
+
+## Requisitos funcionales
+
+- El usuario puede escribir una nueva tarea en el campo de texto y pulsar el botón “Agregar” para añadirla a la lista.  
+- Cada tarea debe mostrarse con su texto y un botón “Eliminar”.  
+- Al pulsar “Eliminar”, la tarea debe desaparecer de la lista.  
+- Si no hay tareas, debe mostrarse un mensaje (por ejemplo: “No hay tareas pendientes”).  
+
+---
+
+## Recomendaciones y buenas prácticas
+
+- Utiliza `@Input()` en los componentes `task-list` y `task-item` para recibir datos.  
+- Utiliza `@Output()` junto con `EventEmitter` para enviar eventos al componente padre.  
+- Emplea `@for` (o `*ngFor` si trabajas con versiones anteriores) para recorrer la lista de tareas.  
+- Utiliza `@if` (o `*ngIf`) para mostrar el mensaje cuando la lista esté vacía.  
+- Mantén el diseño simple y funcional, sin necesidad de estilos complejos.  
+
+---
+
+## Reto adicional (opcional)
+
+Si deseas ampliar el proyecto, puedes:
+
+- Añadir un campo para marcar una tarea como completada.  
+- Mostrar las tareas completadas con un estilo diferente (por ejemplo, texto tachado).  
