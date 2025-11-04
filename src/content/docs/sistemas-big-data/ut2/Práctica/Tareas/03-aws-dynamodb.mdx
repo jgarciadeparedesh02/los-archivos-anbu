@@ -1,0 +1,151 @@
+---
+title: "Práctica 3: DynamoDB y el Poder de las Bases de Datos Serverless"
+description: "Una inmersión práctica en Amazon DynamoDB, la base de datos NoSQL serverless de AWS, para entender su funcionamiento, ventajas y diferencias con MongoDB."
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Imagina que tu aplicación se vuelve viral. De repente, miles de usuarios se registran y realizan pedidos cada segundo. Tu base de datos tradicional, alojada en un único servidor, empieza a ahogarse. Las consultas se vuelven lentas, el sistema se colapsa y los usuarios se frustran. ¿Cómo solucionarlo? Podrías comprar un servidor más potente (escalado vertical), pero es caro y tiene un límite. O podrías distribuir la carga entre múltiples servidores (escalado horizontal), pero es complejo de gestionar.
+
+Aquí es donde brilla **Amazon DynamoDB**. Es una base de datos NoSQL totalmente administrada por AWS, diseñada desde cero para ofrecer un rendimiento constante a cualquier escala. La palabra clave es **"serverless"** (sin servidor): tú te olvidas de la infraestructura, y AWS se encarga de todo.
+
+:::tip[¿Qué significa "Serverless"?]
+No es que no haya servidores, ¡claro que los hay! Significa que, como desarrollador, no tienes que aprovisionarlos, gestionarlos ni parchearlos. Simplemente defines tu tabla, y AWS se ocupa de la disponibilidad, el rendimiento y el escalado de forma automática. Pagas solo por lo que usas, ya sea para una pequeña prueba o para una aplicación a escala planetaria.
+:::
+
+En esta práctica, nos pondremos en la piel de la startup ficticia **DataMart** y usaremos DynamoDB para construir un sistema de gestión de pedidos, comparándolo con lo que ya conocemos de MongoDB.
+
+---
+
+## Objetivos de Aprendizaje
+
+Al finalizar esta guía, serás capaz de:
+
+-   Entender los conceptos de "serverless" y "base de datos administrada".
+-   Crear y configurar una tabla en DynamoDB, definiendo su clave primaria.
+-   Realizar operaciones básicas (CRUD: Crear, Leer, Actualizar, Borrar) sobre los datos.
+-   Distinguir el modelo de datos de DynamoDB del de otras bases de datos como MongoDB.
+
+> **Importante para tu entrega:**
+> A lo largo de la práctica, se te pedirá que tomes **capturas de pantalla** de tus avances. Deberás entregar un informe en formato Markdown explicando **qué hiciste, qué observaste y qué aprendiste**, junto con las capturas.
+
+---
+
+## Manos a la Obra: El Sistema de Pedidos de DataMart
+
+Nuestra startup, **DataMart**, necesita una base de datos para gestionar los pedidos de su e-commerce. Debe ser rápida, escalable y no requerir un equipo de administradores de sistemas. DynamoDB parece la elección perfecta.
+
+Cada pedido tendrá la siguiente estructura:
+
+| Campo           | Descripción                     | Tipo de Dato | Clave            |
+| :-------------- | :------------------------------ | :----------- | :--------------- |
+| `order_id`      | Identificador único del pedido  | String       | **Clave de Partición** |
+| `customer_name` | Nombre del cliente              | String       |                  |
+| `product`       | Producto comprado               | String       |                  |
+| `quantity`      | Cantidad de productos           | Number       |                  |
+| `order_date`    | Fecha en que se realizó el pedido | String       |                  |
+| `status`        | Estado actual del pedido        | String       |                  |
+
+Un pedido de ejemplo en formato JSON se vería así:
+
+```json
+{
+  "order_id": "ORD1001",
+  "customer_name": "Lucía Pérez",
+  "product": "Laptop Lenovo",
+  "quantity": 2,
+  "order_date": "2025-11-04",
+  "status": "Pending"
+}
+```
+
+### 1. Creando nuestra primera tabla en la nube
+
+Lo primero es crear el "contenedor" para nuestros datos. En DynamoDB, estos contenedores se llaman tablas.
+
+1.  Inicia sesión en la [**Consola de AWS**](https://aws.amazon.com/console/).
+2.  En el buscador de servicios, escribe **DynamoDB** y accede a su panel.
+3.  Haz clic en **"Create table"**.
+4.  Configura los siguientes valores:
+    *   **Table name:** `Orders`
+    *   **Partition key:** `order_id` (y asegúrate de que el tipo sea `String`).
+5.  Deja el resto de opciones con sus valores por defecto y haz clic en **"Create table"**.
+
+¡Listo! En segundo plano, AWS ha creado una tabla distribuida y de alta disponibilidad. La **clave de partición (`order_id`)** es fundamental: DynamoDB la usa internamente para distribuir los datos entre múltiples servidores, garantizando un acceso ultrarrápido siempre que busques un pedido por su ID.
+
+**Captura #1:** Muestra una imagen de tu tabla `Orders` creada correctamente en la consola de DynamoDB.
+
+### 2. Insertando nuestros primeros pedidos
+
+Ahora que tenemos la tabla, vamos a añadirle datos.
+
+1.  En el menú de la izquierda, dentro de tu tabla, ve a **"Explore items"**.
+2.  Haz clic en **"Create item"**.
+3.  La forma más sencilla de insertar datos complejos es usando la vista **JSON**. Pega el siguiente contenido. Fíjate en la sintaxis: DynamoDB requiere que especifiques el tipo de dato (`"S"` para String, `"N"` para Number).
+
+```json
+{
+  "order_id": { "S": "ORD1002" },
+  "customer_name": { "S": "Carlos Soto" },
+  "product": { "S": "Mouse Logitech" },
+  "quantity": { "N": "1" },
+  "order_date": { "S": "2025-11-04" },
+  "status": { "S": "Shipped" }
+}
+```
+
+4.  Haz clic en **"Create item"**.
+5.  ¡Tu turno! Repite el proceso y **añade al menos tres pedidos más**, con datos diferentes. Varía los productos, clientes y estados (`Pending`, `Shipped`, `Delivered`).
+
+**Captura #2:** Muestra una vista de la tabla con todos los ítems que has creado.
+
+### 3. Explorando y modificando los datos
+
+Con los datos ya en la tabla, veamos cómo consultarlos y actualizarlos.
+
+1.  Dentro de **"Explore items"**, puedes ver todos los pedidos. La consola ofrece una opción para **filtrar (`Filter items`)**. Úsala para encontrar pedidos que cumplan ciertas condiciones. Por ejemplo:
+    *   Busca todos los pedidos con `status` igual a `"Shipped"`.
+    *   Busca los pedidos de un cliente específico.
+2.  Haz clic sobre cualquiera de los ítems para ver sus detalles.
+3.  Puedes editar un campo directamente desde esta vista. Busca un pedido con estado `"Pending"` y cámbialo a `"Delivered"`. Guarda los cambios.
+
+:::info[Scan vs. Query]
+La función "Filter" de la consola ejecuta una operación llamada **Scan**. Un Scan lee **todos los ítems** de la tabla y luego filtra los resultados. Es flexible, pero puede ser lento y costoso en tablas grandes. Una operación **Query**, en cambio, es mucho más eficiente, ya que busca directamente usando la clave primaria o un índice. Para usar Query, necesitarías definir índices secundarios, un concepto más avanzado.
+:::
+
+**Captura #3:** Incluye una captura del filtro aplicado y otra del ítem que has actualizado.
+
+### 4. Eliminando un pedido
+
+Finalmente, vamos a eliminar un ítem. En DynamoDB, la forma más eficiente de eliminar es usando su clave primaria.
+
+1.  En la vista **"Explore items"**, selecciona el ítem que deseas borrar marcando la casilla a su izquierda.
+2.  Haz clic en el menú **"Actions"** y selecciona **"Delete item"**.
+3.  Confirma la eliminación. El ítem desaparecerá permanentemente.
+
+**Captura #4:** Muestra el resultado de la tabla después de haber eliminado uno de los ítems.
+
+---
+
+## Reflexión Final: DynamoDB en el Ecosistema NoSQL
+
+Ahora que has trabajado con DynamoDB, es hora de comparar. ¿En qué se parece y en qué se diferencia de otras bases de datos NoSQL como MongoDB?
+
+<CardGrid>
+  <Card title="Modelo de Datos" icon="file-text">
+    **DynamoDB** es principalmente una base de datos **Clave-Valor**, aunque su soporte para JSON anidado le da características de base de datos Documental. Está altamente optimizada para búsquedas por clave.
+    <br/><br/>
+    **MongoDB** es una base de datos **Documental** pura. Ofrece más flexibilidad para consultar por cualquier campo del documento y tiene un lenguaje de consulta más rico, pero requiere más gestión.
+  </Card>
+  <Card title="Gestión y Escalado" icon="server">
+    **DynamoDB** es **Serverless**. AWS gestiona todo. El escalado es automático y transparente. Ideal para quienes no quieren preocuparse por la infraestructura.
+    <br/><br/>
+    **MongoDB** (en su versión auto-alojada) requiere que tú gestiones los servidores, la replicación y el sharding (escalado horizontal). MongoDB Atlas es su equivalente "serverless", pero DynamoDB está más integrado en el ecosistema de AWS.
+  </Card>
+</CardGrid>
+
+Para tu informe final, incluye una sección de reflexión respondiendo a estas preguntas:
+
+1.  **Comparativa**: ¿Qué diferencias clave notaste entre trabajar con DynamoDB y lo que has visto de MongoDB? (Piensa en la sintaxis de inserción, las consultas, el esquema...).
+2.  **Ventajas Serverless**: ¿Qué beneficios crees que aporta un servicio como DynamoDB a un equipo de desarrollo? ¿Y qué inconvenientes podría tener?
+3.  **Experiencia**: ¿Qué te resultó más fácil de esta práctica? ¿Qué fue lo más complicado o confuso?
