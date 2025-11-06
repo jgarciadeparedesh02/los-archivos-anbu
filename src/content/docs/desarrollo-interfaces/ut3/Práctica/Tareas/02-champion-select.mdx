@@ -1,0 +1,58 @@
+---
+title: "02: Champion Select de League of Legends"
+---
+
+Desarrolla una aplicación para explorar campeones de League of Legends. En este proyecto, utilizarás **servicios** para consumir una API externa, y practicarás la **comunicación entre componentes anidados** para crear una experiencia de usuario interactiva.
+
+---
+
+## Componentes y Servicios Requeridos
+
+1.  **`ChampionListComponent`**
+    -   Muestra una lista o cuadrícula con la imagen y el nombre de cada campeón.
+    -   Cuando un usuario hace clic en un campeón, emite un evento (`@Output()`) con los datos de ese campeón.
+
+2.  **`ChampionDetailComponent`**
+    -   Recibe los datos de un campeón seleccionado a través de una propiedad de entrada (`@Input()`).
+    -   Muestra información detallada del campeón, como su imagen grande (splash art) y su historia (lore).
+
+---
+
+## Lógica General del Proyecto
+
+-   El **`AppComponent`** actúa como el componente contenedor principal.
+-   El `AppComponent` renderiza `ChampionListComponent` y `ChampionDetailComponent`.
+-   Cuando el usuario selecciona un campeón en `ChampionListComponent`, este notifica al `AppComponent`.
+-   El `AppComponent` recibe los datos del campeón seleccionado y los pasa al `ChampionDetailComponent` a través de un `@Input()`.
+-   El estado principal (el campeón seleccionado actualmente) se gestiona en el `AppComponent`.
+
+---
+
+## Requisitos Funcionales
+
+-   Al cargar la aplicación, se debe mostrar la lista de todos los campeones disponibles.
+-   Cada campeón en la lista debe mostrar, como mínimo, su nombre y su imagen en miniatura.
+-   Al hacer clic en un campeón de la lista, su información detallada (nombre, splash art, y lore) debe aparecer en el componente de detalle.
+-   Si no se ha seleccionado ningún campeón, el área de detalle debe mostrar un mensaje indicativo (ej: "Selecciona un campeón para ver sus detalles").
+
+---
+
+## Pistas y Endpoints de la API
+
+-   Las URLs de la API de Data Dragon son públicas. La versión puede cambiar, pero puedes usar una reciente como `14.10.1`.
+
+-   **Lista de campeones:**
+    `https://ddragon.leagueoflegends.com/cdn/14.10.1/data/en_US/champion.json`
+-   **Detalles de un campeón (ej: Aatrox):**
+    `https://ddragon.leagueoflegends.com/cdn/14.10.1/data/en_US/champion/Aatrox.json`
+-   **Imagen en miniatura (ej: Aatrox):**
+    `https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/Aatrox.png`
+-   **Splash art (ej: Aatrox):**
+    `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg`
+
+---
+
+## Reto Adicional (Opcional)
+
+-   Añade un campo de búsqueda (`<input type="text">`) para filtrar la lista de campeones por nombre en tiempo real.
+-   En la vista de detalle, muestra las diferentes *skins* del campeón. La URL para las skins es `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{championId}_{skinNum}.jpg`.
