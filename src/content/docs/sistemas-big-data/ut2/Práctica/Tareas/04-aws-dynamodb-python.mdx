@@ -1,0 +1,273 @@
+---
+title: "Práctica 4: Automatización de DynamoDB con Python y Boto3"
+description: "Aprende a controlar Amazon DynamoDB mediante programación con Python y Boto3, el SDK oficial de AWS, para automatizar la gestión de datos."
+---
+
+## Descripción general
+
+En la práctica anterior, como parte del equipo de la startup **DataMart**, creaste y gestionaste manualmente una tabla de pedidos en DynamoDB a través de la Consola de AWS. Si bien la consola es útil para empezar, las aplicaciones reales necesitan interactuar con la base de datos de forma automática. ¿Imaginas tener que añadir cada pedido a mano? Sería inviable.
+
+En esta práctica, daremos el siguiente paso: aprenderás a comunicarte con DynamoDB mediante **código**. Utilizaremos **Python** y la librería **Boto3**, el SDK (Software Development Kit) oficial de AWS. Esto te permitirá crear scripts para automatizar por completo las operaciones **CRUD (Crear, Leer, Actualizar y Borrar)** sobre la tabla `Orders`, sentando las bases para construir una API o un backend funcional.
+
+---
+
+## Objetivos de aprendizaje
+
+Al finalizar esta práctica, serás capaz de:
+
+1.  Comprender qué es un SDK y por qué es fundamental para la automatización en la nube.
+2.  Configurar un entorno de desarrollo en Python para interactuar con servicios de AWS.
+3.  Utilizar Boto3 para conectarse a una tabla de DynamoDB.
+4.  Implementar mediante programación las operaciones `put_item`, `get_item`, `update_item` y `delete_item`.
+5.  Realizar búsquedas en una tabla utilizando la operación `scan` y entender sus implicaciones de rendimiento.
+6.  Estructurar un script de Python para realizar un flujo completo de operaciones sobre la base de datos.
+
+---
+
+## Requisitos previos
+
+*   Haber completado la **Práctica 3**, ya que necesitarás la tabla `Orders` creada en DynamoDB.
+*   Tener **Python** y **pip** instalados en tu sistema.
+*   Tener la **AWS CLI** instalada y configurada con las credenciales temporales de AWS Academy, tal como se hizo en la práctica anterior.
+
+---
+
+## Parte 1: Preparando el Entorno de Programación
+
+Antes de escribir una sola línea de código Python, debemos asegurarnos de que nuestro entorno local puede comunicarse de forma segura con nuestra cuenta de AWS.
+
+### 1.1. Instalación de Boto3
+
+1. **Instala la AWS CLI:** Sigue la [guía oficial de instalación](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+2. **Instala Boto3:**  
+   ```bash
+   pip install boto3
+   ```
+    Boto3 es la herramienta que permitirá a tus scripts de Python llamar a la API de AWS para controlar servicios como DynamoDB, S3, EC2 y muchos más.
+
+### 1.2. Verificación de las Credenciales
+
+Boto3 es inteligente: buscará automáticamente las credenciales que configuraste con la AWS CLI. Para asegurarte de que todo está en orden, ejecuta este comando en tu terminal:
+
+```bash
+aws sts get-caller-identity
+```
+
+Si el comando devuelve la información de tu rol de AWS Academy (un ARN similar a `arn:aws:sts::...`), significa que Boto3 podrá autenticarse sin problemas. No necesitas escribir tus claves secretas en el código (¡nunca lo hagas!).
+
+---
+
+## Parte 2: Automatizando Operaciones con Boto3
+
+Ahora empieza lo divertido. Crea un archivo en tu editor de código favorito y llámalo `dynamodb_operations.py`. A lo largo de esta sección, añadiremos funciones a este script para interactuar con nuestra tabla `Orders`.
+
+### 2.1. Conexión a DynamoDB
+
+Primero, necesitamos establecer la conexión con el servicio y seleccionar nuestra tabla.
+
+```python
+import boto3
+
+# 1. Crear un recurso de servicio de DynamoDB
+# Reemplaza 'us-east-1' con la región que estés utilizando
+dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+
+# 2. Seleccionar la tabla 'Orders'
+table = dynamodb.Table('Orders')
+
+# 3. Imprimir un mensaje de confirmación
+print(f"Conectado a la tabla '{table.name}' en la región '{dynamodb.meta.client.meta.region_name}'.")
+```
+
+-   **`boto3.resource(...)`**: Crea un objeto de "recurso" de alto nivel, que proporciona una forma orientada a objetos de interactuar con AWS. Es más intuitivo que el `boto3.client` de bajo nivel.
+-   **`dynamodb.Table('Orders')`**: A partir del recurso, seleccionamos la tabla específica con la que queremos trabajar. Todas nuestras operaciones se realizarán a través de este objeto `table`.
+
+### Ejercicio 1: Crear un Nuevo Pedido
+
+```python
+def create_order(order_id, customer_name, product, quantity, status):
+    '''Crea un nuevo ítem en la tabla Orders.'''
+    try:
+        response = table.put_item(
+           Item={
+                'order_id': order_id,
+                'customer_name': customer_name,
+                'product': product,
+                'quantity': quantity,
+                'status': status,
+                'order_date': '2025-11-10' # Puedes usar una fecha actual
+            }
+        )
+        print(f"Pedido {order_id} creado exitosamente.")
+        return response
+    except Exception as e:
+        print(f"Error al crear el pedido: {e}")
+```
+
+-   **`table.put_item(Item={...})`**: Este método crea un nuevo ítem. El diccionario `Item` contiene los atributos del pedido. A diferencia de la consola, Boto3 no requiere que especifiques el tipo de dato (`S`, `N`) para cada valor, lo que simplifica el código. Si usas `put_item` con un `order_id` que ya existe, el ítem antiguo será **reemplazado** por completo.
+
+### Ejercicio 2: Leer un Pedido
+
+```python
+def get_order(order_id):
+    '''Obtiene un ítem de la tabla Orders por su ID.'''
+    try:
+        response = table.get_item(Key={'order_id': order_id})
+        item = response.get('Item')
+        if item:
+            print(f"Datos del pedido {order_id}: {item}")
+            return item
+        else:
+            print(f"No se encontró el pedido con ID {order_id}.")
+            return None
+    except Exception as e:
+        print(f"Error al obtener el pedido: {e}")
+```
+
+-   **`table.get_item(Key={...})`**: Es la forma más eficiente de leer un ítem, ya que utiliza la clave de partición. La respuesta es un diccionario que contiene una clave `Item` con los datos del pedido si se encuentra.
+
+### Ejercicio 3: Actualizar el Estado de un Pedido
+
+```python
+def update_order_status(order_id, new_status):
+    '''Actualiza el atributo 'status' de un pedido.'''
+    try:
+        response = table.update_item(
+            Key={'order_id': order_id},
+            UpdateExpression="set #st = :s",
+            ExpressionAttributeNames={'#st': 'status'},
+            ExpressionAttributeValues={':s': new_status},
+            ReturnValues="UPDATED_NEW"
+        )
+        print(f"Estado del pedido {order_id} actualizado a '{new_status}'.")
+        return response
+    except Exception as e:
+        print(f"Error al actualizar el pedido: {e}")
+```
+
+-   **`table.update_item(...)`**: Este método es ideal para modificar atributos específicos sin reescribir todo el ítem.
+-   **`UpdateExpression`**: Define la acción a realizar. `set #st = :s` significa: "establece el atributo llamado `#st` al valor `:s`".
+-   **`ExpressionAttributeNames` y `ExpressionAttributeValues`**: Son marcadores de posición. Se usan como buena práctica para evitar conflictos con palabras reservadas de DynamoDB y para prevenir ataques de inyección.
+
+### Ejercicio 4: Eliminar un Pedido
+
+```python
+def delete_order(order_id):
+    '''Elimina un item de la tabla Orders.'''
+    try:
+        response = table.delete_item(Key={'order_id': order_id})
+        print(f"Pedido {order_id} eliminado exitosamente.")
+        return response
+    except Exception as e:
+        print(f"Error al eliminar el pedido: {e}")
+```
+
+-   **`table.delete_item(Key={...})`**: Elimina un ítem identificado por su clave primaria. Es una operación rápida y definitiva.
+
+---
+
+### Ejercicio 5: Buscar Pedidos por Cliente
+
+Tu tarea consiste en **crear una función** llamada `get_orders_by_customer(customer_name)` que devuelva **todos los pedidos realizados por un cliente** en la tabla `Orders`.
+Para ello, deberás utilizar el método **`scan()`** de DynamoDB.
+
+#### Ejemplo ilustrativo (no relacionado con la tabla Orders)
+
+Imagina que tienes una tabla diferente llamada `Students`, con los atributos:
+
+* `student_id`
+* `name`
+* `course`
+* `grade`
+
+Y quieres obtener todos los alumnos matriculados en el curso **“Big Data”**.
+El método `scan()` se usaría de la siguiente manera:
+
+```python
+# Ejemplo ilustrativo (NO es parte de la solución)
+from boto3.dynamodb.conditions import Attr
+
+students_table = dynamodb.Table('Students')
+
+response = students_table.scan(
+    FilterExpression=Attr('course').eq('Big Data')
+)
+
+print("Estudiantes en el curso Big Data:")
+for item in response.get('Items', []):
+    print(item)
+```
+
+ Este ejemplo muestra cómo `scan()` revisa toda la tabla `Students` y devuelve solo los elementos cuyo atributo `course` sea igual a “Big Data”.
+
+---
+
+#### Tu tarea
+
+Implementa ahora tu propia función `get_orders_by_customer(customer_name)` que:
+
+1. Utilice el método `scan()` sobre la tabla `Orders`.
+2. Aplique un filtro para obtener solo los ítems cuyo campo `customer_name` coincida con el valor recibido por parámetro.
+3. Imprima los resultados obtenidos y devuelva la lista de pedidos encontrados.
+
+> **Pista:** Puedes guiarte por el ejemplo anterior con la tabla `Students`, pero adaptándolo a la tabla `Orders`.
+
+```python
+def get_orders_by_customer(customer_name):
+    """Devuelve todos los pedidos realizados por un cliente concreto."""
+    # TODO: Implementar el uso del método scan() con un filtro por 'customer_name'
+    pass
+```
+
+---
+
+## Parte 3: Demostración y Entrega
+
+Para demostrar que todas tus funciones operan correctamente, añadirás un bloque principal a tu script que las llame en secuencia.
+
+### Instrucciones de entrega
+
+1.  Completa tu script `dynamodb_operations.py` con todas las funciones de los ejercicios.
+2.  Añade el siguiente bloque al final del fichero para ejecutar un flujo de demostración. Asegúrate de usar IDs y nombres que existan o que vayas a crear en el script.
+
+    ```python
+    if __name__ == "__main__":
+        print("--- Demostración de operaciones con DynamoDB ---")
+
+        # 1. Crear un nuevo pedido
+        create_order("ORD-PY-1001", "Ana García", "Teclado Mecánico", 1, "Pending")
+
+        # 2. Leer el pedido recién creado
+        get_order("ORD-PY-1001")
+
+        # 3. Actualizar su estado
+        update_order_status("ORD-PY-1001", "Shipped")
+        get_order("ORD-PY-1001") # Verificamos el cambio
+
+        # 4. Buscar todos los pedidos de un cliente (usa un nombre que exista en tu tabla)
+        get_orders_by_customer("Ana García")
+        get_orders_by_customer("Carlos Soto") # Ejemplo con otro cliente
+
+        # 5. Eliminar el pedido
+        delete_order("ORD-PY-1001")
+        get_order("ORD-PY-1001") # Verificamos que ya no existe
+
+        print("\n--- Demostración finalizada ---")
+    ```
+
+3.  Ejecuta tu script desde la terminal: `python dynamodb_operations.py`.
+4.  Crea un informe en Markdown en tu repositorio que incluya:
+    *   El código completo de tu script.
+    *   Una captura de pantalla de la **salida de la terminal** después de ejecutar el script.
+    *   Una breve **reflexión** respondiendo a las preguntas de la siguiente sección.
+5.  Sube el informe y comparte el enlace con el profesor.
+
+---
+
+## Reflexión Final
+
+Incluye en tu informe una sección de reflexión respondiendo a estas preguntas:
+
+1.  **Automatización vs. Consola**: ¿Qué ventajas claras observas al usar un script de Python en lugar de la consola web de AWS para gestionar los datos? ¿Y qué desventajas?
+2.  **SDK como Herramienta**: ¿En qué otros escenarios (además de gestionar pedidos) podrías imaginar el uso de Boto3 para automatizar tareas en AWS?
+3.  **Dificultades y Aprendizajes**: ¿Qué parte de la práctica te resultó más desafiante? ¿Cuál fue el concepto más interesante que aprendiste?
