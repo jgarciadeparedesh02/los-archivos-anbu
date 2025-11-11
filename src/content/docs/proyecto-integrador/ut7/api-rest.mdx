@@ -1,0 +1,150 @@
+---
+title: "¿Qué es una API REST? Una Guía Sencilla"
+description: "Aprende los conceptos fundamentales de las APIs REST de una manera sencilla, con ejemplos claros sobre endpoints, métodos, parámetros y códigos de estado."
+keywords: ["API", "API REST", "HTTP", "Endpoint", "JSON", "Status Code", "Parámetros API"]
+---
+
+import { Card, CardContent } from '@/components/ui/card';
+
+Imagina que estás en un restaurante. Tú eres el **cliente** y la cocina es el **servidor** que prepara la comida. ¿Cómo pides tu comida y la recibes? No entras directamente a la cocina a prepararla tú mismo, ¿verdad?
+
+Ahí es donde entra el **camarero**. El camarero es la **API** (Interfaz de Programación de Aplicaciones).
+
+- Tú (el cliente) le das al camarero (la API) un pedido (una **solicitud**).
+- El camarero lleva tu pedido a la cocina (el servidor).
+- La cocina prepara tu comida.
+- El camarero te trae la comida (la **respuesta**) a tu mesa.
+
+Una API funciona de la misma manera: es un intermediario que permite que dos aplicaciones de software se comuniquen entre sí, siguiendo un conjunto de reglas.
+
+---
+
+## Los Componentes Clave de una API REST
+
+REST (Representational State Transfer) es el estilo de arquitectura más popular para crear APIs. Se basa en los estándares de la web (el protocolo HTTP). Vamos a desglosar sus partes.
+
+### 1. Endpoints (Las Rutas o Paths)
+
+Un endpoint es simplemente una URL que identifica un **recurso**. Un recurso es cualquier "cosa" con la que quieras interactuar: un usuario, un producto, una foto, etc.
+
+Los endpoints deben ser sustantivos en plural y ser fáciles de entender.
+
+- `https://api.ejemplo.com/usuarios`  -> Representa la colección de todos los usuarios.
+- `https://api.ejemplo.com/usuarios/123` -> Representa a un usuario específico (el que tiene el ID 123).
+- `https://api.ejemplo.com/productos` -> Representa la colección de todos los productos.
+
+### 2. Métodos HTTP (Los Verbos de la Acción)
+
+Una vez que tienes el endpoint (el "qué"), necesitas decir qué acción quieres realizar. Para eso se usan los métodos HTTP. Los más comunes son:
+
+| Método   | Acción                               | Ejemplo de Uso                               | Analogía del Restaurante        |
+| :------- | :----------------------------------- | :------------------------------------------- | :------------------------------ |
+| `GET`    | **Obtener** datos.                   | `GET /usuarios` (dame todos los usuarios)    | Pedir el menú.                  |
+| `POST`   | **Crear** un nuevo recurso.          | `POST /usuarios` (crea un nuevo usuario)     | Hacer un nuevo pedido.          |
+| `PUT`    | **Actualizar** un recurso completo.  | `PUT /usuarios/123` (reemplaza al usuario 123) | Cambiar tu pedido por completo. |
+| `DELETE` | **Eliminar** un recurso.             | `DELETE /usuarios/123` (borra al usuario 123)  | Cancelar tu pedido.           |
+| `PATCH`  | **Actualizar** parcialmente un recurso. | `PATCH /usuarios/123` (cambia solo el nombre) | "Quiero mi plato sin cebolla". |
+
+### 3. Parámetros (Información Adicional para tu Solicitud)
+
+A veces, necesitas ser más específico en tu solicitud. Los parámetros te permiten afinar tu petición.
+
+#### Parámetros de Ruta (Path Parameters)
+Son parte del endpoint y se usan para identificar un recurso específico.
+- `GET /usuarios/`**`123`** -> El `123` es un parámetro de ruta.
+
+#### Parámetros de Consulta (Query Parameters)
+Se añaden al final de la URL después de un `?` y se usan para filtrar, ordenar o paginar resultados.
+- `GET /productos`**`?categoria=electronica&orden=precio`**
+  - `categoria=electronica`: Filtra por productos de electrónica.
+  - `orden=precio`: Ordena los resultados por precio.
+
+#### Cuerpo de la Solicitud (Request Body)
+Cuando creas (`POST`) o actualizas (`PUT`/`PATCH`) un recurso, necesitas enviar los datos. Estos datos viajan en el "cuerpo" de la solicitud, generalmente en formato **JSON**.
+
+**Ejemplo de un `POST` para crear un usuario:**
+La solicitud sería `POST /usuarios` y el cuerpo (body) se vería así:
+```json
+{
+  "nombre": "Elena",
+  "email": "elena@ejemplo.com"
+}
+```
+
+---
+
+## La Respuesta: Códigos de Estado y Datos
+
+Cuando la API responde, te envía dos cosas importantes:
+
+### 1. Códigos de Estado HTTP
+
+Es un número de 3 dígitos que te dice rápidamente cómo fue la solicitud. Son como las respuestas rápidas del camarero: "¡Enseguida!", "No nos queda de eso" o "La cocina se ha incendiado".
+
+<Card>
+  <CardContent className="pt-6">
+    <p className="text-center text-lg font-bold">Códigos de Estado Más Comunes</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div>
+        <p className="font-semibold text-green-500">Respuestas Exitosas (2xx)</p>
+        <ul className="list-disc pl-5">
+          <li><strong>200 OK</strong>: La solicitud fue exitosa. (Ej: `GET /usuarios`)</li>
+          <li><strong>201 Created</strong>: Se creó un nuevo recurso. (Ej: `POST /usuarios`)</li>
+        </ul>
+      </div>
+      <div>
+        <p className="font-semibold text-red-500">Errores del Cliente (4xx)</p>
+        <ul className="list-disc pl-5">
+          <li><strong>400 Bad Request</strong>: La solicitud está mal formada (Ej: enviaste datos incorrectos).</li>
+          <li><strong>401 Unauthorized</strong>: No estás autenticado. Necesitas iniciar sesión.</li>
+          <li><strong>404 Not Found</strong>: El recurso que buscas no existe. (Ej: `GET /usuarios/9999`)</li>
+        </ul>
+      </div>
+      <div className="md:col-span-2">
+        <p className="font-semibold text-red-700">Errores del Servidor (5xx)</p>
+        <ul className="list-disc pl-5">
+          <li><strong>500 Internal Server Error</strong>: Algo salió mal en el servidor (la "cocina"). No es tu culpa.</li>
+        </ul>
+      </div>
+    </div>
+  </CardContent>
+</Card>
+
+### 2. Cuerpo de la Respuesta (Response Body)
+
+Si solicitaste datos (`GET`), la API te los devolverá en el cuerpo de la respuesta, casi siempre en formato **JSON** (JavaScript Object Notation), que es un formato de texto ligero y fácil de leer tanto para humanos como para máquinas.
+
+**Ejemplo de una respuesta a `GET /usuarios/123`:**
+```json
+{
+  "id": 123,
+  "nombre": "Juan Pérez",
+  "email": "juan.perez@ejemplo.com",
+  "fecha_registro": "2025-01-15"
+}
+```
+
+---
+
+## Resumen del Flujo Completo
+
+1.  **Cliente**: Quiere obtener la información del usuario con ID 42.
+2.  **Construye la Solicitud**:
+    - **Método**: `GET`
+    - **Endpoint**: `/usuarios/42`
+3.  **Envía la Solicitud**: `GET https://api.ejemplo.com/usuarios/42`
+4.  **Servidor (API)**:
+    - Recibe la solicitud.
+    - Busca en la base de datos al usuario con ID 42.
+    - Lo encuentra.
+5.  **Construye la Respuesta**:
+    - **Código de Estado**: `200 OK`
+    - **Cuerpo de la Respuesta**:
+      ```json
+      {
+        "id": 42,
+        "nombre": "Ana",
+        "email": "ana@ejemplo.com"
+      }
+      ```
+6.  **Envía la Respuesta**: El cliente recibe el código `200` y los datos de Ana en formato JSON. ¡Éxito!
