@@ -71,6 +71,10 @@ export default defineConfig({
         autogenerate: { directory: 'proyecto-integrador/ut6' },
       },
       {
+        label: 'Recursos Extra',
+        autogenerate: { directory: 'proyecto-integrador/ut7' },
+      },
+      {
         label: 'UT1: Introducción a Big Data y Ecosistema Hadoop',
         autogenerate: { directory: 'sistemas-big-data/ut1' },
       },
