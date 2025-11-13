@@ -1,0 +1,50 @@
+---
+title: "03: Portfolio Personal con Angular"
+---
+
+Desarrolla un portfolio personal utilizando Angular para mostrar tus proyectos, habilidades y experiencia. En este proyecto, te centrarás en la **creación de componentes reutilizables**, la **gestión de la navegación con el Router de Angular** y la **implementación de servicios** para manejar los datos de la aplicación.
+
+---
+
+## Componentes y Páginas Requeridas
+
+1.  **`HeaderComponent`**
+    -   Componente reutilizable que contendrá la barra de navegación principal.
+    -   Debe incluir enlaces de navegación (`routerLink`) a las diferentes secciones del portfolio: `Home`, `About`, `Projects` y `Contact`.
+
+2.  **`FooterComponent`**
+    -   Componente reutilizable que mostrará información de contacto, enlaces a redes sociales (como LinkedIn o GitHub) y el año actual.
+
+3.  **`HomeComponent` (Página)**
+    -   Será la página de inicio del portfolio.
+    -   Debe mostrar un saludo de bienvenida, tu nombre y una breve introducción sobre tu perfil profesional.
+
+4.  **`AboutComponent` (Página)**
+    -   Página dedicada a describir tu trayectoria, habilidades técnicas y experiencia laboral.
+    -   Puedes estructurar esta sección en sub-apartados para una mejor legibilidad.
+
+5.  **`ProjectsComponent` (Página)**
+    -   Mostrará una galería de tus proyectos más destacados.
+    -   Cada proyecto se representará mediante una tarjeta (`Card`) que incluirá una imagen, título, descripción y un enlace al proyecto o su repositorio.
+
+6.  **`ContactComponent` (Página)**
+    -   Contendrá un formulario de contacto con los campos: Nombre, Email y Mensaje.
+    -   El formulario debe incluir validaciones para asegurar que los campos no estén vacíos y que el email tenga un formato válido.
+
+---
+
+## Lógica General del Proyecto
+
+-   El **`AppComponent`** actuará como el contenedor principal de la aplicación, renderizando el `HeaderComponent`, el `FooterComponent` y el contenido de la ruta activa a través de `<router-outlet>`.
+
+---
+
+## Requisitos Funcionales
+
+-   La aplicación debe tener cuatro rutas principales: `/home`, `/about`, `/projects` y `/contact`.
+-   La ruta raíz (`/`) debe redirigir a `/home`.
+-   El `ProjectsComponent` debe obtener los datos de los proyectos desde el `ProjectsService` y mostrarlos dinámicamente.
+-   El formulario de contacto en `ContactComponent` debe ser reactivo (utilizando `ReactiveFormsModule`) y mostrar mensajes de error si los campos no son válidos.
+-   El diseño debe ser limpio, profesional y responsive, adaptándose a diferentes tamaños de pantalla.
+
+---
