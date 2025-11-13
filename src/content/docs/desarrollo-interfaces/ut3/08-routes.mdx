@@ -1,0 +1,307 @@
+---
+title: "08. Enrutamiento (Routing) en Angular"
+description: "Explora cómo configurar y gestionar el enrutamiento en aplicaciones Angular, incluyendo rutas básicas, dinámicas, anidadas, guardias y resolvers, con un enfoque en las prácticas modernas de Angular 20."
+---
+
+En el desarrollo de Single Page Applications (SPAs) con Angular, la navegación entre diferentes vistas de la aplicación sin recargar la página completa es fundamental. El módulo `@angular/router` es la herramienta oficial y potente que Angular proporciona para gestionar este **enrutamiento**, permitiendo una experiencia de usuario fluida y dinámica.
+
+Esta sección te guiará a través de la configuración y uso del enrutador de Angular, destacando las prácticas modernas y las APIs funcionales introducidas en versiones recientes, como Angular 20.
+
+---
+
+## 1. Fundamentos del Enrutamiento en Angular
+
+El enrutamiento en Angular se basa en la idea de mapear URLs a componentes específicos. Cuando la URL del navegador cambia, el enrutador de Angular determina qué componente debe mostrarse en una ubicación designada de la plantilla.
+
+### 1.1 Definición de Rutas
+
+Las rutas se definen como un array de objetos `Route`, donde cada objeto especifica un `path` (la URL) y el `component` que se debe renderizar cuando esa ruta coincide.
+
+```typescript
+// src/app/app.routes.ts
+import { Routes } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent }, // Ruta por defecto
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: '**', component: NotFoundComponent } // Ruta comodín para URLs no encontradas
+];
+```
+
+-   **`path`**: La parte de la URL que el enrutador debe coincidir.
+    -   `''`: Representa la ruta raíz de la aplicación.
+    -   `'**'`: Es una ruta comodín que coincide con cualquier URL que no haya sido previamente definida. Siempre debe ser la última ruta en la configuración.
+-   **`component`**: El componente de Angular que se cargará y mostrará cuando la ruta coincida.
+
+### 1.2 El `<router-outlet>`
+
+Para que el enrutador sepa dónde debe renderizar el componente activo, necesitas colocar la directiva `<router-outlet>` en la plantilla de tu componente principal (generalmente `app.component.html`).
+
+```html
+<!-- src/app/app.component.html -->
+<nav>
+  <a routerLink="/">Inicio</a>
+  <a routerLink="/about">Acerca de</a>
+  <a routerLink="/contact">Contacto</a>
+</nav>
+
+<router-outlet></router-outlet>
+```
+
+El `<router-outlet>` actúa como un marcador de posición donde Angular inyectará dinámicamente el componente asociado a la ruta activa.
+
+### 1.3 Configuración del Enrutador (Aplicaciones Standalone)
+
+En las aplicaciones Angular modernas (especialmente con componentes standalone), el enrutamiento se configura en el archivo `app.config.ts` utilizando la función `provideRouter`.
+
+```typescript
+// src/app/app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+
+import { routes } from './app.routes'; // Importa tus rutas definidas
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes) // Provee la configuración de rutas a la aplicación
+  ]
+};
+```
+
+---
+
+## 2. Navegación
+
+Angular ofrece dos formas principales de navegar entre rutas: declarativa (usando la directiva `routerLink`) y programática (usando el servicio `Router`).
+
+### 2.1 Navegación Declarativa con `routerLink`
+
+La directiva `routerLink` se utiliza en las plantillas HTML para crear enlaces de navegación.
+
+```html
+<!-- src/app/app.component.html -->
+<nav>
+  <a routerLink="/">Inicio</a>
+  <a routerLink="/about">Acerca de</a>
+  <a routerLink="/contact">Contacto</a>
+</nav>
+```
+
+Puedes pasar un array a `routerLink` para construir URLs más complejas o con parámetros:
+
+```html
+<a [routerLink]="['/products', productId]">Ver Producto</a>
+```
+
+### 2.2 Navegación Programática con el Servicio `Router`
+
+Para navegar desde la lógica de tu componente (por ejemplo, después de enviar un formulario o una acción de usuario), inyecta el servicio `Router` y usa sus métodos `navigate` o `navigateByUrl`.
+
+```typescript
+// src/app/components/login/login.component.ts
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  template: `
+    <button (click)="login()">Iniciar Sesión</button>
+  `
+})
+export class LoginComponent {
+  constructor(private router: Router) {}
+
+  login() {
+    // Lógica de autenticación...
+    // Después de un login exitoso, navega a la página de inicio
+    this.router.navigate(['/dashboard']);
+    // O con navigateByUrl si tienes la URL completa como string
+    // this.router.navigateByUrl('/dashboard');
+  }
+}
+```
+
+---
+
+## 3. Rutas Dinámicas y Parámetros
+
+A menudo, necesitarás pasar datos a través de la URL, como el ID de un producto o un usuario. Esto se logra con **parámetros de ruta**.
+
+### 3.1 Definición de Rutas con Parámetros
+
+Define un segmento de la ruta con un prefijo de dos puntos (`:`).
+
+```typescript
+// src/app/app.routes.ts
+import { Routes } from '@angular/router';
+import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+
+export const routes: Routes = [
+  // ... otras rutas
+  { path: 'products/:id', component: ProductDetailComponent }
+];
+```
+
+### 3.2 Acceso a Parámetros en el Componente
+
+Dentro del `ProductDetailComponent`, puedes acceder a los parámetros de la ruta inyectando el servicio `ActivatedRoute`.
+
+```typescript
+// src/app/components/product-detail/product-detail.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-product-detail',
+  standalone: true,
+  template: `
+    <h2>Detalle del Producto</h2>
+    <p>ID del Producto: {{ productId }}</p>
+  `
+})
+export class ProductDetailComponent implements OnInit {
+  productId: string | null = null;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // Acceder al parámetro de la ruta de forma síncrona (snapshot)
+    // Útil si el componente no se reutiliza con diferentes IDs en la misma instancia
+    this.productId = this.route.snapshot.paramMap.get('id');
+
+    // Acceder al parámetro de la ruta de forma asíncrona (observable)
+    // Es la forma recomendada si el componente puede reutilizarse
+    this.route.paramMap.subscribe(params => {
+      this.productId = params.get('id');
+      // Aquí podrías cargar los datos del producto usando el productId
+    });
+  }
+}
+```
+
+---
+
+## 4. Rutas Hijas (Nested Routing)
+
+Las rutas hijas permiten organizar la interfaz de usuario en secciones anidadas, donde un componente padre tiene su propio `<router-outlet>` para mostrar componentes hijos.
+
+### 4.1 Configuración de Rutas Hijas
+
+Define la propiedad `children` en un objeto de ruta.
+
+```typescript
+// src/app/app.routes.ts
+import { Routes } from '@angular/router';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
+import { AdminProductsComponent } from './components/admin/admin-products/admin-products.component';
+
+export const routes: Routes = [
+  // ... otras rutas
+  {
+    path: 'admin',
+    component: AdminDashboardComponent, // Este componente tendrá su propio <router-outlet>
+    children: [
+      { path: 'users', component: AdminUsersComponent },
+      { path: 'products', component: AdminProductsComponent },
+      { path: '', redirectTo: 'users', pathMatch: 'full' } // Ruta por defecto para /admin
+    ]
+  }
+];
+```
+
+### 4.2 `<router-outlet>` en el Componente Padre
+
+El `AdminDashboardComponent` debe tener su propio `<router-outlet>` para renderizar los componentes hijos (`AdminUsersComponent`, `AdminProductsComponent`).
+
+```html
+<!-- src/app/components/admin/admin-dashboard/admin-dashboard.component.html -->
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <a routerLink="users">Gestionar Usuarios</a>
+    <a routerLink="products">Gestionar Productos</a>
+  </aside>
+  <main class="admin-content">
+    <router-outlet></router-outlet> <!-- Aquí se renderizarán los componentes hijos -->
+  </main>
+</div>
+```
+
+---
+
+## 5. Redirecciones
+
+Las redirecciones son útiles para guiar al usuario de una URL a otra.
+
+```typescript
+// src/app/app.routes.ts
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirige la raíz a /home
+  { path: 'old-path', redirectTo: '/new-path', pathMatch: 'full' },
+  // ... otras rutas
+];
+```
+
+-   **`redirectTo`**: La URL a la que se redirigirá.
+-   **`pathMatch`**: Es crucial para las redirecciones.
+    -   `'full'`: La URL completa debe coincidir exactamente con el `path`.
+    -   `'prefix'`: La URL debe comenzar con el `path`.
+
+---
+
+## 6. Guardias de Ruta (Route Guards)
+
+Los guardias de ruta son funciones que el enrutador ejecuta antes de activar o desactivar una ruta. Son ideales para implementar lógica de autenticación, autorización o para confirmar acciones del usuario.
+
+Angular 15+ introdujo **guardias funcionales**, que son la forma recomendada de implementarlos.
+
+### 6.1 `CanActivate` (Proteger el Acceso a una Ruta)
+
+Un guardia `CanActivate` decide si un usuario puede acceder a una ruta.
+
+```typescript
+// src/app/guards/auth.guard.ts
+import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service'; // Asume un servicio de autenticación
+
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isLoggedIn()) {
+    return true; // Permite el acceso
+  } else {
+    router.navigate(['/login']); // Redirige a la página de login
+    return false; // Bloquea el acceso
+  }
+};
+```
+
+Luego, aplica el guardia a tus rutas:
+
+```typescript
+// src/app/app.routes.ts
+import { Routes } from '@angular/router';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { authGuard } from './guards/auth.guard';
+
+export const routes: Routes = [
+  // ...
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] }
+];
+```
+
+### 6.2 Otros Tipos de Guardias Funcionales
+
+-   **`CanDeactivateFn`**: Decide si un usuario puede salir de una ruta (útil para formularios con cambios no guardados).
+-   **`CanMatchFn`**: Decide si una ruta debe ser cargada (útil para lazy loading condicional).
+-   **`CanLoadFn`**: Similar a `CanMatchFn`, pero para módulos lazy-loaded.
