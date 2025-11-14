@@ -1,0 +1,186 @@
+---
+title: "Git y GitHub: Tu Máquina del Tiempo para el Código"
+description: "Aprende los fundamentos de Git y GitHub para controlar las versiones de tu proyecto, colaborar en equipo y nunca más perder un cambio importante."
+keywords: ["Git", "GitHub", "Control de Versiones", "Commit", "Push", "Pull", "Repositorio"]
+---
+
+import { Card, CardContent } from '@/components/ui/card';
+
+Imagina que estás escribiendo un documento muy importante. Haces cambios, guardas, y al día siguiente te das cuenta de que borraste algo crucial. ¿Cómo lo recuperas? Podrías tener `documento_v1.doc`, `documento_v2.doc`, `documento_final.doc`, `documento_final_AHORA_SI.doc`... Es un caos.
+
+**Git** es la solución profesional a este problema para los desarrolladores. Es un **sistema de control de versiones**, una especie de "máquina del tiempo" para tu código. Te permite:
+
+-   Guardar "fotografías" (llamadas **commits**) de tu proyecto en momentos específicos.
+-   Volver a cualquier "fotografía" anterior si algo sale mal.
+-   Trabajar en nuevas funcionalidades en una línea de tiempo paralela (llamada **rama**) sin afectar la versión principal.
+-   Colaborar con otros desarrolladores de forma ordenada.
+
+Y **GitHub**? Si Git es el software que gestiona el historial en tu ordenador, GitHub es la plataforma online donde guardas una copia de tu proyecto y su historial. Es como una red social para desarrolladores donde puedes compartir tu código, colaborar y mucho más.
+
+---
+
+## Configuración Inicial: Tu Identidad en Git
+
+Antes de empezar a hacer commits, es importante que le digas a Git quién eres. Esto es fundamental porque cada commit que hagas llevará tu nombre y correo, como una firma.
+
+Abre tu terminal o Git Bash y ejecuta estos dos comandos, reemplazando los datos de ejemplo con los tuyos.
+
+```bash
+# Configura tu nombre de usuario de GitHub
+git config --global user.name "TuNombreDeUsuario"
+
+# Configura tu correo electrónico de GitHub
+git config --global user.email "tu-correo@ejemplo.com"
+```
+
+:::caution
+Usa el mismo correo electrónico que tienes configurado en tu cuenta de GitHub. La opción `--global` guarda esta configuración para todos tus proyectos de Git en tu ordenador.
+:::
+
+## El Flujo de Trabajo Básico en Git
+
+El ciclo de vida de un cambio en Git tiene tres "zonas" principales en tu ordenador:
+
+1.  **Directorio de Trabajo (Working Directory)**: La carpeta de tu proyecto con todos tus archivos. Aquí es donde editas, creas y borras archivos.
+2.  **Área de Preparación (Staging Area)**: Una zona intermedia. Antes de tomar la "fotografía" (commit), seleccionas qué cambios específicos quieres incluir. Es como elegir qué actores estarán en la foto.
+3.  **Repositorio Local (.git)**: La base de datos donde Git guarda todo el historial de commits. Una vez que un cambio está aquí, está guardado de forma segura.
+
+<Card>
+  <CardContent className="pt-6">
+    <p className="text-center text-lg font-bold">El Ciclo: Modificar, Preparar, Confirmar</p>
+    <div className="text-center mt-4">
+      <p>1. Modificas archivos en tu <strong>Directorio de Trabajo</strong>.</p>
+      <p className="text-2xl font-bold">↓</p>
+      <p>2. Usas `git add` para añadir los cambios al <strong>Área de Preparación</strong>.</p>
+      <p className="text-2xl font-bold">↓</p>
+      <p>3. Usas `git commit` para guardar esos cambios en tu <strong>Repositorio Local</strong>.</p>
+    </div>
+  </CardContent>
+</Card>
+
+---
+
+## Comandos Esenciales para tu Día a Día
+
+### 1. `git init` y `git status`
+
+-   `git init`: Es el primer comando que ejecutas en una nueva carpeta de proyecto. Crea el repositorio local (la carpeta oculta `.git`). Solo se hace una vez por proyecto.
+-   `git status`: Tu mejor amigo. Te dice el estado de tu repositorio: qué archivos han sido modificados, cuáles están en el área de preparación y cuáles no. ¡Úsalo constantemente!
+
+### 2. `git add`
+
+Este comando mueve los cambios del Directorio de Trabajo al Área de Preparación.
+
+```bash
+# Prepara un archivo específico
+git add nombre_del_archivo.js
+
+# Prepara todos los archivos modificados en la carpeta actual y subcarpetas
+git add .
+```
+
+### 3. `git commit`
+
+Crea la "fotografía" (commit) con los cambios que están en el Área de Preparación y la guarda en tu repositorio local.
+
+```bash
+git commit -m "Un mensaje que describe qué hiciste"
+```
+
+:::tip
+**Buenas prácticas para los mensajes de commit:**
+-   Escríbelos en presente y en modo imperativo (Ej: "Añade botón de login" en lugar de "Añadí un botón").
+-   Sé claro y conciso. El mensaje debe explicar *qué* y *por qué* hiciste el cambio.
+:::
+
+### 4. `git log`
+
+Te muestra el historial de todos los commits que has hecho.
+
+```bash
+# Muestra el historial completo
+git log
+
+# Muestra una versión más compacta y bonita
+git log --oneline --graph --decorate
+```
+
+---
+
+## Colaborando con GitHub: Repositorios Remotos
+
+Tu repositorio local está en tu máquina. Para colaborar o tener una copia de seguridad, necesitas un **repositorio remoto**, y ahí es donde entra GitHub.
+
+### 1. `git clone`
+
+Para empezar a trabajar en un proyecto que ya existe en GitHub, lo "clonas". Esto descarga una copia completa del proyecto y todo su historial a tu ordenador.
+
+```bash
+git clone https://github.com/usuario/nombre-del-repositorio.git
+```
+
+### 2. Subiendo un Proyecto Existente a GitHub
+
+Si ya tienes un proyecto en tu máquina con `git init` y algunos commits, y quieres subirlo a GitHub, el proceso es un poco diferente.
+
+1.  **Crea un nuevo repositorio en GitHub**: Ve a GitHub y crea un nuevo repositorio. **Importante**: No lo inicialices con un `README` o `.gitignore` desde la web, créalo vacío.
+2.  **Copia la URL del repositorio remoto**: GitHub te la mostrará. Será algo como `https://github.com/TuUsuario/TuProyecto.git`.
+3.  **Conecta tu repositorio local con el remoto**: En tu terminal, dentro de la carpeta de tu proyecto, ejecuta este comando. `origin` es el nombre estándar que se le da al repositorio remoto principal.
+
+    ```bash
+    git remote add origin https://github.com/TuUsuario/TuProyecto.git
+    ```
+4.  **Verifica la conexión**:
+    ```bash
+    git remote -v
+    ```
+    Deberías ver la URL que acabas de añadir.
+5.  **Sube tus cambios**: Ahora, empuja tus commits a GitHub.
+
+    ```bash
+    git push -u origin main
+    ```
+    El flag `-u` establece una relación de seguimiento para que en el futuro solo necesites escribir `git push`.
+
+### 3. `git push`
+
+Cuando has hecho commits en tu repositorio local, `git push` los sube al repositorio remoto en GitHub para compartirlos con otros.
+
+```bash
+# La primera vez, puede que necesites especificar a dónde empujar
+git push -u origin main
+
+# Las veces siguientes, usualmente basta con:
+git push
+```
+
+### 4. `git pull`
+
+Si otros han subido cambios al repositorio remoto, `git pull` los descarga y los fusiona con tu versión local. Es una combinación de dos comandos: `git fetch` (traer los cambios) y `git merge` (fusionarlos).
+
+**Regla de oro:** Haz `git pull` antes de empezar a trabajar para asegurarte de que tienes la versión más reciente.
+
+---
+
+## Ignorando Archivos con `.gitignore`
+
+No todos los archivos de tu proyecto deben guardarse en el historial. Archivos generados automáticamente (`node_modules`), secretos (`.env`) o archivos de tu sistema operativo no deben estar en el repositorio.
+
+Crea un archivo llamado `.gitignore` en la raíz de tu proyecto y añade los nombres de los archivos o carpetas que Git debe ignorar.
+
+**Ejemplo de un archivo `.gitignore`:**
+```
+# Dependencias
+node_modules/
+
+# Archivos de entorno (contienen secretos)
+.env
+
+# Logs
+*.log
+
+# Archivos del sistema operativo
+.DS_Store
+```
+
+Git ahora actuará como si esos archivos no existieran.
