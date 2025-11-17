@@ -1,0 +1,61 @@
+---
+title: "04: Champion Select con Rutas de League of Legends"
+---
+
+Desarrolla una aplicación web interactiva para explorar campeones del juego League of Legends, incorporando **enrutamiento** para navegar entre el listado y los detalles de cada campeón. Este proyecto te permitirá practicar la gestión de **rutas** en Angular.
+
+- **[Ver ejemplo](https://selector-champions-lol-routes.vercel.app/champions)**
+---
+
+## Componentes Requeridos
+
+1.  **`ChampionListComponent`**
+    -   Muestra un listado de campeones (imagen y nombre).
+    -   Al hacer clic en un campeón, navega a la ruta de detalles de ese campeón.
+
+2.  **`ChampionDetailComponent`**
+    -   Recibe el ID del campeón de la URL.
+    -   Muestra información detallada del campeón (imagen principal, nombre, título, roles, historia).
+    -   Debe permitir regresar al listado de campeones.
+
+---
+
+## Lógica General del Proyecto
+
+-   La aplicación debe tener una página principal con el `ChampionListComponent`.
+-   Al seleccionar un campeón, la aplicación debe navegar a una ruta específica para mostrar el `ChampionDetailComponent` con la información del campeón.
+-   El enrutamiento debe ser configurado para manejar estas transiciones.
+-   El estado de la aplicación (campeón seleccionado) se gestiona a través de las rutas.
+
+---
+
+## Requisitos Funcionales
+
+-   **Listado de Campeones:**
+    -   La página principal (`/champions`) debe mostrar un listado de todos los campeones disponibles.
+    -   Cada campeón debe mostrar su imagen y nombre.
+    -   Al hacer clic en un campeón, la aplicación debe navegar a la ruta `/champions/:id` para mostrar sus detalles.
+
+-   **Búsqueda de Campeones:**
+    -   Debe haber un campo de búsqueda en el listado que permita filtrar campeones por nombre en tiempo real.
+
+-   **Detalle del Campeón:**
+    -   La ruta `/champions/:id` debe mostrar el `ChampionDetailComponent`.
+    -   Este componente debe mostrar la imagen principal (splash art), nombre, título, etiquetas (roles) y lore del campeón.
+    -   Debe haber un mecanismo para volver al listado de campeones.
+
+-   **Arquitectura:**
+    -   Utiliza componentes y enrutamiento de Angular.
+
+---
+
+## Pistas y Endpoints de la API
+
+-   **Lista de campeones:**
+    `https://ddragon.leagueoflegends.com/cdn/14.10.1/data/en_US/champion.json`
+-   **Detalles de un campeón (ej: Aatrox):**
+    `https://ddragon.leagueoflegends.com/cdn/14.10.1/data/en_US/champion/Aatrox.json`
+-   **Imagen en miniatura (ej: Aatrox):**
+    `https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/Aatrox.png`
+-   **Splash art (ej: Aatrox):**
+    `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg`
