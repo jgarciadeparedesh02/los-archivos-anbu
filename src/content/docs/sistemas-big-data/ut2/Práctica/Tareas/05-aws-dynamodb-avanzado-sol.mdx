@@ -1,0 +1,145 @@
+---
+title: "Solución Práctica 5: Operaciones CRUD en DynamoDB"
+description: "Solución paso a paso para la práctica de diseño y manipulación de una tabla de DynamoDB para Smart City IoT."
+draft: true
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## 1. Diseño y Creación de la Tabla
+
+Para cumplir con el patrón de acceso principal (recuperar histórico por sensor ordenado por tiempo), el diseño óptimo es:
+
+*   **Partition Key (PK):** `SensorID` (String). Agrupa todas las lecturas de un mismo sensor.
+*   **Sort Key (SK):** `Timestamp` (String). Permite ordenar las lecturas cronológicamente.
+
+**Modelo de Datos Completo:**
+Además de las claves, almacenaremos los siguientes atributos en cada ítem (DynamoDB es NoSQL, por lo que no necesitamos definirlos al crear la tabla, solo al insertar los datos):
+*   `TipoMedicion` (String): CO2, Ruido, Temperatura...
+*   `Valor` (Number): Valor numérico de la lectura.
+*   `Estado` (String): OK, Alerta, Mantenimiento...
+
+**Comando CLI:**
+
+```bash
+aws dynamodb create-table \
+    --table-name SensoresEcoCity \
+    --attribute-definitions \
+        AttributeName=SensorID,AttributeType=S \
+        AttributeName=Timestamp,AttributeType=S \
+    --key-schema \
+        AttributeName=SensorID,KeyType=HASH \
+        AttributeName=Timestamp,KeyType=RANGE \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+```
+
+## 2. Ingesta de Datos (Create)
+
+Insertamos 5 lecturas simuladas.
+
+**Comandos CLI:**
+
+```bash
+# Sensor 1: SENSOR-ZONA-Norte-01 (3 lecturas)
+aws dynamodb put-item \
+    --table-name SensoresEcoCity \
+    --item '{"SensorID": {"S": "SENSOR-ZONA-Norte-01"}, "Timestamp": {"S": "2024-11-20T10:00:00Z"}, "TipoMedicion": {"S": "Temperatura"}, "Valor": {"N": "22.5"}, "Estado": {"S": "OK"}}'
+
+aws dynamodb put-item \
+    --table-name SensoresEcoCity \
+    --item '{"SensorID": {"S": "SENSOR-ZONA-Norte-01"}, "Timestamp": {"S": "2024-11-20T10:05:00Z"}, "TipoMedicion": {"S": "Temperatura"}, "Valor": {"N": "22.8"}, "Estado": {"S": "OK"}}'
+
+aws dynamodb put-item \
+    --table-name SensoresEcoCity \
+    --item '{"SensorID": {"S": "SENSOR-ZONA-Norte-01"}, "Timestamp": {"S": "2024-11-20T10:10:00Z"}, "TipoMedicion": {"S": "CO2"}, "Valor": {"N": "410"}, "Estado": {"S": "Alerta"}}'
+
+# Sensor 2: SENSOR-ZONA-Sur-05 (2 lecturas)
+aws dynamodb put-item \
+    --table-name SensoresEcoCity \
+    --item '{"SensorID": {"S": "SENSOR-ZONA-Sur-05"}, "Timestamp": {"S": "2024-11-20T10:00:00Z"}, "TipoMedicion": {"S": "Ruido"}, "Valor": {"N": "45"}, "Estado": {"S": "OK"}}'
+
+aws dynamodb put-item \
+    --table-name SensoresEcoCity \
+    --item '{"SensorID": {"S": "SENSOR-ZONA-Sur-05"}, "Timestamp": {"S": "2024-11-20T10:15:00Z"}, "TipoMedicion": {"S": "Ruido"}, "Valor": {"N": "80"}, "Estado": {"S": "Alerta"}}'
+```
+
+## 3. Consulta de Datos (Read - Query)
+
+Consultamos el histórico del sensor `SENSOR-ZONA-Norte-01`.
+
+**Comando CLI:**
+
+```bash
+aws dynamodb query \
+    --table-name SensoresEcoCity \
+    --key-condition-expression "SensorID = :id" \
+    --expression-attribute-values '{":id": {"S": "SENSOR-ZONA-Norte-01"}}'
+```
+
+## 4. Actualización de Datos (Update)
+
+Marcamos una lectura como "Mantenimiento" y añadimos una nota. Usaremos la lectura del `SENSOR-ZONA-Norte-01` a las `10:10:00Z` (la que dio Alerta de CO2).
+
+**Comando CLI:**
+
+```bash
+aws dynamodb update-item \
+    --table-name SensoresEcoCity \
+    --key '{"SensorID": {"S": "SENSOR-ZONA-Norte-01"}, "Timestamp": {"S": "2024-11-20T10:10:00Z"}}' \
+    --update-expression "SET Estado = :e, Nota = :n" \
+    --expression-attribute-values '{":e": {"S": "Mantenimiento"}, ":n": {"S": "Recalibrado por técnico"}}' \
+    --return-values ALL_NEW
+```
+
+## 5. Eliminación de Datos (Delete)
+
+Eliminamos la lectura del sensor `SENSOR-ZONA-Sur-05` a las `10:15:00Z`.
+
+**Comando CLI:**
+
+```bash
+aws dynamodb delete-item \
+    --table-name SensoresEcoCity \
+    --key '{"SensorID": {"S": "SENSOR-ZONA-Sur-05"}, "Timestamp": {"S": "2024-11-20T10:15:00Z"}}'
+```
+
+## 6. Reto Avanzado: Alertas Globales
+
+**Pregunta:** ¿Se puede hacer eficientemente con un Query usando solo la tabla base?
+**Respuesta:** No. La tabla base está particionada por `SensorID`. Para buscar por `Estado` tendrías que hacer un **Scan** (leer toda la tabla y filtrar), lo cual es ineficiente y costoso a gran escala.
+
+**Solución Propuesta (GSI):**
+Crear un Índice Secundario Global (GSI).
+*   **GSI Partition Key:** `Estado`
+*   **GSI Sort Key:** `Timestamp` (para ver las alertas ordenadas por tiempo)
+
+Esto permitiría hacer una Query directa: `SELECT * FROM SensoresEcoCity WHERE Estado = 'Alerta'`.
+
+**Comando CLI para añadir el GSI a la tabla existente:**
+
+```bash
+aws dynamodb update-table \
+    --table-name SensoresEcoCity \
+    --attribute-definitions \
+        AttributeName=Estado,AttributeType=S \
+        AttributeName=Timestamp,AttributeType=S \
+    --global-secondary-index-updates '
+    [
+        {
+            "Create": {
+                "IndexName": "EstadoIndex",
+                "KeySchema": [
+                    {"AttributeName": "Estado","KeyType": "HASH"},
+                    {"AttributeName": "Timestamp","KeyType": "RANGE"}
+                ],
+                "Projection": {
+                    "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5
+                }
+            }
+        }
+    ]'
+```
