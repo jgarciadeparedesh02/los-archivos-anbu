@@ -1,0 +1,164 @@
+---
+title: "Práctica 5: Modelado Avanzado y Patrones de Acceso en DynamoDB"
+description: "Profundiza en DynamoDB aprendiendo a modelar tus datos con claves compuestas e índices secundarios para lograr consultas ultrarrápidas y eficientes."
+draft: true
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+En la práctica anterior, creamos nuestra primera tabla en DynamoDB y realizamos operaciones básicas. Usamos una **clave primaria simple** (`order_id`), perfecta para buscar un pedido concreto. Pero, ¿qué pasa si necesitamos responder a preguntas más complejas?
+
+-   "Muéstrame todos los pedidos de un cliente específico, ordenados por fecha."
+-   "Encuentra todos los pedidos que están pendientes de envío para procesarlos."
+
+Con nuestra tabla `Orders` actual, responder a estas preguntas requeriría una operación de **Scan**, leyendo cada uno de los ítems de la tabla. Esto es lento, caro y no escala. La clave del rendimiento en DynamoDB no está en cómo almacenas los datos, sino en **cómo piensas acceder a ellos**.
+
+En esta práctica, elevaremos nuestro juego de modelado de datos para soportar patrones de acceso complejos de manera eficiente.
+
+:::tip[El Mantra de DynamoDB]
+**"Diseña tus tablas pensando en tus consultas, no en tus datos."** A diferencia de las bases de datos relacionales, donde normalizas los datos y luego escribes `JOIN`s, en DynamoDB debes conocer tus patrones de acceso de antemano para diseñar una estructura de claves e índices que los resuelva de forma óptima.
+:::
+
+---
+
+## Objetivos de Aprendizaje
+
+-   Diseñar tablas con **claves primarias compuestas** (clave de partición + clave de ordenación).
+-   Entender la diferencia entre una operación `Query` y `Scan`.
+-   Crear y utilizar **Índices Secundarios Globales (GSI)** para habilitar nuevos patrones de consulta.
+-   Realizar consultas eficientes sobre la tabla base y sobre los índices.
+
+---
+
+## Laboratorio 1: De Clave Simple a Compuesta
+
+**Escenario:** El equipo de atención al cliente de DataMart necesita ver el historial de pedidos de un cliente. La búsqueda por `customer_name` en la tabla `Orders` original es ineficiente. Vamos a rediseñar la tabla.
+
+### 1. Creando la tabla `OrdersV2`
+
+Crearemos una nueva tabla donde la clave primaria nos permita agrupar todos los pedidos por cliente.
+
+1.  Ve al panel de **DynamoDB** en la consola de AWS y haz clic en **"Create table"**.
+2.  Configura los siguientes valores:
+    *   **Table name:** `OrdersV2`
+    *   **Primary key:**
+        *   **Partition key:** `customer_id` (Tipo: `String`)
+        *   **Sort key:** `order_date` (Tipo: `String`)
+3.  Deja el resto por defecto y crea la tabla.
+
+**¿Qué acabamos de hacer?**
+Hemos definido una **clave primaria compuesta**.
+-   La **clave de partición (`customer_id`)** le dice a DynamoDB dónde almacenar físicamente todos los pedidos de un mismo cliente.
+-   La **clave de ordenación (`order_date`)** almacena los pedidos de ese cliente ordenados por fecha.
+
+Esto nos permitirá hacer una operación `Query` extremadamente rápida para "obtener todos los pedidos del cliente X, ordenados por fecha Y".
+
+**Captura #1:** Muestra la configuración de tu tabla `OrdersV2` con su clave primaria compuesta.
+
+### 2. Insertando Datos de Prueba
+
+Vamos a añadir algunos pedidos. Ve a **"Explore items"** en tu tabla `OrdersV2` y crea varios ítems. Fíjate en que ahora `customer_id` y `order_date` son obligatorios.
+
+**Ítem 1:**
+```json
+{
+  "customer_id": { "S": "CUST001" },
+  "order_date": { "S": "2025-11-10T10:00:00Z" },
+  "order_id": { "S": "ORD2001" },
+  "product": { "S": "Teclado Mecánico" },
+  "status": { "S": "Pending" }
+}
+```
+
+**Ítem 2 (mismo cliente, otra fecha):**
+```json
+{
+  "customer_id": { "S": "CUST001" },
+  "order_date": { "S": "2025-11-15T14:30:00Z" },
+  "order_id": { "S": "ORD2005" },
+  "product": { "S": "Monitor 4K" },
+  "status": { "S": "Shipped" }
+}
+```
+
+**Ítem 3 (otro cliente):**
+```json
+{
+  "customer_id": { "S": "CUST002" },
+  "order_date": { "S": "2025-11-12T09:00:00Z" },
+  "order_id": { "S": "ORD2003" },
+  "product": { "S": "Webcam HD" },
+  "status": { "S": "Pending" }
+}
+```
+**Captura #2:** Muestra los ítems que has insertado en la tabla `OrdersV2`.
+
+### 3. Realizando una `Query`
+
+Ahora, la magia. En lugar de usar "Filter" (que hace un `Scan`), vamos a usar la función de **Query**.
+
+1.  Dentro de **"Explore items"**, cambia el desplegable de "Scan" a **"Query"**.
+2.  En el campo `customer_id`, introduce `CUST001`.
+3.  Haz clic en **"Run"**.
+
+Verás que DynamoDB devuelve instantáneamente solo los dos pedidos del cliente `CUST001`, ya ordenados por fecha. ¡No ha tenido que leer los datos del cliente `CUST002`! Esto es una `Query`.
+
+**Captura #3:** Muestra el resultado de la `Query` para `CUST001`.
+
+---
+
+## Laboratorio 2: Potenciando Consultas con Índices Secundarios
+
+**Escenario:** El equipo de logística necesita una lista de todos los pedidos con estado `Pending` para preparar los envíos. En nuestra tabla `OrdersV2`, el `status` no es parte de la clave, por lo que necesitaríamos un `Scan`. ¡Inaceptable!
+
+La solución es crear un **Índice Secundario Global (GSI)**. Un GSI es como una réplica de tu tabla, pero con una clave primaria diferente, diseñada para soportar un nuevo patrón de acceso.
+
+### 1. Añadiendo un GSI a `OrdersV2`
+
+1.  Ve a tu tabla `OrdersV2` y abre la pestaña **"Indexes"**.
+2.  Haz clic en **"Create index"**.
+3.  Configura el GSI:
+    *   **Primary key:**
+        *   **Partition key:** `status` (Tipo: `String`)
+        *   **Sort key:** `order_date` (Tipo: `String`) - *Opcional, pero útil para ordenar los pendientes por antigüedad.*
+    *   **Index name:** `StatusAndDateIndex`
+    *   **Attribute projection:** Deja la opción por defecto (`All`). Esto significa que el índice contendrá una copia completa de los ítems.
+4.  Haz clic en **"Create index"**. La creación puede tardar unos minutos mientras DynamoDB propaga los datos existentes al nuevo índice.
+
+**Captura #4:** Muestra la configuración de tu nuevo GSI.
+
+### 2. Consultando a través del GSI
+
+Una vez que el índice esté en estado "Active", podemos usarlo.
+
+1.  Vuelve a **"Explore items"** y selecciona **"Query"**.
+2.  Verás un nuevo desplegable llamado **"Index"**. Selecciónalo y elige `StatusAndDateIndex`.
+3.  Ahora los campos de consulta han cambiado. En el campo `status`, introduce `Pending`.
+4.  Haz clic en **"Run"**.
+
+DynamoDB usará el GSI para devolverte, de forma casi instantánea, todos los pedidos pendientes de todos los clientes, ordenados por fecha. Hemos creado un nuevo patrón de acceso sin modificar nuestra tabla original.
+
+**Captura #5:** Muestra el resultado de la consulta al GSI buscando por el estado `Pending`.
+
+---
+
+## Reflexión y Conclusiones
+
+<CardGrid>
+  <Card title="Clave Primaria Compuesta" icon="key">
+    **Cuándo usarla:** Cuando necesitas consultar una colección de ítems que comparten un mismo identificador (la clave de partición) y quieres poder filtrarlos u ordenarlos por un segundo atributo (la clave de ordenación).
+    <br/><br/>
+    **Ejemplo:** Todos los comentarios de un post, ordenados por fecha.
+  </Card>
+  <Card title="Índice Secundario Global (GSI)" icon="globe">
+    **Cuándo usarlo:** Cuando necesitas consultar tus datos por atributos que **no** están en la clave primaria de tu tabla. Es la herramienta principal para habilitar múltiples patrones de acceso sobre el mismo conjunto de datos.
+    <br/><br/>
+    **Ejemplo:** Buscar usuarios por su email, cuando el `user_id` es la clave primaria de la tabla.
+  </Card>
+</CardGrid>
+
+Para tu informe final, añade una nueva sección de reflexión:
+
+1.  **`Query` vs. `Scan`:** Explica con tus propias palabras la diferencia fundamental entre una `Query` y un `Scan` en DynamoDB y por qué es tan importante para el rendimiento.
+2.  **Diseño de Índices:** ¿Qué pregunta de negocio te ayudó a resolver el GSI que creaste? Piensa en otro posible patrón de acceso para la tabla `OrdersV2` y describe qué GSI crearías para soportarlo.
+3.  **Costes y Complejidad:** Crear índices tiene un coste (tanto monetario como de mantenimiento). ¿Qué desventajas crees que puede tener añadir muchos GSI a una tabla?
