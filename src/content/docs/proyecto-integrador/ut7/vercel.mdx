@@ -1,0 +1,281 @@
+---
+title: "Despliegue de Proyectos en Vercel"
+description: "Aprende a desplegar aplicaciones Angular, APIs con Node.js o Flask y bases de datos con Neon en Vercel."
+draft: true
+---
+
+Vercel es una plataforma en la nube diseñada para ofrecer la mejor experiencia de desarrollo y despliegue. Destaca por su red global de entrega de contenido (Edge Network), HTTPS automático, y su integración perfecta tanto con Git como con flujos de trabajo manuales. Es ideal para desplegar aplicaciones frontend modernas y funciones serverless.
+
+## Despliegue de Angular
+
+Vercel tiene soporte de primera clase para Angular. Tienes dos formas principales de desplegar tu aplicación: conectando tu repositorio (recomendado) o usando la línea de comandos (CLI).
+
+### Opción A: Conectando con Git (Recomendado)
+
+Esta es la forma más robusta, ya que habilita **Deployments Automáticos** cada vez que haces un `push` a tu rama.
+
+1.  Sube tu proyecto a un repositorio de GitHub, GitLab o Bitbucket.
+2.  Inicia sesión en Vercel y haz clic en **"Add New..."** > **"Project"**.
+3.  Importa tu repositorio.
+4.  Vercel detectará el framework **Angular**.
+5.  Verifica los **Build and Output Settings**:
+    -   **Build Command**: `ng build`
+    -   **Output Directory**: `dist/nombre-de-tu-proyecto` (Asegúrate de que coincida con el `outputPath` en tu `angular.json`).
+6.  Haz clic en **Deploy**.
+
+### Opción B: Despliegue Manual con CLI
+
+Si no quieres vincular tu repositorio o prefieres hacer despliegues manuales desde tu terminal, puedes usar **Vercel CLI**.
+
+#### 1. Instalación y Login
+Primero, necesitas instalar la herramienta globalmente y loguearte:
+
+```bash
+npm i -g vercel
+vercel login
+```
+
+#### 2. Despliegue (Preview)
+Para desplegar una versión de prueba (Preview), simplemente ejecuta este comando en la raíz de tu proyecto:
+
+```bash
+vercel
+```
+
+- Te hará unas preguntas de configuración la primera vez (puedes aceptar los valores por defecto con Enter).
+- Esto generará una URL única (ej: `mi-proyecto-adh32.vercel.app`) para que pruebes tus cambios.
+
+#### 3. Despliegue a Producción
+Cuando estés listo para que tus cambios sean públicos en tu dominio principal, ejecuta:
+
+```bash
+vercel --prod
+```
+
+Este comando toma tu código local y lo despliega directamente a tu entorno de Producción.
+
+:::note[Importante para el enrutamiento]
+Si tu aplicación Angular usa el router (SPA), necesitas asegurarte de que todas las rutas redirijan al `index.html`. Vercel suele manejar esto automáticamente si detecta el framework, pero si tienes problemas, puedes crear un archivo `vercel.json` en la raíz:
+
+```json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+```
+:::
+
+## Variables de Entorno y Seguridad
+
+Antes de pasar a las APIs, es crucial entender cómo manejar información sensible como las credenciales de la base de datos.
+
+### ¿Qué son?
+Las variables de entorno son valores que configuras fuera de tu código. Esto permite que tu código se comporte de manera diferente en desarrollo (tu PC) y en producción (Vercel), y lo más importante: **mantiene tus secretos seguros**.
+
+### `.env` vs Vercel Environment Variables
+
+1.  **Local (`.env`)**: En tu ordenador, creas un archivo llamado `.env` en la raíz del proyecto.
+    ```env
+    DATABASE_URL="postgres://usuario:password@host:port/database?sslmode=require"
+    ```
+    **IMPORTANTE**: Nunca subas este archivo a GitHub. Añádelo siempre a tu `.gitignore`.
+
+2.  **Producción (Vercel)**:
+    -   Ve a tu proyecto en Vercel (vía web).
+    -   Haz clic en **Settings** > **Environment Variables**.
+    -   Añade la clave (`DATABASE_URL`) y el valor (tu connection string de Neon).
+
+## Despliegue de APIs
+
+Vercel permite desplegar funciones serverless. Vamos a ver cómo crear una API real que consulte una base de datos de usuarios.
+
+### API con Node.js (Paso a Paso)
+
+Vamos a crear una API desde cero que devuelva una lista de usuarios desde una base de datos Neon.
+
+#### 1. Inicializar el proyecto
+Abre tu terminal y ejecuta:
+
+```bash
+# Crea una carpeta para tu proyecto
+mkdir mi-api-node
+cd mi-api-node
+
+# Inicializa un proyecto de Node.js (crea package.json)
+npm init -y
+
+# Instala el driver de PostgreSQL
+npm install pg
+```
+
+#### 2. Estructura del proyecto
+Tu proyecto debería verse así:
+
+```text
+mi-api-node/
+├── api/
+│   └── users.js      # Nuestro endpoint
+├── .env              # Variables locales (NO SUBIR A GIT)
+├── .gitignore        # Ignorar node_modules y .env
+├── package.json      # Dependencias
+└── package-lock.json
+```
+
+#### 3. El Código (`api/users.js`)
+Crea la carpeta `api` y dentro el archivo `users.js`. Vercel convertirá automáticamente cualquier archivo en `api/` en una ruta serverless.
+
+```javascript
+// api/users.js
+import { Pool } from 'pg';
+
+// Creamos una conexión a la base de datos usando la variable de entorno
+// Es importante crear el pool fuera de la función handler para reutilizar conexiones
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+export default async function handler(req, res) {
+  // Solo permitimos peticiones GET
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Conectamos al cliente
+  const client = await pool.connect();
+
+  try {
+    // Ejecutamos la consulta SQL
+    // Asumimos que tienes una tabla 'users' creada en Neon
+    const result = await client.query('SELECT id, name, email FROM users LIMIT 10');
+    
+    // Devolvemos los resultados en formato JSON
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } finally {
+    // Liberamos el cliente de vuelta al pool
+    client.release();
+  }
+}
+```
+
+### API con Flask (Python) (Paso a Paso)
+
+Si prefieres Python, aquí tienes cómo hacerlo con Flask.
+
+#### 1. Inicializar el proyecto
+
+```bash
+# Crea una carpeta
+mkdir mi-api-flask
+cd mi-api-flask
+
+# (Opcional pero recomendado) Crea un entorno virtual
+python -m venv venv
+# Windows:
+.\venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
+
+# Instala Flask y el driver de Postgres
+pip install flask psycopg2-binary
+```
+
+#### 2. Preparar para Vercel
+Vercel necesita saber qué librerías instalar.
+
+```bash
+# Genera el archivo requirements.txt con las librerías instaladas
+pip freeze > requirements.txt
+```
+
+#### 3. Estructura del proyecto
+
+```text
+mi-api-flask/
+├── api/
+│   └── index.py      # Punto de entrada de la aplicación
+├── .env              # Variables locales
+├── .gitignore        # Ignorar venv, __pycache__, .env
+├── requirements.txt  # Lista de dependencias
+└── vercel.json       # Configuración para Python en Vercel
+```
+
+#### 4. Configuración (`vercel.json`)
+Crea este archivo en la raíz para decirle a Vercel que todo el tráfico debe ir a nuestra app Flask.
+
+```json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index.py" }
+  ]
+}
+```
+
+#### 5. El Código (`api/index.py`)
+
+```python
+from flask import Flask, jsonify
+import os
+import psycopg2
+
+app = Flask(__name__)
+
+# Función para obtener la conexión a la BD
+def get_db_connection():
+    conn = psycopg2.connect(os.environ['DATABASE_URL'])
+    return conn
+
+@app.route('/')
+def home():
+    return "Bienvenido a mi API de Usuarios con Flask!"
+
+@app.route('/users')
+def get_users():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    try:
+        # Ejecutamos la consulta
+        cur.execute('SELECT id, name, email FROM users LIMIT 10;')
+        users = cur.fetchall()
+        
+        # Convertimos los resultados a una lista de diccionarios
+        users_list = []
+        for user in users:
+            users_list.append({
+                'id': user[0],
+                'name': user[1],
+                'email': user[2]
+            })
+            
+        return jsonify(users_list)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+```
+
+## Base de Datos con Neon
+
+Para que los ejemplos anteriores funcionen, necesitas una base de datos.
+
+1.  Crea una cuenta en [Neon](https://neon.tech/).
+2.  Crea un proyecto.
+3.  Ve al **SQL Editor** en Neon y crea una tabla de prueba:
+    ```sql
+    CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL
+    );
+    
+    INSERT INTO users (name, email) VALUES 
+    ('Alice', 'alice@example.com'),
+    ('Bob', 'bob@example.com');
+    ```
+4.  Copia el **Connection String** del Dashboard.
+5.  Configúralo en tu archivo `.env` (local) y en las **Environment Variables** de Vercel (producción).
